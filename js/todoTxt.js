@@ -611,6 +611,14 @@ function downloadTodoTxtFile() {
 	window.location.href = data;
 }
 
+/**
+ * function will clear all the filters currently set.
+ */
+function clearFilters() {
+  refreshFilters();
+  refreshUi();
+}
+
 function bindControlEvents() {
 	// enable processing of todo.txt file
 	$("#getFileButton-div").click(function() {
@@ -633,6 +641,18 @@ function bindControlEvents() {
 		editTask(createUUID());
 	});
 	
+	// enable clearing of filters without having to refresh page
+	$("#clearFilterButton-div").click(function() {
+		clearFilters();
+	});
+
+	// enable clearing of filters through keyboard shortcut
+	$(document).bind("keydown", function(e) {
+		if (e.keyCode == 67 && e.altKey) { // Alt + c
+      clearFilters();
+		}
+	});
+
 	// enable priority filter handling by clicking in the priority multiselect
 	$("#priority-select").mouseup(function(e) {
 		refreshUi();
