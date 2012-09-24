@@ -563,8 +563,8 @@ function updateTask(taskId) {
 	addTaskToLocalStorage(task);
 	
 	// update the DOM with the new task details and filter changes
-	refreshUi();
 	refreshFilters();
+	refreshUi();
 	
 	// hide the modal
 	$("#modalBorder-div").toggle();
