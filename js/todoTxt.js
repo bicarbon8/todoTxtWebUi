@@ -30,91 +30,24 @@
  * You should have received a copy of the GNU General Public License
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
- 
-/*####--------------------BEGIN POJO'S--------------------####*/
+
 /**
- * this function represents a Task Object similar to a POJO 
- * (Plain Old Java Object) used as a container for metadata 
- * about some type of object.  In this case that object is a
- * task.
- * @param pri an alphabetical String value [A-Z] representing the
- * priority of this task
- * @param created a String date value in the format YYYY-MM-DD
- * Ex: 2012-08-10
- * @param completed a String date value in the format YYYY-MM-DD
- * Ex: 2012-06-30
- * @param project an Array of Project values as referenced in the original task
- * @param ctx an Array of Context values as referenced in the original task
- * @param task the original task as listed in the todo.txt file
+ * Project container
  */
-function Task(pri, created, completed, proj, ctx, isActive, task) {
-	this.id = createUUID();
-	this.priority = pri;
-	this.createdDate = created;
-	this.completedDate = completed;
-	this.projects = proj;
-	this.contexts = ctx;
-	this.isActive = isActive;
-	this.taskString = task;
-}
+var TodoTxtJs = TodoTxtJs || {};
 
 /**
  * this function represents a Filters tracking object used to
  * limit the list of Tasks displayed at any one time.
  */
-function Filters() {
-	this.priorityHashSet = {};
-	this.projectHashSet = {};
-	this.contextHashSet = {};
-}
-/*####---------------------END POJO'S---------------------####*/
+TodoTxtJs.Filters = {
+	priorityHashSet: {},
+	projectHashSet: {},
+	contextHashSet: {},
+};
 
-/*####--------------------BEGIN GLOBALS--------------------####*/
-var isDirty = false;		// used to signify that something has been modified
-var filters = new Filters();
-/*####---------------------END GLOBALS---------------------####*/
-
-/**
- * this will load any items that need to be configured at page
- * load time such as event handlers, etc.
- */
-$(document).ready(function() {
-	// enable hiding and showing of the controls section
-	$("#controlGridContainerToggle-div").click(function() {
-		// update the button text
-		if ($("#controlGridContainer-li").is(":visible") == true) { 
-			$("#controlGridContainerToggle-div").text("Open Controls");
-		} else {
-			$("#controlGridContainerToggle-div").text("Close Controls");
-		}
-		
-		// toggle display state with animation
-		$("#controlGridContainer-li").toggle('blind');
-		
-		return false;
-	});
-	
-	// enable canceling task edit by clicking outside the modalEdit-div
-	$("#modalBorder-div").click(function() {
-		// disable click handling
-		unbindModalEvents();
-		
-		// and hide
-		$("#modalBorder-div").toggle();
-	}).children().click(function(e) {
-		// ignore clicks in child elements
-		return false;
-	});
-	
-	// check for pre-existing tasks in localStorage on startup
-	processTasksFromLocalStorage();
-	
-	// display any filters
-	refreshFilters();
-	
-	// enable keyboard shortcuts and click events for the controls area
-	bindControlEvents();
-});
+/** used to signify that something has been modified */
+TodoTxtJs.isDirty = false;
 
 /**
  * function will attempt to get all localStorage tasks and display them
@@ -122,34 +55,20 @@ $(document).ready(function() {
  * will need to clear the DOM first if you want to update the entire list
  * instead of just appending to the list.
  */
-function processTasksFromLocalStorage() {
-	var taskArray = getSortedTaskArrayFromLocalStorage();
+TodoTxtJs.processTasksFromLocalStorage = function () {
+	var taskArray = TodoTxtJs.getSortedTaskArray();
 	
 	// process each item by id
-	for (var i=0; i<taskArray.length; i++) {
-		var id = taskArray[i].id;
-		
-		// verify this matches the currently selected (if any) priority filter
-		var pri = taskArray[i].priority;
-		var validPri = filterPriority(pri);
-		
-		// verify this matches the currently selected (if any) project filter
-		var projArray = taskArray[i].projects;
-		var validProj = filterProject(projArray);
-		
-		// verify this matches the currently selected (if any) context filter
-		var ctxArray = taskArray[i].contexts;
-		var validContext = filterContext(ctxArray);
-		
-		// TODO: check for filtering out of closed tasks
-		
-		// if this task doesn't already exist in the DOM
-		if ($("#" + id).text() == "" && (validPri && validProj && validContext)) {
-			// add it to the DOM
-			addTaskToDom(taskArray[i]);
-		}
-	}
-}
+	var filteredTasks = taskArray.filter(function (t) {
+		return TodoTxtJs.filterPriority(t.priority) && 
+			   TodoTxtJs.filterProject(t.projects) && 
+			   TodoTxtJs.filterContext(t.contexts);
+	});
+
+	filteredTasks.forEach(function (t) {
+		document.querySelector("#listContainer-ul").appendChild(t.getDomElement());
+	});
+},
 
 /**
  * function will check the passed in priority and see if it
@@ -159,10 +78,10 @@ function processTasksFromLocalStorage() {
  * @return boolean of true if the priority matches the selected
  * priorities or no priority filters are selected, otherwise false.
  */
-function filterPriority(pri) {
+TodoTxtJs.filterPriority = function (pri) {
 	// get the list of selected priorities from the filter
-	var selectedOptions = $("#priority-select option:selected");
-	var selectedValues = $.map(selectedOptions, function(option) {
+	var selectedOptions = document.querySelectorAll("#priority-select option[selected]");
+	var selectedValues = [].map.call(selectedOptions, function(option) {
 		return option.value;
 	});
 	
@@ -180,7 +99,7 @@ function filterPriority(pri) {
 	
 	// no match found if we reach this point
 	return false;
-}
+},
 
 /**
  * function will check the passed in project Array and see if it
@@ -191,10 +110,10 @@ function filterPriority(pri) {
  * with the selected projects or no projects are selected, otherwise
  * false
  */
-function filterProject(projArray) {
+TodoTxtJs.filterProject = function (projArray) {
 	// get the list of selected projects from the filter
-	var selectedOptions = $("#project-select option:selected");
-	var selectedValues = $.map(selectedOptions, function(option) {
+	var selectedOptions = document.querySelectorAll("#project-select option[selected]");
+	var selectedValues = [].map.call(selectedOptions, function(option) {
 		return option.value;
 	});
 	
@@ -214,7 +133,7 @@ function filterProject(projArray) {
 	
 	// no match found if we reach this point
 	return false;
-}
+},
 
 /**
  * function will check the passed in context Array and see if it
@@ -225,10 +144,10 @@ function filterProject(projArray) {
  * with the selected contexts or no contexts are selected, otherwise
  * false
  */
-function filterContext(ctxArray) {
+TodoTxtJs.filterContext = function (ctxArray) {
 	// get the list of selected contexts from the filter
-	var selectedOptions = $("#context-select option:selected");
-	var selectedValues = $.map(selectedOptions, function(option) {
+	var selectedOptions = document.querySelectorAll("#context-select option[selected]");
+	var selectedValues = [].map.call(selectedOptions, function(option) {
 		return option.value;
 	});
 	
@@ -248,50 +167,42 @@ function filterContext(ctxArray) {
 	
 	// no match found if we reach this point
 	return false;
-}
+},
 
 /**
  * function will return a sorted array of tasks as pulled from
  * localStorage.
  */
-function getSortedTaskArrayFromLocalStorage() {
+TodoTxtJs.getSortedTaskArray = function () {
 	// sort the list and then add it
-	var taskArray = new Array();
-	var index = 0;
+	var taskArray = [];
 	for (var key in localStorage) {
-		taskArray[index++] = JSON.parse(localStorage.getItem(key));
+		var t = TodoTxtJs.getTask(key);
+		t.id = key;
+		taskArray.push(t);
 	}
-	taskArray.sort(compareTasks);
+	taskArray.sort(TodoTxtJs.compareTasks);
 	
 	return taskArray;
-}
+},
 
-function handleFileSelect(e) {
-	e.stopPropagation();
-	e.preventDefault();
+/**
+ * function will get a specified task from localstorage by id
+ * @throws exception if task not found
+ */
+TodoTxtJs.getTask = function (taskId) {
+	var t = new TodoTxtJs.Task().parseFromString(localStorage.getItem(taskId));
+	t.id = taskId;
+	return t;
+};
 
-	var files = e.originalEvent.target.files || e.originalEvent.dataTransfer.files; // FileList object.
-
-	// files is a FileList of File objects.
-	if (files.length > 0) {
-		var f = files[0];
-		
-		// process using a FileReader
-		var reader = new FileReader();
-
-		// get the content as a String
-		reader.onloadend = function (e) {
-			processTodoTxtFile(e.target.result);
-		};
-		reader.readAsText(f, "UTF-8");
-	}
-}
-
-function handleDragOver(e) {
-	e.stopPropagation();
-	e.preventDefault();
-	e.originalEvent.dataTransfer.dropEffect = "copy"; // Explicitly show this is a copy.
-}
+/**
+ * function adds this task to the browser's local cache allowing for
+ * retained data on subsequent reloads of the page
+ */
+TodoTxtJs.addTask = function (task) {
+	localStorage.setItem(task.id, task.toString());
+};
 
 /**
  * function will open and process the user's todo.txt file
@@ -300,19 +211,19 @@ function handleDragOver(e) {
  * and replace them with a new list from the referenced todo.txt
  * file.
  */
-function processTodoTxtFile(fileLines) {
+TodoTxtJs.processTodoTxtFile = function (fileLines) {
 	// confirm that the user really wants to wipe out the existing tasks and reload from disk
 	if (confirm("Loading from a todo.txt file will overwrite any existing list displayed.  Are you sure you wish to proceed?")) {
 		// clear the localStorage
 		localStorage.clear();
 		
 		// clear the DOM
-		refreshUi();
+		TodoTxtJs.refreshUi();
 		
 		// get the path and send to getTodoTxtFile function
-		parseTodoTxtFile(fileLines);
+		TodoTxtJs.parseTodoTxtFile(fileLines);
 	}
-}
+},
 
 /**
  * function will retrieve the todo.txt file from the passed in
@@ -322,7 +233,7 @@ function processTodoTxtFile(fileLines) {
  * file.
  * EX: "todo.txt" 
  */
-function getTodoTxtFile(fileName) {
+TodoTxtJs.getTodoTxtFile = function (fileName) {
 	// load via AJAX call to local file system
 	$.ajax({
 		url: fileName,
@@ -334,10 +245,10 @@ function getTodoTxtFile(fileName) {
 		},
 		success: function(data) {
 			// pass the response on to the next call
-			parseTodoTxtFile(data);
+			TodoTxtJs.parseTodoTxtFile(data);
 		}
 	});
-}
+};
 
 /**
  * function will process each line of the todo.txt, sort by priority,
@@ -347,238 +258,120 @@ function getTodoTxtFile(fileName) {
  * @param todoTxt the AJAX response containing the contents of the
  * referenced todo.txt file
  */
-function parseTodoTxtFile(todoTxt) {
+TodoTxtJs.parseTodoTxtFile = function (todoTxt) {
 	var lines = todoTxt.split("\n");
-	$.each(lines, function(n, elem) {
+	for (var i in lines) {
+		var line = lines[i];
 		// ignore empty lines
-		if (elem != null && elem != "") {
+		if (line && line !== "") {
 			// parse the individual line and return a Task
-			var task = createTaskObjFromTextLine(elem);
+			var task = new TodoTxtJs.Task().parseFromString(line);
 			
 			// add this taskObj to our global list in it's proper location
-			addTaskToLocalStorage(task);
+			TodoTxtJs.addTask(task);
 		}
-	});
+	};
 	
 	// add task to DOM from localStorage
-	processTasksFromLocalStorage();
+	TodoTxtJs.processTasksFromLocalStorage();
 	
 	// display any filters
-	refreshFilters();
-}
+	TodoTxtJs.refreshFilters();
+};
 
 /**
- * function will create a new taskObj populated with all it's data.
- * The format expected is as follows:
- * [closed("x")] [priority("(A)-(Z)")] [completed-date("YYYY-MM-DD")] [created-date("YYYY-MM-DD")] task text string
- * where a closed date should only exist if the task is closed
- * (otherwise the closed date will be parsed in as the created date)
- * 
- * @param textLine a single line from the todo.txt file to be parsed
- * into a Task Object
+ * function creates a new task
  */
-function createTaskObjFromTextLine(textLine) {
-	// get the priority of the task EX: (A)
-	var pri = parsePriorityFromString(textLine);
-	
-	// get the completed date of the task EX: 2012-09-23
-	var completed = parseCompletedDateFromString(textLine);
-	
-	// get the created date of the task EX: 2012-09-23
-	var created = parseCreatedDateFromString(textLine);
-	
-	// parse out any Projects (items starting with "+" like "+ProjectName")
-	var proj = parseProjectsFromString(textLine);
-	
-	// parse out any Context (items starting with "@" like "@ContextName")
-	var ctx = parseContextsFromString(textLine);
-	
-	// parse out the Active / Closed state (starts with "x " for closed)
-	var isActive = true;
-	if (textLine.match(/^(x\s)/)) {
-		isActive = false;
-	}
-	
-	// create the Task Object
-	var task = new Task(pri, created, completed, proj, ctx, isActive, textLine);
-	
-	// return Task Object to caller
-	return task;
-}
-
-function parsePriorityFromString(str) {
-	// parse out the priority RegEx: /\^([A-Z]\).*/ 
-	var pri = null; // used to hold the priority if set
-	
-	// check for strings starting with something like "(A)"
-	var priFoundPattern = /^\([A-Z]\)\s.*/;
-	var match = str.match(priFoundPattern); // returns null if not found
-	if (match != null && match.length > 0) {
-		// found an active match so get the priority
-		var priMatcher = /\([A-Z]\)/;
-		pri = str.match(priMatcher);
-	}
-	
-	return pri;
-}
-
-function parseCompletedDateFromString(str) {
-	// parse out the completedDate (if closed)
-	var completed = null;
-	
-	// check for strings starting with something like "x (A) 2012-08-09 2012-08-01"
-	var completedFoundPattern = /(x\s)(\([A-Z]\)\s)?(\d{4}-\d{2}-\d{2}\s){1,2}.*/;
-	match = str.match(completedFoundPattern); // returns null if not found
-	if (match != null && match.length > 0) {
-		// found a closed task with a completed date so parse
-		var completedMatcher = /(\d{4}-\d{2}-\d{2}\s)/; // gets the first date in the string
-		completed = str.match(completedMatcher);
-	}
-	
-	return completed;
-}
-
-function parseCreatedDateFromString(str) {
-	// parse out the createdDate
-	var created = null;
-	
-	// check for strings starting with something like "(A) 2012-08-01"
-	var createdFoundPattern = /^(\([A-Z]\)\s)?(\d{4}-\d{2}-\d{2}\s){1}.*/;
-	match = str.match(createdFoundPattern); // returns null if not found
-	if (match != null && match.length > 0) {
-		// found a closed task with a completed date so parse
-		var createdMatcher = /(\d{4}-\d{2}-\d{2}\s)/; // gets the first date in the string
-		created = str.match(createdMatcher);
-	}
-	
-	return created;
-}
-
-function parseProjectsFromString(str) {
-	// parse out the projects RegEx: /\+[0-9A-Za-z]+\s/ (words starting with "+")
-	var projArray = new Array(); // used to hold the project if set
-	
-	// check for strings like "+ABC123"
-	var projFoundPattern = /\+[0-9A-Za-z]+\s/;
-	var match = str.match(projFoundPattern); // returns null if not found
-	if (match != null && match.length > 0) {
-		// found an active match so get the projects as an array of projects
-		var projMatcher = /\+[0-9A-Za-z]+\s/g;
-		projArray = str.match(projMatcher);
-	}
-	
-	return projArray;
-}
-
-function parseContextsFromString(str) {
-	// parse out the contexts RegEx: /\@[0-9A-Za-z]+\s/ (words starting with "+")
-	var ctxArray = new Array(); // used to hold the context if set
-	
-	// check for strings like "+ABC123"
-	var ctxFoundPattern = /\@[0-9A-Za-z]+\s/;
-	var match = str.match(ctxFoundPattern); // returns null if not found
-	if (match != null && match.length > 0) {
-		// found an active match so get the contexts as an array of contexts
-		var ctxMatcher = /\@[0-9A-Za-z]+\s/g;
-		ctxArray = str.match(ctxMatcher);
-	}
-	
-	return ctxArray;
-}
-
-/**
- * function adds this task to the browser's local cache allowing for
- * retained data on subsequent reloads of the page
- */
-function addTaskToLocalStorage(task) {
-	localStorage.setItem(task.id, JSON.stringify(task));
-}
-
-/**
- * function will add the passed in task to the listContainer-ul setting
- * the appropriate 
- */
-function addTaskToDom(task) {
-	$("#listContainer-ul").append("<li id=\"" + task.id + "\"  class=\"" + getDisplayClassForTask(task) + "\" onclick=\"editTask('" + task.id + "');\">" + task.taskString + "</li>");
-}
-
-/**
- * function returns the appropriate display classes for this task
- */
-function getDisplayClassForTask(task) {
-	// get a list of the current tasks and iterate through
-	var cls = "";
-	if (task.priority != null && !task.taskString.match(/^(x\s)/)) {
-		if (task.priority == "(A)") {
-			cls += " a";
-		}
-		if (task.priority == "(B)") {
-			cls += " b";
-		}
-		if (task.priority == "(C)") {
-			cls += " c";
-		}
-	}
-	if (!task.isActive) {
-		cls += " closed";
-	}
-	
-	return cls;
-}
+TodoTxtJs.createTask = function (taskId) {
+	var task = new TodoTxtJs.Task();
+	TodoTxtJs.addTask(task);
+	TodoTxtJs.processTasksFromLocalStorage();
+	task.getDomElement().onclick();
+};
 
 /**
  * function opens the selected task in an editing window
  */
-function editTask(taskId) {
+TodoTxtJs.editTask = function (taskId) {
 	// populate the modal textarea with this task string
-	$("#modalEdit-textarea").val($("#" + taskId).text());
-	
-	// enable click and keyboard shortcut handling
-	bindModalEvents(taskId);
+	var task = TodoTxtJs.getTask(taskId);
+	/*
+		<div id="modalBorder-div" class="hidden modalBorder">
+			<div id="modalEdit-div" class="modal">
+				<textarea id="modalEdit-textarea"></textarea>
+				<div id="updateTaskButton-div" class="stdButton">Update Task</div>
+				<div id="deleteTaskButton-div" class="stdButton">Delete Task</div>
+			</div>
+		</div>
+	*/
+	var modalText = document.createElement("textarea");
+	modalText.id = "#modalEdit-textarea";
+	modalText.innerHTML = task.toString();
+	var updateButton = document.createElement("div");
+	updateButton.className = "stdButton";
+	updateButton.innerHTML = "Update Task";
+	var deleteButton = document.createElement("div");
+	deleteButton.className = "stdButton";
+	deleteButton.innerHTML = "Delete Task";
+	var modalContainer = document.createElement("div");
+	modalContainer.className = "modal";
+	modalContainer.appendChild(modalText);
+	modalContainer.appendChild(updateButton);
+	modalContainer.appendChild(deleteButton);
+	var modalBackground = document.createElement("div");
+	modalBackground.className = "modalBorder";
+	modalBackground.appendChild(modalContainer);
+
+	updateButton.onclick = function () {
+		if (TodoTxtJs.updateTask(taskId, modalText.value)) {
+			document.body.removeChild(modalBackground);
+		} else {
+			// TODO: display error toast
+		}
+	};
+	deleteButton.onclick = function () {
+		if (TodoTxtJs.deleteTask(taskId)) {
+			document.body.removeChild(modalBackground);
+		} else {
+			// TODO: display error toast
+		}
+	};
+
+	document.body.appendChild(modalBackground);
 	
 	// TODO: add additional details of the task to the div for display
 	
-	// display the modal
-	$("#modalBorder-div").toggle();
-	
 	// place focus on the textarea
 	$("#modalEdit-textarea").focus();
-}
+};
 
 /**
  * function updates the task and saves it to the local storage cache
  */
-function updateTask(taskId) {
-	// unbind the previous click handlers
-	unbindModalEvents();
-	
+TodoTxtJs.updateTask = function (taskId, newText) {
 	// signify that something has been modified
 	isDirty = true;
 	
 	// re-parse task
-	var task = createTaskObjFromTextLine($("#modalEdit-textarea").val());
+	var task = new TodoTxtJs.Task().parseFromString(newText);
 	task.id = taskId;
 	
 	// update local cache with new task details
-	addTaskToLocalStorage(task);
+	TodoTxtJs.addTask(task);
 	
 	// update the DOM with the new task details and filter changes
-	refreshFilters();
-	refreshUi();
+	TodoTxtJs.refreshFilters();
+	TodoTxtJs.refreshUi();
 	
-	// hide the modal
-	$("#modalBorder-div").toggle();
-}
+	return true;
+};
 
 /**
  * function will remove an existing task following confirmation from user
  */
-function deleteTask(taskId) {
+TodoTxtJs.deleteTask = function (taskId) {
 	// first confirm that the user really intended to delete this task
 	if (confirm("Are you sure you want to delete task: \"" + localStorage.getItem(taskId) + "\"?")) {
-		// unbind the previous click handlers
-		unbindModalEvents();
-		
 		// delete the task from localStorage
 		localStorage.removeItem(taskId);
 		
@@ -586,167 +379,133 @@ function deleteTask(taskId) {
 		$("#" + taskId).remove();
 		
 		// update the Filters
-		refreshFilters();
+		TodoTxtJs.refreshFilters();
 		
-		// hide the modal
-		$("#modalBorder-div").toggle();
+		return true;
 	}
-}
+};
 
 /**
  * function will allow the user to download a copy of the todo.txt file
  */
-function downloadTodoTxtFile() {
-	var taskArray = getSortedTaskArrayFromLocalStorage();
+TodoTxtJs.downloadTodoTxtFile = function () {
+	var taskArray = TodoTxtJs.getSortedTaskArray();
 	
 	// create the output string to be written
 	var content = "";
-	for (var i=0; i<taskArray.length; i++) {
-		content += taskArray[i].taskString + "\n";
+	for (var i in taskArray) {
+		var t = taskArray[i];
+		content += t.toString() + "\n";
 	}
 	
-	var data = "data:text;charset=utf-8," +
-	encodeURI(content);
+	var data = "data:text;charset=utf-8," + encodeURI(content);
 	
 	window.location.href = data;
-}
+};
 
 /**
  * function will clear all the filters currently set.
  */
-function clearFilters() {
-  refreshFilters();
-  refreshUi();
-}
+TodoTxtJs.clearFilters = function () {
+	TodoTxtJs.refreshFilters();
+	TodoTxtJs.refreshUi();
+};
 
-function bindControlEvents() {
+TodoTxtJs.bindControlEvents = function () {
 	// enable processing of todo.txt file
 	$("#getFileButton-div").click(function() {
-		processTodoTxtFile();
+		TodoTxtJs.processTodoTxtFile();
 	});
 	
 	// enable saving of todo.txt file
 	$("#saveFileButton-div").click(function() {
-		downloadTodoTxtFile();
+		TodoTxtJs.downloadTodoTxtFile();
 	});
 	// enable saving the todo.txt content through keyboard shortcut
 	$(document).bind("keydown", function(e) {
 		if (e.keyCode == 83 && e.altKey) { // Alt + s
-			downloadTodoTxtFile();
+			TodoTxtJs.downloadTodoTxtFile();
 		}
-	});
-	
-	// enable adding new tasks to DOM
-	$("#addTaskButton-div").click(function() {
-		editTask(createUUID());
 	});
 	
 	// enable clearing of filters without having to refresh page
 	$("#clearFilterButton-div").click(function() {
-		clearFilters();
+		TodoTxtJs.clearFilters();
 	});
 
 	// enable clearing of filters through keyboard shortcut
 	$(document).bind("keydown", function(e) {
 		if (e.keyCode == 67 && e.altKey) { // Alt + c
-      clearFilters();
+      		TodoTxtJs.clearFilters();
 		}
 	});
 
 	// enable priority filter handling by clicking in the priority multiselect
 	$("#priority-select").mouseup(function(e) {
-		refreshUi();
+		TodoTxtJs.refreshUi();
 	});
 	
 	// enable project filter handling by clicking in the project multiselect
 	$("#project-select").mouseup(function(e) {
-		refreshUi();
+		TodoTxtJs.refreshUi();
 	});
 	
 	// enable context filter handling by clicking in the context multiselect
 	$("#context-select").mouseup(function(e) {
-		refreshUi();
+		TodoTxtJs.refreshUi();
 	});
 	
 	// enable adding new tasks through keyboard shortcut
 	$(document).bind("keydown", function(e) {
 		if (e.keyCode == 84 && e.altKey) { // Alt + t
-			editTask(createUUID());
+			TodoTxtJs.createTask();
 		}
 	});
 	
 	// enable drag-and-drop handling of file uploads
 	$("#fileDrop-div").bind("dragover", function(e) {
-		handleDragOver(e);
+		TodoTxtJs.Utils.handleDragOver(e);
 	});
 	$("#fileDrop-div").bind("drop", function(e) {
-		handleFileSelect(e);
+		TodoTxtJs.Utils.handleFileSelect(e);
 	});
 	$("#fileUpload-input").bind("change", function(e) {
-		handleFileSelect(e);
+		TodoTxtJs.Utils.handleFileSelect(e);
 	});
-}
+};
 
-function unbindControlEvents() {
+TodoTxtJs.unbindControlEvents = function () {
 	// disable adding new tasks through keyboard shortcut
 	$(document).unbind("keydown");
-}
-
-function bindModalEvents(taskId) {
-	// enable processing of changes for this task
-	$("#updateTaskButton-div").bind("click", function() {
-		updateTask(taskId);
-	});
-	$("#modalEdit-textarea").bind("keydown", function(e) {
-		if (e.keyCode == 13 && e.altKey) { // Alt + Enter
-			updateTask(taskId);
-		}
-	});
-	// enable deletion of this task
-	$("#deleteTaskButton-div").bind("click", function() {
-		deleteTask(taskId);
-	});
-	$(document).bind("keyup", function(e) {
-		if (e.keyCode == 46 && e.altKey) { // Alt + Delete
-			deleteTask(taskId);
-		}
-	});
-}
-
-function unbindModalEvents() {
-	$("#updateTaskButton-div").unbind("click");
-	$("#modalEdit-textarea").unbind("keydown");
-	$("#deleteTaskButton-div").unbind("click");
-	$(document).unbind("keyup");
-}
+};
 
 /**
  * function will reload the list of tasks from localStorage to ensure it
  * is sorted and displaying properly
  */
-function refreshUi() {
+TodoTxtJs.refreshUi = function () {
 	// clear the list
-	$("#listContainer-ul").empty();
+	document.querySelector("#listContainer-ul").innerHTML = "";
 	
 	// now rebuild from localStorage
-	processTasksFromLocalStorage();
-}
+	TodoTxtJs.processTasksFromLocalStorage();
+};
 
-function refreshFilters() {
+TodoTxtJs.refreshFilters = function () {
 	// parse the list of tasks
-	var tasks = getSortedTaskArrayFromLocalStorage();
+	var tasks = TodoTxtJs.getSortedTaskArray();
 	for (var i=0; i<tasks.length; i++) {
 		// get the priority and add to global filter hashset
 		var priority = tasks[i].priority;
 		if (priority != null && priority != undefined) {
-			filters.priorityHashSet[$.trim(priority)] = true;
+			TodoTxtJs.Filters.priorityHashSet[$.trim(priority)] = true;
 		}
 		
 		// get each project and add to the global filter hashset
 		var projects = tasks[i].projects;
 		if (projects != null && projects != undefined) {
 			for (var j=0; j<projects.length; j++) {
-				filters.projectHashSet[$.trim(projects[j])] = true;
+				TodoTxtJs.Filters.projectHashSet[$.trim(projects[j])] = true;
 			}
 		}
 		
@@ -754,40 +513,40 @@ function refreshFilters() {
 		var contexts = tasks[i].contexts;
 		if (contexts != null && contexts != undefined) {
 			for (var j=0; j<contexts.length; j++) {
-				filters.contextHashSet[$.trim(contexts[j])] = true;
+				TodoTxtJs.Filters.contextHashSet[$.trim(contexts[j])] = true;
 			}
 		}
 	}
 	
 	// update the filter options in the DOM
 	$("#priority-select").empty();
-	var priorities = Object.keys(filters.priorityHashSet);
+	var priorities = Object.keys(TodoTxtJs.Filters.priorityHashSet);
 	for (var i=0; i<priorities.length; i++) {
 		var pri = priorities[i];
 		$("#priority-select").append("<option value=\"" + pri + "\">" + pri + "</option>");
 	}
 	
 	$("#project-select").empty();
-	var projects = Object.keys(filters.projectHashSet);
+	var projects = Object.keys(TodoTxtJs.Filters.projectHashSet);
 	for (var i=0; i<projects.length; i++) {
 		var proj = projects[i];
 		$("#project-select").append("<option value=\"" + proj + "\">" + proj + "</option>");
 	}
 	
 	$("#context-select").empty();
-	var contexts = Object.keys(filters.contextHashSet);
+	var contexts = Object.keys(TodoTxtJs.Filters.contextHashSet);
 	for (var i=0; i<contexts.length; i++) {
 		var ctx = contexts[i];
 		$("#context-select").append("<option value=\"" + ctx + "\">" + ctx + "</option>");
 	}
-}
+};
 
 /**
  * function will allow sorting of tasks by the following
  * criteria: (1) active vs. closed (2) priority (3) created date
  * (4) completed date
  */
-function compareTasks(taskA, taskB) {
+TodoTxtJs.compareTasks = function (taskA, taskB) {
 	var aActive = taskA.isActive;
 	var bActive = taskB.isActive;
 	var aPri = taskA.priority;
@@ -836,23 +595,4 @@ function compareTasks(taskA, taskB) {
 	
 	// objects are equivalent
 	return 0;
-}
- 
-/**
- * function will generate a GUID for use in dynamic DOM ID's
- * code taken from: Kevin Hakanson at http://stackoverflow.com/a/873856
- */
-function createUUID() {
-    // http://www.ietf.org/rfc/rfc4122.txt
-    var s = [];
-    var hexDigits = "0123456789abcdef";
-    for (var i = 0; i < 36; i++) {
-        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-    }
-    s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
-    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
-    s[8] = s[13] = s[18] = s[23] = "-";
-
-    var uuid = s.join("");
-    return uuid;
-}
+};
