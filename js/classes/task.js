@@ -30,14 +30,14 @@
  * You should have received a copy of the GNU General Public License
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
-var TodoTxtJs = TodoTxtJs || {};
+var TodoTxt = TodoTxt || {};
 /**
  * this represents a Task Class to be used as a container for metadata 
  * about some type of object.  In this case that object is a
  * task.
  */
-TodoTxtJs.Task = function () {
-	this.id = TodoTxtJs.Utils.createUUID();
+TodoTxt.Task = function () {
+	this.id = TodoTxt.Utils.createId();
 	this.priority = null;
 	this.createdDate = null;
 	this.completedDate = null;
@@ -46,43 +46,7 @@ TodoTxtJs.Task = function () {
 	this.isActive = true;
 	this.text = "";
 };
-/**
- * function generates the DOM element for this task
- */
-TodoTxtJs.Task.prototype.getDomElement = function () {
-	var element = document.createElement("li");
-	element.id = this.id;
-	element.className = this.getDisplayClassForTask();
-	element.onclick = function () {
-		TodoTxtJs.editTask(this.id);
-	};
-	element.innerHTML = this.text;
 
-	return element;
-};
-/**
- * function returns the appropriate display classes for this task
- */
-TodoTxtJs.Task.prototype.getDisplayClassForTask = function () {
-	// get a list of the current tasks and iterate through
-	var cls = "";
-	if (this.priority != null && !this.text.match(/^(x\s)/)) {
-		if (this.priority == "(A)") {
-			cls += " a";
-		}
-		if (this.priority == "(B)") {
-			cls += " b";
-		}
-		if (this.priority == "(C)") {
-			cls += " c";
-		}
-	}
-	if (!this.isActive) {
-		cls += " closed";
-	}
-	
-	return cls;
-};
 /**
  * function will create a new taskObj populated with all it's data.
  * The format expected is as follows:
@@ -93,113 +57,126 @@ TodoTxtJs.Task.prototype.getDisplayClassForTask = function () {
  * @param textLine a single line from the todo.txt file to be parsed
  * into a Task Object
  */
-TodoTxtJs.Task.prototype.parseFromString = function (textLine) {
+TodoTxt.Task.prototype.parseFromString = function (textLine) {
 	// assign the text
 	this.text = textLine;
 
-	// get the priority of the task EX: (A)
-	this.priority = this.parsePriorityFromString(textLine);
-	
-	// get the completed date of the task EX: 2012-09-23
-	this.completedDate = this.parseCompletedDateFromString(textLine);
-	
-	// get the created date of the task EX: 2012-09-23
-	this.createdDate = this.parseCreatedDateFromString(textLine);
-	
-	// parse out any Projects (items starting with "+" like "+ProjectName")
-	this.projects = this.parseProjectsFromString(textLine);
-	
-	// parse out any Context (items starting with "@" like "@ContextName")
-	this.contexts = this.parseContextsFromString(textLine);
-	
-	// parse out the Active / Closed state (starts with "x " for closed)
-	if (textLine && textLine.match(/^(x\s)/)) {
-		this.isActive = false;
+	if (typeof textLine === "string") {
+		// parse out the Active / Closed state (starts with "x " for closed)
+		this.isActive = this.parseStatusFromString(textLine);
+
+		// get the priority of the task EX: (A)
+		this.priority = this.parsePriorityFromString(textLine);
+		
+		// get the completed date of the task EX: 2012-09-23
+		this.completedDate = this.parseCompletedDateFromString(textLine);
+		
+		// get the created date of the task EX: 2012-09-23
+		this.createdDate = this.parseCreatedDateFromString(textLine);
+		
+		// parse out any Projects (items starting with "+" like "+ProjectName")
+		this.projects = this.parseProjectsFromString(textLine);
+		
+		// parse out any Context (items starting with "@" like "@ContextName")
+		this.contexts = this.parseContextsFromString(textLine);
 	}
-	
 	// return Task Object to caller
 	return this;
 };
 
-TodoTxtJs.Task.prototype.parsePriorityFromString = function (str) {
+TodoTxt.Task.prototype.parseStatusFromString = function (str) {
+	if (str && str.match(/^(x )/)) {
+		return false;
+	}
+	return true;
+};
+
+TodoTxt.Task.prototype.parsePriorityFromString = function (str) {
 	var pri = null; // used to hold the priority if set
 	if (str) {
 		// parse out the priority RegEx: /\^([A-Z]\).*/ 
 		// check for strings starting with something like "(A)"
-		var priFoundPattern = /^\([A-Z]\)\s.*/;
-		var match = str.match(priFoundPattern); // returns null if not found
-		if (match != null && match.length > 0) {
+		var priPattern = /^\([A-Z]\)/;
+		var match = str.match(priPattern); // returns null if not found
+		if (match) {
 			// found an active match so get the priority
-			var priMatcher = /\([A-Z]\)/;
-			pri = str.match(priMatcher);
+			pri = match[0];
 		}
 	}
 	
 	return pri;
 };
 
-TodoTxtJs.Task.prototype.parseCompletedDateFromString = function (str) {
+TodoTxt.Task.prototype.parseCompletedDateFromString = function (str) {
 	var completed = null;
 	if (str) {
-		// parse out the completedDate (if closed)
-		// check for strings starting with something like "x (A) 2012-08-09 2012-08-01"
-		var completedFoundPattern = /(x\s)(\([A-Z]\)\s)?(\d{4}-\d{2}-\d{2}\s){1,2}.*/;
-		match = str.match(completedFoundPattern); // returns null if not found
-		if (match != null && match.length > 0) {
-			// found a closed task with a completed date so parse
-			var completedMatcher = /(\d{4}-\d{2}-\d{2}\s)/; // gets the first date in the string
-			completed = str.match(completedMatcher);
+		// parse out the completedDate if closed (starts with "x ")
+		if (!this.isActive) {
+			var dates = this.parseDatesFromString(str);
+			if (dates) {
+				completed = dates[0];
+			}			
 		}
 	}
 	
 	return completed;
 };
 
-TodoTxtJs.Task.prototype.parseCreatedDateFromString = function (str) {
+TodoTxt.Task.prototype.parseCreatedDateFromString = function (str) {
 	var created = null;
 	if (str) {
-		// parse out the createdDate
-		// check for strings starting with something like "(A) 2012-08-01"
-		var createdFoundPattern = /^(\([A-Z]\)\s)?(\d{4}-\d{2}-\d{2}\s){1}.*/;
-		match = str.match(createdFoundPattern); // returns null if not found
-		if (match != null && match.length > 0) {
-			// found a closed task with a completed date so parse
-			var createdMatcher = /(\d{4}-\d{2}-\d{2}\s)/; // gets the first date in the string
-			created = str.match(createdMatcher);
+		// parse out the createdDate (will be 2nd if item is closed)
+		var dates = this.parseDatesFromString(str);
+		if (!this.isActive && dates.length > 1) {
+			created = dates[1];
+		} else if (dates) {
+			created = dates[0];
 		}
 	}
 	
 	return created;
 };
 
-TodoTxtJs.Task.prototype.parseProjectsFromString = function (str) {
+TodoTxt.Task.prototype.parseDatesFromString = function (str) {
+	var dates = null;
+	if (str) {
+		// check for strings with something like "2012-08-09"
+		var datePattern = /(\d{4}-\d{2}-\d{2}\s)/g;
+		match = str.match(datePattern); // returns null if not found
+		if (match) {
+			dates = match;
+		}
+	}
+	
+	return dates;
+};
+
+TodoTxt.Task.prototype.parseProjectsFromString = function (str) {
 	var projArray = []; // used to hold the project if set
 	if (str) {
 		// parse out the projects RegEx: /\+[0-9A-Za-z]+\s/ (words starting with "+")
 		// check for strings like "+ABC123"
-		var projFoundPattern = /\+[0-9A-Za-z]+\s/;
-		var match = str.match(projFoundPattern); // returns null if not found
-		if (match != null && match.length > 0) {
+		var projPattern = /\+[0-9A-Za-z]+/g;
+		var match = str.match(projPattern); // returns null if not found
+		if (match) {
 			// found an active match so get the projects as an array of projects
-			var projMatcher = /\+[0-9A-Za-z]+\s/g;
-			projArray = str.match(projMatcher);
+			projArray = match;
 		}
 	}
 	
 	return projArray;
 };
 
-TodoTxtJs.Task.prototype.parseContextsFromString = function (str) {
+TodoTxt.Task.prototype.parseContextsFromString = function (str) {
 	var ctxArray = []; // used to hold the context if set
 	if (str) {
 		// parse out the contexts RegEx: /\@[0-9A-Za-z]+\s/ (words starting with "+")
-		// check for strings like "+ABC123"
-		var ctxFoundPattern = /\@[0-9A-Za-z]+\s/;
-		var match = str.match(ctxFoundPattern); // returns null if not found
-		if (match != null && match.length > 0) {
+		// check for strings like "@ABC123"
+		var ctxPattern = /\@[0-9A-Za-z]+/g;
+		var match = str.match(ctxPattern); // returns null if not found
+		if (match) {
 			// found an active match so get the contexts as an array of contexts
-			var ctxMatcher = /\@[0-9A-Za-z]+\s/g;
-			ctxArray = str.match(ctxMatcher);
+			ctxArray = match;
 		}
 	}
 	
@@ -209,6 +186,6 @@ TodoTxtJs.Task.prototype.parseContextsFromString = function (str) {
 /**
  * override toString() to output the raw TodoTxt format
  */
-TodoTxtJs.Task.prototype.toString = function () {
+TodoTxt.Task.prototype.toString = function () {
 	return this.text;
 };

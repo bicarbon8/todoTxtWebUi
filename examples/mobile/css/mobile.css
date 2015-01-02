@@ -29,16 +29,15 @@ body {
     color: #222; /* Forground color used for text */
     font-family: Helvetica;
     font-size: 14px;
+    margin: 0; 		/* Amount of negative space around the outside of the body */
+    padding: 10px; 	/* Amount of negative space around the inside of the body */
 }
 
-li.topRound {
-    background-color: #c0c0c0;
-    border: 1px solid #999999;
-}
-
-li.bottomRound {
-    background-color: #c0c0c0;
-    border: 1px solid #999999;
+/** Task Styles **/
+ul {
+    list-style: none;
+    margin: 0px 0px;
+    padding: 0px 10px;
 }
 
 li {
@@ -46,8 +45,36 @@ li {
     font-weight: bold;
 	text-decoration: none;
     color: #222222;
+    box-sizing: border-box;
+	display: block;
+    margin: 0px -10px;
+    padding: 10px 12px;
+	border: 1px solid #999999;
+    margin-bottom: -1px;
+    padding: 12px 10px;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
+.topRound {
+    display: block;
+    margin-bottom: -1px;
+    padding: 12px 10px;
+}
+.topRound:first-child {
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+}
+.bottomRound {
+    display: block;
+    margin-bottom: -1px;
+    padding: 12px 10px;
+}
+.bottomRound:last-child {
+    -webkit-border-bottom-left-radius: 10px;
+    -webkit-border-bottom-right-radius: 10px;
+}
 .a {
 	background-color: #660000; 
 	color: #ffffff;
@@ -65,8 +92,12 @@ li {
 	color: #333333;
 }
 .closed {
-	background-color:#e0e0e0;
+	background-color: #e0e0e0;
 	color:#f6f6f6;
+}
+.active {
+	background-color: #80FF00;
+	color:#000000;
 }
 
 .stdButton {
@@ -77,6 +108,10 @@ li {
     border-image:url(../img/button.png) 0 8 0 8;
 	-moz-border-image:url(../img/button.png) 0 8 0 8; /* Firefox */
     -webkit-border-image:url(../img/button.png) 0 8 0 8;
+    height: 30px;
+    text-align: center;
+    cursor: pointer; 
+	cursor: hand;
 }
 
 .modal {
@@ -84,21 +119,61 @@ li {
     font-weight: bold;
 	text-decoration: none;
     border: 1px solid #999999;
+    border-radius: 10px;
     color: #222222;
 	background: #ffffff;
+	box-sizing: border-box;
+	margin: 0px -10px;
+    padding: 10px 12px;
+	margin-bottom: -1px;
+    padding: 12px 10px;
+	z-index: inherit;
+	width: 95%;
+	height: 200px;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.modal textarea {
+	width: 100%;
+	height: 50%;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:auto;
+	margin-bottom:auto;
 }
 
 .modalBorder {
 	background: rgb(0, 0, 0);
 	background: rgba(0, 0, 0, 0.8); /* In case older browsers don't support alpha */
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: 1000;
+	width: 100%;
+	height: 1000%;
 }
 
-.filedrop
-{
+.filedrop {
 	font-weight: bold;
 	text-align: center;
 	color: #555;
 	border: 2px dashed #555;
 	border-radius: 7px;
 	cursor: default;
+	padding: 1em 0;
+	margin: 1em 0;
+}
+
+.roundedBorder {
+	border: 1px solid #000000;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+.hidden {
+	display: none;
 }
