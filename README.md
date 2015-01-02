@@ -1,4 +1,4 @@
-todoTxtWebUi
+todoTxtWebUi ![build status](https://travis-ci.org/bicarbon8/todoTxtWebUi.svg)
 ============
 @Created: 08/14/2012
 
