@@ -36,7 +36,7 @@ var TodoTxt = TodoTxt || {};
  * about some type of object.  In this case that object is a
  * task.
  */
-TodoTxt.Task = function () {
+TodoTxt.Task = function (taskString) {
 	this.id = TodoTxt.Utils.createId();
 	this.priority = null;
 	this.createdDate = null;
@@ -45,6 +45,9 @@ TodoTxt.Task = function () {
 	this.contexts = [];
 	this.isActive = true;
 	this.text = "";
+	if (taskString) {
+		this.parseFromString(taskString);
+	}
 };
 
 /**
@@ -63,48 +66,50 @@ TodoTxt.Task.prototype.parseFromString = function (textLine) {
 
 	if (typeof textLine === "string") {
 		// parse out the Active / Closed state (starts with "x " for closed)
-		this.isActive = this.parseStatusFromString(textLine);
+		this.parseStatusFromString(textLine);
 
 		// get the priority of the task EX: (A)
-		this.priority = this.parsePriorityFromString(textLine);
+		this.parsePriorityFromString(textLine);
 		
 		// get the completed date of the task EX: 2012-09-23
-		this.completedDate = this.parseCompletedDateFromString(textLine);
+		this.parseCompletedDateFromString(textLine);
 		
 		// get the created date of the task EX: 2012-09-23
-		this.createdDate = this.parseCreatedDateFromString(textLine);
+		this.parseCreatedDateFromString(textLine);
 		
 		// parse out any Projects (items starting with "+" like "+ProjectName")
-		this.projects = this.parseProjectsFromString(textLine);
+		this.parseProjectsFromString(textLine);
 		
 		// parse out any Context (items starting with "@" like "@ContextName")
-		this.contexts = this.parseContextsFromString(textLine);
+		this.parseContextsFromString(textLine);
 	}
 	// return Task Object to caller
 	return this;
 };
 
 TodoTxt.Task.prototype.parseStatusFromString = function (str) {
+	// check for strings starting with something like "x "
 	if (str && str.match(/^(x )/)) {
-		return false;
+		this.isActive = false;
+	} else {
+		this.isActive = true;
 	}
-	return true;
 };
 
 TodoTxt.Task.prototype.parsePriorityFromString = function (str) {
 	var pri = null; // used to hold the priority if set
 	if (str) {
 		// parse out the priority RegEx: /\^([A-Z]\).*/ 
-		// check for strings starting with something like "(A)"
-		var priPattern = /^\([A-Z]\)/;
+		// check for strings starting with something like "(A) "
+		var priPattern = /^(\([A-Z]\) )/;
 		var match = str.match(priPattern); // returns null if not found
 		if (match) {
 			// found an active match so get the priority
-			pri = match[0];
+			pri = match[0].replace(/[\s]*/g, "");
 		}
 	}
 	
-	return pri;
+	this.priority = pri;
 };
 
 TodoTxt.Task.prototype.parseCompletedDateFromString = function (str) {
@@ -114,12 +119,12 @@ TodoTxt.Task.prototype.parseCompletedDateFromString = function (str) {
 		if (!this.isActive) {
 			var dates = this.parseDatesFromString(str);
 			if (dates) {
-				completed = dates[0];
+				completed = dates[0].replace(/[\s]*/g, "");
 			}			
 		}
 	}
 	
-	return completed;
+	this.completedDate = completed;
 };
 
 TodoTxt.Task.prototype.parseCreatedDateFromString = function (str) {
@@ -127,14 +132,18 @@ TodoTxt.Task.prototype.parseCreatedDateFromString = function (str) {
 	if (str) {
 		// parse out the createdDate (will be 2nd if item is closed)
 		var dates = this.parseDatesFromString(str);
-		if (!this.isActive && dates.length > 1) {
-			created = dates[1];
-		} else if (dates) {
-			created = dates[0];
+		if (dates) {
+			if (!this.isActive) {
+				if (dates.length > 1) { // we have created and completed
+					created = dates[1].replace(/[\s]*/g, "");
+				}
+			} else {
+				created = dates[0].replace(/[\s]*/g, "");
+			}
 		}
 	}
 	
-	return created;
+	this.createdDate = created;
 };
 
 TodoTxt.Task.prototype.parseDatesFromString = function (str) {
@@ -164,7 +173,7 @@ TodoTxt.Task.prototype.parseProjectsFromString = function (str) {
 		}
 	}
 	
-	return projArray;
+	this.projects = projArray;
 };
 
 TodoTxt.Task.prototype.parseContextsFromString = function (str) {
@@ -180,7 +189,7 @@ TodoTxt.Task.prototype.parseContextsFromString = function (str) {
 		}
 	}
 	
-	return ctxArray;
+	this.contexts = ctxArray;
 };
 
 /**

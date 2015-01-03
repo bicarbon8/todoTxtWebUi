@@ -63,6 +63,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
 
   // Default task(s).
-  grunt.registerTask('default', ['clean','uglify','qunit','copy']);
+  grunt.registerTask('default', ['clean','qunit','uglify','copy']);
+
+  // Build only task(s).
+  grunt.registerTask('build', ['clean','uglify','copy']);
+
+  // test only task(s).
+  grunt.registerTask('test', ['qunit']);
 
 };
