@@ -12,9 +12,6 @@ module.exports = function(grunt) {
       "js/objects/resources.js",
       "js/objects/resources/en-us.js",
     ],
-    dependencies: [
-      "deps/jquery-1.7.2.min.js"
-    ],
     tests: "tests/allTests.html"
   },
     clean: {
@@ -36,14 +33,6 @@ module.exports = function(grunt) {
         files: {
           'dist/<%= pkg.main %>.min.js': ['<%= files.base %>']
         }
-      },
-      buildWithDeps: {
-        options: {
-          banner: '/*! <%= pkg.name %> v<%= pkg.version %>, created by: <%= pkg.author %> <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %>, includes JQuery 1.7.2 dependency */\n'
-        },
-        files: {
-          'dist/<%= pkg.main %>-deps.min.js': ['<%= files.dependencies %>','<%= files.base %>']
-        }
       }
     },
     qunit: {
@@ -54,7 +43,7 @@ module.exports = function(grunt) {
         expand: true,
         cwd: 'dist/',
         flatten: true,
-        src: '<%= pkg.main %>-deps.*', 
+        src: '<%= pkg.main %>.*', 
         dest: 'examples/js/',
         filter: 'isFile'
       }

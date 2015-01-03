@@ -35,8 +35,13 @@
  -->
 <html>
 <head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/mobile.css" />
-<script type="text/javascript" src="../js/todoTxt-deps.min.js"></script>
+<script type="text/javascript" src="../js/todoTxt.min.js"></script>
+<script type="text/javascript" src="js/view.js"></script>
 <script type="text/javascript">
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-35011839-1']);
@@ -46,379 +51,66 @@ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async
 ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
-
-var TodoTxt = TodoTxt || {};
-
-TodoTxt.View = { 
-	/**
-	 * function generates the DOM element for the passed in task
-	 */
-	generateTaskElement: function (task) {
-		var element = document.createElement("li");
-		element.id = task.id;
-		element.className = "topRound bottomRound" + TodoTxt.View.getDisplayClassForTask(task);
-		element.onclick = function () {
-			TodoTxt.View.displayModalForTask(task.id);
-		};
-		element.onmouseover = function () {
-			element.className += " active";
-		};
-		element.onmouseout = function () {
-			element.className = element.className.replace(/( active)/, "");
-		};
-		element.innerHTML = task.text;
-		
-		return element;
-	},
-
-	/**
-	 * function returns the appropriate display classes for this task
-	 */
-	getDisplayClassForTask: function (task) {
-		// get a list of the current tasks and iterate through
-		var cls = "";
-		if (task.priority != null && !task.text.match(/^(x\s)/)) {
-			if (task.priority == "(A)") {
-				cls += " a";
-			}
-			if (task.priority == "(B)") {
-				cls += " b";
-			}
-			if (task.priority == "(C)") {
-				cls += " c";
-			}
-		}
-		if (!task.isActive) {
-			cls += " closed";
-		}
-		
-		return cls;
-	},
-
-	/**
-	 * function will attempt to get all localStorage tasks and display them
-	 * in the DOM if any exist.  This will add to any existing tasks so you
-	 * will need to clear the DOM first if you want to update the entire list
-	 * instead of just appending to the list.
-	 */
-	displayTasks: function () {
-		// get the list of selected priorities from the filter
-		var selectedPriorityOptions = document.querySelectorAll("#priority-select option:checked");
-		var selectedPriorityValues = [].map.call(selectedPriorityOptions, function(option) {
-			return option.value;
-		});
-		// get the list of selected priorities from the filter
-		var selectedProjectOptions = document.querySelectorAll("#project-select option:checked");
-		var selectedProjectValues = [].map.call(selectedProjectOptions, function(option) {
-			return option.value;
-		});
-		// get the list of selected priorities from the filter
-		var selectedContextOptions = document.querySelectorAll("#context-select option:checked");
-		var selectedContextValues = [].map.call(selectedContextOptions, function(option) {
-			return option.value;
-		});
-		
-		// filter list by those matching selected filters
-		var filteredTasks = TodoTxt.getFilteredTaskArray(selectedPriorityValues, selectedProjectValues, selectedContextValues);
-
-		// add tasks to DOM
-		filteredTasks.forEach(function (t) {
-			TodoTxt.View.displayTask(t);
-		});
-	},
-
-	displayTask: function (task) {
-		// add task to DOM
-		document.querySelector("#listContainer-ul").appendChild(TodoTxt.View.generateTaskElement(task));
-	},
-
-	removeTask: function (taskId) {
-		// delete the task from the DOM
-		document.querySelector("#listContainer-ul").removeChild(document.querySelector("#" + taskId));
-	},
-
-	/**
-	 * function opens the specified task in an editing window
-	 */
-	displayModalForTask: function (taskId) {
-		// populate the modal textarea with this task string
-		var task = TodoTxt.getTask(taskId) || new TodoTxt.Task();
-		/*
-			<div class="hidden modalBorder">
-				<div class="modal">
-					<textarea></textarea>
-					<div class="stdButton">Update Task (Alt + Enter)</div>
-					<div class="stdButton">Delete Task</div>
-				</div>
-			</div>
-		*/
-		var modalText = document.createElement("textarea");
-		modalText.id = "#modalEdit-textarea";
-		modalText.innerHTML = task.toString();
-		var updateButton = document.createElement("div");
-		updateButton.className = "stdButton";
-		updateButton.innerHTML = "Update Task (Alt + Enter)";
-		var cancelButton = document.createElement("div");
-		cancelButton.className = "stdButton";
-		cancelButton.innerHTML = "Cancel Edit (Esc)";
-		var deleteButton = document.createElement("div");
-		deleteButton.className = "stdButton";
-		deleteButton.innerHTML = "Delete Task";
-		var modalContainer = document.createElement("div");
-		modalContainer.className = "modal";
-		modalContainer.appendChild(modalText);
-		modalContainer.appendChild(updateButton);
-		modalContainer.appendChild(cancelButton);
-		modalContainer.appendChild(deleteButton);
-		var modalBackground = document.createElement("div");
-		modalBackground.className = "modalBorder";
-		modalBackground.appendChild(modalContainer);
-
-		function update() {
-			if (TodoTxt.updateTask(task.id, modalText.value)) {
-				TodoTxt.View.refreshUi();
-				document.body.removeChild(modalBackground);
-			} else {
-				// TODO: display error toast
-			}
-		}
-
-		updateButton.onclick = update;
-		// enable submitting update via keyboard shortcut
-		document.addEventListener("keydown", function(e) {
-			if (e.keyCode == 13 && e.altKey) { // Alt + Enter
-	      		update();
-			}
-		}, false);
-		cancelButton.onclick = function () {
-			document.body.removeChild(modalBackground);
-		};
-		// enable cancelling update via keyboard shortcut
-		document.addEventListener("keydown", function(e) {
-			if (e.keyCode == 27) { // Esc
-	      		update();
-			}
-		}, false);
-		deleteButton.onclick = function () {
-			if (TodoTxt.deleteTask(taskId)) {
-				TodoTxt.View.refreshUi();
-				document.body.removeChild(modalBackground);
-			} else {
-				// TODO: display error toast
-			}
-		};
-
-		document.body.appendChild(modalBackground);
-		
-		// TODO: add additional details of the task to the div for display
-		
-		// place focus on the textarea
-		modalText.focus();
-	},
-
-	bindControlEvents: function () {
-		// enable saving the todo.txt content through keyboard shortcut
-		document.addEventListener("keydown", TodoTxt.View.handleAltS, false);
-
-		// enable clearing of filters through keyboard shortcut
-		document.addEventListener("keydown", TodoTxt.View.handleAltC, false);
-		
-		// enable adding new tasks through keyboard shortcut
-		document.addEventListener("keydown", TodoTxt.View.handleAltT, false);
-		
-		// enable drag-and-drop handling of file uploads
-		document.querySelector("#fileDrop-div").addEventListener("dragover", TodoTxt.View.handleDragOver, false);
-		document.querySelector("#fileDrop-div").addEventListener("drop", TodoTxt.View.handleDrop, false);
-		document.querySelector("#fileUpload-input").addEventListener("change", TodoTxt.View.handleDrop, false);
-	},
-
-	handleAltS: function(e) {
-		if (e.keyCode == 83 && e.altKey) { // Alt + s
-			TodoTxt.exportTodoTxtFile();
-		}
-	},
-
-	handleAltC: function(e) {
-		if (e.keyCode == 67 && e.altKey) { // Alt + c
-      		TodoTxt.View.refreshUi();
-		}
-	},
-
-	handleAltT: function(e) {
-		if (e.keyCode == 84 && e.altKey) { // Alt + t
-			TodoTxt.View.displayModalForTask();
-		}
-	},
-
-	handleDragOver: function (e) {
-		TodoTxt.View.handleDragOver(e);
-	},
-
-	handleDrop: function (e) {
-		TodoTxt.View.handleFileSelect(e);
-	},
-
-	unbindControlEvents: function () {
-		// disable adding new tasks through keyboard shortcut
-		document.removeEventListener("keydown", TodoTxt.View.handleAltS, false);
-		document.removeEventListener("keydown", TodoTxt.View.handleAltC, false);
-		document.removeEventListener("keydown", TodoTxt.View.handleAltT, false);
-
-		document.querySelector("#fileDrop-div").removeEventListener("dragover", TodoTxt.View.handleDragOver, false);
-		document.querySelector("#fileDrop-div").removeEventListener("drop", TodoTxt.View.handleDrop, false);
-		document.querySelector("#fileUpload-input").removeEventListener("change", TodoTxt.View.handleDrop, false);
-	},
-
-	/**
-	 * function will reload the list of tasks from localStorage to ensure it
-	 * is sorted and displaying properly
-	 */
-	refreshUi: function () {
-		// unbind any event handling
-		TodoTxt.View.unbindControlEvents();
-
-		// clear the list
-		TodoTxt.View.clearTasks();
-
-		// reset filters
-		TodoTxt.View.refreshFilters();
-		
-		// now rebuild from localStorage
-		TodoTxt.View.displayTasks();
-	
-		// update the DOM with the new task details and filter changes
-		TodoTxt.View.refreshFilters();
-
-		// enable keyboard shortcuts and click events for the controls area
-		TodoTxt.View.bindControlEvents();
-	},
-
-	refreshFilters: function () {
-		// update the filter options in the DOM
-		document.querySelector("#priority-select").innerHTML = "";
-		document.querySelector("#project-select").innerHTML = "";
-		document.querySelector("#context-select").innerHTML = "";
-
-		for (var i in TodoTxt.Filters.priorities) {
-			var opt = document.createElement("option");
-			opt.value = i;
-			opt.innerHTML = i;
-			document.querySelector("#priority-select").appendChild(opt);
-		}
-		
-		for (var i in TodoTxt.Filters.projects) {
-			var opt = document.createElement("option");
-			opt.value = i;
-			opt.innerHTML = i;
-			document.querySelector("#project-select").appendChild(opt);
-		}
-		
-		for (var i in TodoTxt.Filters.contexts) {
-			var opt = document.createElement("option");
-			opt.value = i;
-			opt.innerHTML = i;
-			document.querySelector("#context-select").appendChild(opt);
-		}
-	},
-
-	clearTasks: function () {
-		document.querySelector("#listContainer-ul").innerHTML = "";
-	},
-
-	filterDisplay: function () {
-		TodoTxt.View.clearTasks();
-
-		// honors any selected filters
-		TodoTxt.View.displayTasks();
-	},
-
-	/**
-	 * function will retrieve the todo.txt file from the passed in
-	 * fileName.
-	 * 
-	 * @param fileName the String name of the todo.txt file to be opened
-	 * file.
-	 * EX: "todo.txt" 
-	 */
-	getTodoTxtFile: function (fileName) {
-		// load via AJAX call to local file system
-		$.ajax({
-			url: fileName,
-			cache: false,
-			//crossDomain: true,
-			error: function(jqXHR, textStatus) {
-				// TODO: display a proper error message
-				alert(textStatus);
-			},
-			success: function(data) {
-				// pass the response on to the next call
-				(function () {
-					TodoTxt.parseTodoTxtFile(data);
-					TodoTxt.View.refreshUi();
-				})();
-			}
-		});
-	},
-
-	handleFileSelect: function (e) {
-		e.stopPropagation();
-		e.preventDefault();
-
-		var files = e.target.files || e.dataTransfer.files; // FileList object.
-
-		// files is a FileList of File objects.
-		if (files.length > 0) {
-			var f = files[0];
-			
-			// process using a FileReader
-			var reader = new FileReader();
-
-			// get the content as a String
-			reader.onloadend = function (e) {
-				TodoTxt.parseTodoTxtFile(e.target.result);
-				TodoTxt.View.refreshUi();
-			};
-			reader.readAsText(f, "UTF-8");
-		}
-	},
-
-	handleDragOver: function (e) {
-		e.stopPropagation();
-		e.preventDefault();
-		e.dataTransfer.dropEffect = "copy"; // Explicitly show this is a copy.
-	},
-};
 </script>
 </head>
 <body onload="TodoTxt.View.refreshUi();">
-	<div id="mainContainer-div" class="roundedBorder">
-		<table>
-			<tbody>
-				<tr>
-					<td>
+	<div id="mainContainer-div" class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">TodoTxtWebUi</h3>
+		</div>
+		<div class="panel-body">
+			<div class="container">
+				<div class="row">
+					<div class="well">
 						<input type="file" id="fileUpload-input" />
 						<div id="fileDrop-div" class="fileDrop">Drop todo.txt file here</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<select id="priority-select" onmouseup="TodoTxt.View.filterDisplay();" multiple></select>
-						<select id="project-select" onmouseup="TodoTxt.View.filterDisplay();" multiple></select>
-						<select id="context-select" onmouseup="TodoTxt.View.filterDisplay();" multiple></select>
-						<input id="showClosed-checkbox" class="hidden" type="checkbox" checked />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div id="addTaskButton-div" onclick="TodoTxt.View.displayModalForTask();" class="stdButton">Add New Task (Alt + t)</div>
-						<div id="saveFileButton-div" onclick="TodoTxt.exportTodoTxtFile();" class="stdButton">Save To File (Alt + s)</div>
-						<div id="clearFilterButton-div" onclick="TodoTxt.View.refreshUi();" class="stdButton">Clear Filters (Alt + c)</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<div id="listContainer-div">
-			<ul id="listContainer-ul"></ul>
+					</div>
+				</div>
+				<div class="row">
+					<!-- Single button -->
+					<div class="btn-group col-md-4">
+						<button type="button" class="btn btn-lg btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						Priorities <span class="caret"></span>
+						</button>
+						<ul id="priority-ul" class="dropdown-menu" role="menu"></ul>
+					</div>
+					<!-- Single button -->
+					<div class="btn-group col-md-4">
+						<button type="button" class="btn btn-lg btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						Projects <span class="caret"></span>
+						</button>
+						<ul id="project-ul" class="dropdown-menu" role="menu"></ul>
+					</div>
+					<!-- Single button -->
+					<div class="btn-group col-md-4">
+						<button type="button" class="btn btn-lg btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						Contents <span class="caret"></span>
+						</button>
+						<ul id="context-ul" class="dropdown-menu" role="menu"></ul>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<button id="addTaskButton-button" onclick="TodoTxt.View.displayModalForTask();" class="btn btn-lg btn-primary">Add New Task (Alt + t)</button>
+					</div>
+					<div class="col-md-4">
+						<button id="saveFileButton-button" onclick="TodoTxt.exportTodoTxtFile();" class="btn btn-lg btn-primary">Save To File (Alt + s)</button>
+					</div>
+					<div class="col-md-4">
+						<button id="clearFilterButton-button" onclick="TodoTxt.View.refreshUi();" class="btn btn-lg btn-primary">Clear Filters (Alt + c)</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title">Tasks</h3>
+						</div>
+						<div class="panel-body">
+							<ul id="listContainer-ul" class="list-group"></ul>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>
