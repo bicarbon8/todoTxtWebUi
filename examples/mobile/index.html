@@ -59,9 +59,9 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 		<div class="col-md-9">
 			<div id="mainContainer-div" class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title">TodoTxtWebUi</h3>
+					<h3 class="panel-title" onclick="TodoTxt.View.toggleControls();">TodoTxtWebUi (click to toggle controls)</h3>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body" style="display: none;">
 					<div class="row">
 						<div class="well" id="fileDrop-div">
 							<span class="btn btn-primary btn-lg btn-file">
@@ -91,11 +91,11 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 							<button id="saveFileButton-button" onclick="TodoTxt.exportTodoTxtFile();" class="btn btn-lg btn-primary">Save To File (Alt + s)</button>
 						</div>
 					</div>
-					<div class="row">
-						<ul id="listContainer-ul" class="list-group"></ul>
-					</div>
 				</div>
 			</div>
+			<div class="row">
+				<ul id="listContainer-ul" class="list-group"></ul>
+			</div>				
 		</div>
 		<div class="col-md-3">
 			<div id="priorities-div" class="panel panel-primary">

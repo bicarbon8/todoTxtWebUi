@@ -78,7 +78,7 @@ body {
 	background-color: #c0c0c0;
 	color:#f6f6f6;
 }
-.list-group-item h4 {
+.list-group-item h4, h3.panel-title {
 	white-space: nowrap;
   	width: 100%;
 	overflow: hidden;

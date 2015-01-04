@@ -114,10 +114,14 @@ TodoTxt.View = {
 			filteredTasks = tasks;
 		}
 
-		// add tasks to DOM
-		filteredTasks.forEach(function (t) {
-			TodoTxt.View.displayTask(t);
-		});
+		if (filteredTasks && filteredTasks.length > 0) {
+			// add tasks to DOM
+			filteredTasks.forEach(function (t) {
+				TodoTxt.View.displayTask(t);
+			});
+		} else {
+			TodoTxt.View.showControls();
+		}
 	},
 
 	displayTask: function (task) {
@@ -200,7 +204,12 @@ TodoTxt.View = {
 		}, false);
 		deleteButton.onclick = function () {
 			if (TodoTxt.deleteTask(taskId)) {
-				update();
+				TodoTxt.View.refreshUi();
+				try {
+					document.body.removeChild(modalBackground);
+				} catch (e) {
+					// TODO: log this
+				}
 			} else {
 				// TODO: display error toast
 			}
@@ -416,6 +425,26 @@ TodoTxt.View = {
 	getShowClosedStatus: function () {
 		var showClosed = localStorage.getItem("showClosed");
 		return showClosed;
+	},
+
+	toggleControls: function () {
+		var el = document.querySelector("#mainContainer-div .panel-body");
+		var hidden = el.style.display === "hidden" || el.style.display === "none" ? true : false;
+		if (hidden) {
+			TodoTxt.View.showControls();
+		} else {
+			TodoTxt.View.hideControls();
+		}
+	},
+
+	showControls: function () {
+		var el = document.querySelector("#mainContainer-div .panel-body");
+		el.style.display = "block";
+	},
+
+	hideControls: function () {
+		var el = document.querySelector("#mainContainer-div .panel-body");
+		el.style.display = "none";
 	},
 
 	/**
