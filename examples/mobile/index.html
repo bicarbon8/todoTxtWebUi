@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <!-- 
  - todoTxtWebUi
  - 
@@ -35,12 +35,13 @@
  -->
 <html>
 <head>
+<meta name="viewport" content="width=device-width">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/mobile.css" />
-<script type="text/javascript" src="../js/todoTxt.min.js"></script>
+<script type="text/javascript" src="../../dist/todoTxt.min.js"></script>
 <script type="text/javascript" src="js/view.js"></script>
 <script type="text/javascript">
 var _gaq = _gaq || [];
@@ -54,64 +55,77 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 </script>
 </head>
 <body onload="TodoTxt.View.refreshUi();">
-	<div id="mainContainer-div" class="panel panel-primary">
-		<div class="panel-heading">
-			<h3 class="panel-title">TodoTxtWebUi</h3>
-		</div>
-		<div class="panel-body">
-			<div class="container">
-				<div class="row">
-					<div class="well">
-						<input type="file" id="fileUpload-input" />
-						<div id="fileDrop-div" class="fileDrop">Drop todo.txt file here</div>
-					</div>
+	<div class="container">
+		<div class="col-md-9">
+			<div id="mainContainer-div" class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">TodoTxtWebUi</h3>
 				</div>
-				<div class="row">
-					<!-- Single button -->
-					<div class="btn-group col-md-4">
-						<button type="button" class="btn btn-lg btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						Priorities <span class="caret"></span>
-						</button>
-						<ul id="priority-ul" class="dropdown-menu" role="menu"></ul>
-					</div>
-					<!-- Single button -->
-					<div class="btn-group col-md-4">
-						<button type="button" class="btn btn-lg btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						Projects <span class="caret"></span>
-						</button>
-						<ul id="project-ul" class="dropdown-menu" role="menu"></ul>
-					</div>
-					<!-- Single button -->
-					<div class="btn-group col-md-4">
-						<button type="button" class="btn btn-lg btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						Contents <span class="caret"></span>
-						</button>
-						<ul id="context-ul" class="dropdown-menu" role="menu"></ul>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<button id="addTaskButton-button" onclick="TodoTxt.View.displayModalForTask();" class="btn btn-lg btn-primary">Add New Task (Alt + t)</button>
-					</div>
-					<div class="col-md-4">
-						<button id="saveFileButton-button" onclick="TodoTxt.exportTodoTxtFile();" class="btn btn-lg btn-primary">Save To File (Alt + s)</button>
-					</div>
-					<div class="col-md-4">
-						<button id="clearFilterButton-button" onclick="TodoTxt.View.refreshUi();" class="btn btn-lg btn-primary">Clear Filters (Alt + c)</button>
-					</div>
-				</div>
-				<div class="row">
-					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<h3 class="panel-title">Tasks</h3>
+				<div class="panel-body">
+					<div class="row">
+						<div class="well" id="fileDrop-div">
+							<span class="btn btn-primary btn-lg btn-file">
+							    Browse <input id="fileUpload-input" type="file" placeholder="Select todo.txt File">
+							</span>
+							Drop todo.txt file here or select Browse
 						</div>
-						<div class="panel-body">
-							<ul id="listContainer-ul" class="list-group"></ul>
+					</div>
+					<div class="row">
+						<div class="input-group input-group-lg">
+							<input id="filter-input" list="filters" type="text" class="form-control" placeholder="Type or select filter" aria-describedby="basic-addon2" onchange="TodoTxt.View.filterDisplay();">
+							<span class="input-group-btn">
+								<button class="btn btn-primary" onclick="TodoTxt.View.refreshUi();;" type="button">Clear (Alt + c)</button>
+							</span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<button id="addTaskButton-button" onclick="TodoTxt.View.displayModalForTask();" class="btn btn-lg btn-primary">Add Task (Alt + t)</button>
+						</div>
+						<div class="col-md-6">
+							<button id="saveFileButton-button" onclick="TodoTxt.exportTodoTxtFile();" class="btn btn-lg btn-primary">Save To File (Alt + s)</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<h3 class="panel-title">Tasks</h3>
+							</div>
+							<div class="panel-body">
+								<ul id="listContainer-ul" class="list-group"></ul>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<div class="col-md-3">
+			<div id="priorities-div" class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Priorities</h3>
+				</div>
+				<div class="panel-body">
+					<!-- TODO: add Priorities here -->
+				</div>
+			</div>
+			<div id="projects-div" class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Projects</h3>
+				</div>
+				<div class="panel-body">
+					<!-- TODO: add Projects here -->
+				</div>
+			</div>
+			<div id="contexts-div" class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Contexts</h3>
+				</div>
+				<div class="panel-body">
+					<!-- TODO: add Contexts here -->
+				</div>
+			</div>
+		</div>
 	</div>
+	<datalist id="filters"></datalist>
 </body>
 </html>

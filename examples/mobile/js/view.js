@@ -85,23 +85,10 @@ TodoTxt.View = {
 	 */
 	displayTasks: function () {
 		// get the list of selected priorities from the filter
-		var selectedPriorityOptions = document.querySelectorAll("#priority-ul > li.active");
-		var selectedPriorityValues = [].map.call(selectedPriorityOptions, function(option) {
-			return option.innerHTML;
-		});
-		// get the list of selected priorities from the filter
-		var selectedProjectOptions = document.querySelectorAll("#project-ul > li.active");
-		var selectedProjectValues = [].map.call(selectedProjectOptions, function(option) {
-			return option.innerHTML;
-		});
-		// get the list of selected priorities from the filter
-		var selectedContextOptions = document.querySelectorAll("#context-ul > li.active");
-		var selectedContextValues = [].map.call(selectedContextOptions, function(option) {
-			return option.innerHTML;
-		});
+		var filterStr = document.querySelector("#filter-input").value;
 		
 		// filter list by those matching selected filters
-		var filteredTasks = TodoTxt.getFilteredTaskArray(selectedPriorityValues, selectedProjectValues, selectedContextValues);
+		var filteredTasks = TodoTxt.getFilteredTaskArray(filterStr);
 
 		// add tasks to DOM
 		filteredTasks.forEach(function (t) {
@@ -281,45 +268,29 @@ TodoTxt.View = {
 	},
 
 	refreshFilters: function () {
+		// update filter input
+		document.querySelector("#filter-input").value = "";
+		
 		// update the filter options in the DOM
-		document.querySelector("#priority-ul").innerHTML = "";
-		document.querySelector("#project-ul").innerHTML = "";
-		document.querySelector("#context-ul").innerHTML = "";
+		var datalist = document.querySelector("#filters");
+		datalist.innerHTML = "";
 
 		for (var i in TodoTxt.Filters.priorities) {
-			var a = document.createElement("a");
-			a.href = "#";
-			a.innerHTML = i;
-			a.onclick = function (el) {
-				el.className += " active";
-			};
-			var opt = document.createElement("li");
-			opt.appendChild(a);
-			document.querySelector("#priority-ul").appendChild(opt);
+			var f = document.createElement("option");
+			f.value = i;
+			datalist.appendChild(f);
 		}
 		
 		for (var i in TodoTxt.Filters.projects) {
-			var a = document.createElement("a");
-			a.href = "#";
-			a.innerHTML = i;
-			a.onclick = function (el) {
-				el.className += " active";
-			};
-			var opt = document.createElement("li");
-			opt.appendChild(a);
-			document.querySelector("#project-ul").appendChild(opt);
+			var f = document.createElement("option");
+			f.value = i;
+			datalist.appendChild(f);
 		}
 		
 		for (var i in TodoTxt.Filters.contexts) {
-			var a = document.createElement("a");
-			a.href = "#";
-			a.innerHTML = i;
-			a.onclick = function (el) {
-				el.className += " active";
-			};
-			var opt = document.createElement("li");
-			opt.appendChild(a);
-			document.querySelector("#context-ul").appendChild(opt);
+			var f = document.createElement("option");
+			f.value = i;
+			datalist.appendChild(f);
 		}
 	},
 

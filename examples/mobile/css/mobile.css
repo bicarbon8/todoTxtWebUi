@@ -28,14 +28,30 @@ body {
 	padding: 10px;
 }
 
-/*.container {
-	margin: 0px;
-	padding: 0px;
-}*/
+/* Customize container */
 .row {
 	margin: 0px;
 	padding: 10px;
 	width: 100%;
+}
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
 }
 
 /** Task Styles **/
@@ -58,6 +74,12 @@ body {
 .closed {
 	background-color: #e0e0e0;
 	color:#f6f6f6;
+}
+.list-group-item {
+	white-space: nowrap;
+  	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 button {

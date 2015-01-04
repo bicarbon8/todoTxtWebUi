@@ -69,29 +69,26 @@ TodoTxt.getSortedTaskArray = function () {
 
 /**
  * function will return a filtered array of tasks based on the passed in
- * priorities, projects and contexts array.  If no tasks are found that
- * match all the specified criteria then an empty array is returned
+ * filter string.  Matching uses an ordered fuzzy match so for the following:
+ * "(A) 2014-03-02 don't forget to file @report with +John" a passed in filter
+ * string of "for John" will match, but "John report" will not match
  */
-TodoTxt.getFilteredTaskArray = function (priorities, projects, contexts) {
-	function arrayContainsTaskItems(findArray, taskItems) {
-		var found = false;
-		for (var i in taskItems) {
-			var tp = taskItems[i];
-			found = findArray.includes(tp);
-			if (found) {
-				return found;
-			}
+TodoTxt.getFilteredTaskArray = function (filterStr) {
+	var filteredTasks = TodoTxt.getSortedTaskArray();
+	if (filterStr && filterStr !== "") {
+		// create the regex matcher
+		var filters = filterStr.split(" ");
+		var rStr = "[\.]*";
+		for (var i=0; i<filters.length; i++) {
+			var filter = filters[i].replace(/([-()\[\]{}+?*.$\^|,:#<!\\])/g, '\\$1').replace(/\x08/g, '\\x08');
+			rStr += "(" + filter + ")[\.]*";
 		}
-
-		return found;
+		var regex = new RegExp(rStr, "i");
+		var tasks = filteredTasks.filter(function (t) {
+			return t.toString().match(regex);
+		});
+		filteredTasks = tasks;
 	}
-	// sort the list and then add it
-	var taskArray = TodoTxt.getSortedTaskArray();
-	var filteredTasks = taskArray.filter(function (t) {
-		return (priorities.length === 0 || priorities.includes(t.priority)) && 
-			   (projects.length === 0 || arrayContainsTaskItems(projects, t.projects)) && 
-			   (contexts.length === 0 || arrayContainsTaskItems(contexts, t.contexts));
-	});
 	
 	return filteredTasks;
 },
