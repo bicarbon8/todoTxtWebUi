@@ -48,7 +48,22 @@ TodoTxt.View = {
 		element.onmouseout = function () {
 			element.className = element.className.replace(/( active)/, "");
 		};
-		element.innerHTML = task.text;
+		element.innerHTML = "<h4>" + task.text + "</h4>";
+		
+		return element;
+	},
+
+	generateListElement: function (text) {
+		var element = document.createElement("li");
+		element.id = TodoTxt.Resources.get("NAMESPACE") + text;
+		element.className = "list-group-item";
+		element.onmouseover = function () {
+			element.className += " active";
+		};
+		element.onmouseout = function () {
+			element.className = element.className.replace(/( active)/, "");
+		};
+		element.innerHTML = "<h4>" + text + "</h4>";
 		
 		return element;
 	},
@@ -89,6 +104,15 @@ TodoTxt.View = {
 		
 		// filter list by those matching selected filters
 		var filteredTasks = TodoTxt.getFilteredTaskArray(filterStr);
+
+		var showClosed = TodoTxt.View.getShowClosedStatus();
+		if (showClosed !== "true") {
+			// filter out closed tasks
+			var tasks = filteredTasks.filter(function (t) {
+				return t.isActive;
+			});
+			filteredTasks = tasks;
+		}
 
 		// add tasks to DOM
 		filteredTasks.forEach(function (t) {
@@ -190,6 +214,45 @@ TodoTxt.View = {
 		modalText.focus();
 	},
 
+	displayPriorities: function () {
+		var priList = document.querySelector('#priorities-ul');
+		for (var i in TodoTxt.Attributes.priorities) {
+			var attr = i;
+			var element = TodoTxt.View.generateListElement(attr);
+			priList.appendChild(element);
+		}
+	},
+
+	clearPriorities: function () {
+		document.querySelector('#priorities-ul').innerHTML = "";
+	},
+
+	displayProjects: function () {
+		var projList = document.querySelector('#projects-ul');
+		for (var i in TodoTxt.Attributes.projects) {
+			var attr = i;
+			var element = TodoTxt.View.generateListElement(attr);
+			projList.appendChild(element);
+		}
+	},
+
+	clearProjects: function () {
+		document.querySelector('#projects-ul').innerHTML = "";
+	},
+
+	displayContexts: function () {
+		var ctxList = document.querySelector('#contexts-ul');
+		for (var i in TodoTxt.Attributes.contexts) {
+			var attr = i;
+			var element = TodoTxt.View.generateListElement(attr);
+			ctxList.appendChild(element);
+		}
+	},
+
+	clearContexts: function () {
+		document.querySelector('#contexts-ul').innerHTML = "";
+	},
+
 	bindControlEvents: function () {
 		// enable saving the todo.txt content through keyboard shortcut
 		document.addEventListener("keydown", TodoTxt.View.handleAltS, false);
@@ -248,46 +311,64 @@ TodoTxt.View = {
 	 * is sorted and displaying properly
 	 */
 	refreshUi: function () {
+		if (TodoTxt.View.getShowClosedStatus() === "true") {
+			TodoTxt.View.setShowClosedActive();
+		}
+
 		// unbind any event handling
 		TodoTxt.View.unbindControlEvents();
 
 		// clear the list
 		TodoTxt.View.clearTasks();
 
-		// reset filters
-		TodoTxt.View.refreshFilters();
+		// clear the attributes
+		TodoTxt.View.clearPriorities();
+		TodoTxt.View.clearProjects();
+		TodoTxt.View.clearContexts();
+
+		// clear filter input
+		TodoTxt.View.clearFilters();
 		
 		// now rebuild from localStorage
 		TodoTxt.View.displayTasks();
 	
 		// update the DOM with the new task details and filter changes
-		TodoTxt.View.refreshFilters();
+		TodoTxt.View.updateFilters();
+
+		// update the DOM with task attributes
+		TodoTxt.View.displayPriorities();
+		TodoTxt.View.displayProjects();
+		TodoTxt.View.displayContexts();
 
 		// enable keyboard shortcuts and click events for the controls area
 		TodoTxt.View.bindControlEvents();
 	},
 
-	refreshFilters: function () {
+	clearFilters: function () {
 		// update filter input
 		document.querySelector("#filter-input").value = "";
 		
 		// update the filter options in the DOM
 		var datalist = document.querySelector("#filters");
 		datalist.innerHTML = "";
+	},
 
-		for (var i in TodoTxt.Filters.priorities) {
+	updateFilters: function () {
+		var datalist = document.querySelector("#filters");
+
+		for (var i in TodoTxt.Attributes.priorities) {
 			var f = document.createElement("option");
 			f.value = i;
 			datalist.appendChild(f);
 		}
 		
-		for (var i in TodoTxt.Filters.projects) {
+		for (var i in TodoTxt.Attributes.projects) {
 			var f = document.createElement("option");
 			f.value = i;
 			datalist.appendChild(f);
 		}
 		
-		for (var i in TodoTxt.Filters.contexts) {
+		for (var i in TodoTxt.Attributes.contexts) {
 			var f = document.createElement("option");
 			f.value = i;
 			datalist.appendChild(f);
@@ -298,11 +379,43 @@ TodoTxt.View = {
 		document.querySelector("#listContainer-ul").innerHTML = "";
 	},
 
-	filterDisplay: function () {
+	filterDisplayedTasks: function () {
 		TodoTxt.View.clearTasks();
 
-		// honors any selected filters
+		// honors any specified filters
 		TodoTxt.View.displayTasks();
+	},
+
+	toggleShowClosedStatus: function () {
+		var el = document.querySelector('#showClosed-input');
+		var active = el.className.match(/( btn-success)/) ? true : false;
+		// if active toggle to inactive
+		if (active) {
+			TodoTxt.View.setShowClosedInactive();
+		} else {
+			TodoTxt.View.setShowClosedActive();
+		}
+		localStorage.setItem("showClosed", !active);
+		TodoTxt.View.refreshUi();
+	},
+
+	setShowClosedActive: function () {
+		var el = document.querySelector('#showClosed-input');
+		el.className = el.className.replace(/( btn-danger)/, "");
+		el.className += " btn-success";
+		el.innerHTML = "Hide Closed";
+	},
+
+	setShowClosedInactive: function () {
+		var el = document.querySelector('#showClosed-input');
+		el.className = el.className.replace(/( btn-success)/, "");
+		el.className += " btn-danger";
+		el.innerHTML = "Show Closed";
+	},
+
+	getShowClosedStatus: function () {
+		var showClosed = localStorage.getItem("showClosed");
+		return showClosed;
 	},
 
 	/**

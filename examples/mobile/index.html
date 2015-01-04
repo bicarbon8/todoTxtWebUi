@@ -67,15 +67,20 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 							<span class="btn btn-primary btn-lg btn-file">
 							    Browse <input id="fileUpload-input" type="file" placeholder="Select todo.txt File">
 							</span>
-							Drop todo.txt file here or select Browse
+							<h3>Drop todo.txt file here or select Browse to use system File picker</h3>
 						</div>
 					</div>
 					<div class="row">
-						<div class="input-group input-group-lg">
-							<input id="filter-input" list="filters" type="text" class="form-control" placeholder="Type or select filter" aria-describedby="basic-addon2" onchange="TodoTxt.View.filterDisplay();">
-							<span class="input-group-btn">
-								<button class="btn btn-primary" onclick="TodoTxt.View.refreshUi();;" type="button">Clear (Alt + c)</button>
-							</span>
+						<div class="col-md-3">
+							<button id="showClosed-input" onclick="TodoTxt.View.toggleShowClosedStatus();" class="btn btn-lg btn-danger">Show Closed</button>
+						</div>
+						<div class="col-md-9">
+							<div class="input-group input-group-lg">
+								<input id="filter-input" list="filters" type="text" class="form-control" placeholder="Type or select filter" aria-describedby="basic-addon2" onchange="TodoTxt.View.filterDisplayedTasks();">
+								<span class="input-group-btn">
+									<button class="btn btn-primary" onclick="TodoTxt.View.refreshUi();;" type="button">Clear (Alt + c)</button>
+								</span>
+							</div>
 						</div>
 					</div>
 					<div class="row">
@@ -87,14 +92,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 						</div>
 					</div>
 					<div class="row">
-						<div class="panel panel-primary">
-							<div class="panel-heading">
-								<h3 class="panel-title">Tasks</h3>
-							</div>
-							<div class="panel-body">
-								<ul id="listContainer-ul" class="list-group"></ul>
-							</div>
-						</div>
+						<ul id="listContainer-ul" class="list-group"></ul>
 					</div>
 				</div>
 			</div>
@@ -105,7 +103,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 					<h3 class="panel-title">Priorities</h3>
 				</div>
 				<div class="panel-body">
-					<!-- TODO: add Priorities here -->
+					<ul id="priorities-ul" class="list-group"></ul>
 				</div>
 			</div>
 			<div id="projects-div" class="panel panel-primary">
@@ -113,7 +111,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 					<h3 class="panel-title">Projects</h3>
 				</div>
 				<div class="panel-body">
-					<!-- TODO: add Projects here -->
+					<ul id="projects-ul" class="list-group"></ul>
 				</div>
 			</div>
 			<div id="contexts-div" class="panel panel-primary">
@@ -121,7 +119,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 					<h3 class="panel-title">Contexts</h3>
 				</div>
 				<div class="panel-body">
-					<!-- TODO: add Contexts here -->
+					<ul id="contexts-ul" class="list-group"></ul>
 				</div>
 			</div>
 		</div>

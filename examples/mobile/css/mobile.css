@@ -53,6 +53,9 @@ body {
     cursor: inherit;
     display: block;
 }
+.list-group {
+	margin-bottom: 0px;
+}
 
 /** Task Styles **/
 .a {
@@ -72,10 +75,10 @@ body {
 	color: #333333;
 }
 .closed {
-	background-color: #e0e0e0;
+	background-color: #c0c0c0;
 	color:#f6f6f6;
 }
-.list-group-item {
+.list-group-item h4 {
 	white-space: nowrap;
   	width: 100%;
 	overflow: hidden;

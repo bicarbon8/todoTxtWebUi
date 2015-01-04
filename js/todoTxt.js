@@ -40,7 +40,7 @@ var TodoTxt = TodoTxt || {};
  * this function represents a Filters tracking object used to
  * limit the list of Tasks displayed at any one time.
  */
-TodoTxt.Filters = {
+TodoTxt.Attributes = {
 	priorities: {},
 	projects: {},
 	contexts: {},
@@ -172,20 +172,20 @@ TodoTxt.updateTask = function (taskId, newText) {
 TodoTxt.updateFilters = function (task) {
 	// get the priority and add to global filter hashset
 	if (task.priority) {
-		TodoTxt.Filters.priorities[task.priority] = true;
+		TodoTxt.Attributes.priorities[task.priority] = true;
 	}
 	
 	// get each project and add to the global filter hashset
 	for (var j in task.projects) {
 		if (typeof task.projects[j] === "string") {
-			TodoTxt.Filters.projects[task.projects[j]] = true;
+			TodoTxt.Attributes.projects[task.projects[j]] = true;
 		}
 	}
 	
 	// get each context and add to the global filter hashset
 	for (var j in task.contexts) {
 		if (typeof task.contexts[j] === "string") {
-			TodoTxt.Filters.contexts[task.contexts[j]] = true;
+			TodoTxt.Attributes.contexts[task.contexts[j]] = true;
 		}
 	}
 };
