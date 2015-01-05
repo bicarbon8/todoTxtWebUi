@@ -32,19 +32,14 @@
  **********************************************************************/
 var TodoTxt = TodoTxt || {};
 
+/**
+ * Utility methods used by the project library
+ * @namespace
+ */
 TodoTxt.Utils = {
-	COUNTER: 0,
-
-	/**
-	 * function will generate a GUID for use in dynamic DOM ID's
-	 * code taken from: Kevin Hakanson at http://stackoverflow.com/a/873856
-	 */
-	createId: function () {
-	    return TodoTxt.Resources.get("NAMESPACE") + TodoTxt.Utils.COUNTER++;
-	},
-
 	/**
 	 * function will format a Date object to a string of YYYY-MM-DD
+	 * @returns {string} formatted date
 	 */
 	formatDate: function (dateObj) {
 		var yyyy = dateObj.getFullYear();
@@ -53,8 +48,25 @@ TodoTxt.Utils = {
 		return String(10000*yyyy + 100*mm + dd); // Leading zeros for mm and dd
 	},
 
+	/**
+	 * function will get the current browser language-locale
+	 * @returns {string} a ISO language-locale for the browser
+	 */
 	getLanguage: function () {
 		var langLocale = window.navigator.userLanguage || window.navigator.language;
 		return langLocale.toLowerCase();
 	},
+
+	/**
+	 * function generates a GUID
+	 * @returns {string} a GUID (NNNNNNNN-NNNN-NNNN-NNNN-NNNNNNNNNNNN)
+	 */
+	guid: function () {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+        return s4()+s4()+'-'+s4()+'-'+s4()+'-'+s4()+'-'+s4()+s4()+s4();
+    },
 };

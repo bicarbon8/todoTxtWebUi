@@ -31,7 +31,10 @@
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
 var TodoTxt = TodoTxt || {};
-TodoTxt.View = { 
+TodoTxt.View = {
+	/** @ignore */
+	namespace: TodoTxt.namespace + "View.",
+
 	/**
 	 * function generates the DOM element for the passed in task
 	 */
@@ -55,7 +58,7 @@ TodoTxt.View = {
 
 	generateListElement: function (text) {
 		var element = document.createElement("li");
-		element.id = TodoTxt.Resources.get("NAMESPACE") + text;
+		element.id = TodoTxt.View.namespace + text;
 		element.className = "list-group-item";
 		element.onmouseover = function () {
 			element.className += " active";
@@ -74,14 +77,14 @@ TodoTxt.View = {
 	getDisplayClassForTask: function (task) {
 		// get a list of the current tasks and iterate through
 		var cls = "";
-		if (task.priority != null && !task.text.match(/^(x\s)/)) {
-			if (task.priority == "(A)") {
+		if (task.priority !== null && !task.text.match(/^(x\s)/)) {
+			if (task.priority === "(A)") {
 				cls += " a";
 			}
-			if (task.priority == "(B)") {
+			if (task.priority === "(B)") {
 				cls += " b";
 			}
-			if (task.priority == "(C)") {
+			if (task.priority === "(C)") {
 				cls += " c";
 			}
 		}
@@ -120,7 +123,7 @@ TodoTxt.View = {
 				TodoTxt.View.displayTask(t);
 			});
 		} else {
-			TodoTxt.View.showControls();
+			TodoTxt.View.showControls(document.querySelector("#mainContainerHeading-div"));
 		}
 	},
 
@@ -203,15 +206,17 @@ TodoTxt.View = {
 			}
 		}, false);
 		deleteButton.onclick = function () {
-			if (TodoTxt.deleteTask(taskId)) {
-				TodoTxt.View.refreshUi();
-				try {
-					document.body.removeChild(modalBackground);
-				} catch (e) {
-					// TODO: log this
+			if (confirm(TodoTxt.View.Resources.get("DELETE_CONFIRM") + "\n\t\"" + TodoTxt.getTask(taskId).toString() + "\"")) {
+				if (TodoTxt.deleteTask(taskId)) {
+					TodoTxt.View.refreshUi();
+					try {
+						document.body.removeChild(modalBackground);
+					} catch (e) {
+						// TODO: log this
+					}
+				} else {
+					// TODO: display error toast
 				}
-			} else {
-				// TODO: display error toast
 			}
 		};
 
@@ -280,13 +285,13 @@ TodoTxt.View = {
 
 	handleAltS: function(e) {
 		if (e.keyCode == 83 && e.altKey) { // Alt + s
-			TodoTxt.exportTodoTxtFile();
+			TodoTxt.View.exportTodoTxtFile();
 		}
 	},
 
 	handleAltC: function(e) {
 		if (e.keyCode == 67 && e.altKey) { // Alt + c
-      		TodoTxt.View.refreshUi();
+			TodoTxt.View.refreshUi();
 		}
 	},
 
@@ -322,6 +327,8 @@ TodoTxt.View = {
 	refreshUi: function () {
 		if (TodoTxt.View.getShowClosedStatus() === "true") {
 			TodoTxt.View.setShowClosedActive();
+		} else {
+			TodoTxt.View.setShowClosedInactive();
 		}
 
 		// unbind any event handling
@@ -356,32 +363,10 @@ TodoTxt.View = {
 	clearFilters: function () {
 		// update filter input
 		document.querySelector("#filter-input").value = "";
-		
-		// update the filter options in the DOM
-		var datalist = document.querySelector("#filters");
-		datalist.innerHTML = "";
 	},
 
 	updateFilters: function () {
-		var datalist = document.querySelector("#filters");
-
-		for (var i in TodoTxt.Attributes.priorities) {
-			var f = document.createElement("option");
-			f.value = i;
-			datalist.appendChild(f);
-		}
 		
-		for (var i in TodoTxt.Attributes.projects) {
-			var f = document.createElement("option");
-			f.value = i;
-			datalist.appendChild(f);
-		}
-		
-		for (var i in TodoTxt.Attributes.contexts) {
-			var f = document.createElement("option");
-			f.value = i;
-			datalist.appendChild(f);
-		}
 	},
 
 	clearTasks: function () {
@@ -396,8 +381,8 @@ TodoTxt.View = {
 	},
 
 	toggleShowClosedStatus: function () {
-		var el = document.querySelector('#showClosed-input');
-		var active = el.className.match(/( btn-success)/) ? true : false;
+		var el = document.querySelector('#showClosed-label');
+		var active = el.className.match(/( active)/) ? true : false;
 		// if active toggle to inactive
 		if (active) {
 			TodoTxt.View.setShowClosedInactive();
@@ -409,17 +394,17 @@ TodoTxt.View = {
 	},
 
 	setShowClosedActive: function () {
-		var el = document.querySelector('#showClosed-input');
-		el.className = el.className.replace(/( btn-danger)/, "");
-		el.className += " btn-success";
-		el.innerHTML = "Hide Closed";
+		var el = document.querySelector('#showClosed-label');
+		el.className += " active";
+		var input = document.querySelector('#showClosed-input');
+		input.checked = true;
 	},
 
 	setShowClosedInactive: function () {
-		var el = document.querySelector('#showClosed-input');
-		el.className = el.className.replace(/( btn-success)/, "");
-		el.className += " btn-danger";
-		el.innerHTML = "Show Closed";
+		var el = document.querySelector('#showClosed-label');
+		el.className = el.className.replace(/( active)/, "");
+		var input = document.querySelector('#showClosed-input');
+		input.checked = false;
 	},
 
 	getShowClosedStatus: function () {
@@ -427,24 +412,28 @@ TodoTxt.View = {
 		return showClosed;
 	},
 
-	toggleControls: function () {
-		var el = document.querySelector("#mainContainer-div .panel-body");
-		var hidden = el.style.display === "hidden" || el.style.display === "none" ? true : false;
+	toggleControls: function (heading) {
+		var el = heading.nextElementSibling;
+		var hidden = el.className.match(/( collapse)/) ? true : false;
 		if (hidden) {
-			TodoTxt.View.showControls();
+			TodoTxt.View.showControls(heading);
 		} else {
-			TodoTxt.View.hideControls();
+			TodoTxt.View.hideControls(heading);
 		}
 	},
 
-	showControls: function () {
-		var el = document.querySelector("#mainContainer-div .panel-body");
-		el.style.display = "block";
+	showControls: function (heading) {
+		var indicator = heading.querySelector(".glyphicon");
+		var el = heading.nextElementSibling;
+		el.className = el.className.replace(/( collapse)/, "");
+		indicator.className = indicator.className.replace(/( glyphicon-plus)/, " glyphicon-minus");
 	},
 
-	hideControls: function () {
-		var el = document.querySelector("#mainContainer-div .panel-body");
-		el.style.display = "none";
+	hideControls: function (heading) {
+		var indicator = heading.querySelector(".glyphicon");
+		var el = heading.nextElementSibling;
+		el.className += " collapse";
+		indicator.className = indicator.className.replace(/( glyphicon-minus)/, " glyphicon-plus");
 	},
 
 	/**
@@ -490,8 +479,10 @@ TodoTxt.View = {
 
 			// get the content as a String
 			reader.onloadend = function (e) {
-				TodoTxt.parseTodoTxtFile(e.target.result);
-				TodoTxt.View.refreshUi();
+				if (confirm(TodoTxt.View.Resources.get("OVERWRITE_CONFIRM"))) {
+					TodoTxt.parseTodoTxtFile(e.target.result);
+					TodoTxt.View.refreshUi();
+				}
 			};
 			reader.readAsText(f, "UTF-8");
 		}
@@ -501,5 +492,20 @@ TodoTxt.View = {
 		e.stopPropagation();
 		e.preventDefault();
 		e.dataTransfer.dropEffect = "copy"; // Explicitly show this is a copy.
+	},
+
+	/**
+	 * function will allow the user to download a copy of the todo.txt file
+	 */
+	exportTodoTxtFile: function () {
+		var taskArray = TodoTxt.getSortedTaskArray();
+		
+		// create the output string to be written
+		var content = taskArray.join("\n");
+		
+		// set datatype to text/csv to initiate download prompt
+		var data = encodeURI("data:text/csv;charset=utf-8," + content);
+		
+		window.open(data);
 	},
 };

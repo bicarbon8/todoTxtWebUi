@@ -9,8 +9,6 @@ module.exports = function(grunt) {
       "js/todoTxt.js",
       "js/objects/utils.js",
       "js/classes/task.js",
-      "js/objects/resources.js",
-      "js/objects/resources/en-us.js",
     ],
     tests: "tests/allTests.html"
   },
@@ -38,14 +36,10 @@ module.exports = function(grunt) {
     qunit: {
       all: ['<%= files.tests %>']
     },
-    copy: {
-      examples: {
-        expand: true,
-        cwd: 'dist/',
-        flatten: true,
-        src: '<%= pkg.main %>.*', 
-        dest: 'examples/js/',
-        filter: 'isFile'
+    jsdoc: {
+      dist: {
+        src: ['<%= files.base %>'],
+        dest: 'dist/doc'
       }
     }
   });
@@ -59,16 +53,19 @@ module.exports = function(grunt) {
   // This plugin provides the "qunit" task.
   grunt.loadNpmTasks('grunt-contrib-qunit');
 
-  // Load the plugin that provides the "copy" task.
-  grunt.loadNpmTasks('grunt-contrib-copy');
+  // This plugin provides the "qunit" task.
+  grunt.loadNpmTasks('grunt-jsdoc');
 
   // Default task(s).
-  grunt.registerTask('default', ['clean','qunit','uglify','copy']);
+  grunt.registerTask('default', ['clean','qunit','uglify','jsdoc']);
 
   // Build only task(s).
-  grunt.registerTask('build', ['clean','uglify','copy']);
+  grunt.registerTask('build', ['clean','uglify']);
 
   // test only task(s).
   grunt.registerTask('test', ['qunit']);
+
+  // document only task(s).
+  grunt.registerTask('doc', ['jsdoc']);
 
 };

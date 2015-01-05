@@ -31,21 +31,21 @@
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
 var sampleTaskStrings = [
-	{ str: "x 2015-01-03 this is a +Task with a +note in it", expectedStatus: false, expectedPriority: null, expectedCompleted: "2015-01-03", expectedCreated: null },
-	{ str: "2015-01-03 this is a @Task with a @note in it", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: "2015-01-03" },
-	{ str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", expectedStatus: false, expectedPriority: null, expectedCompleted: "2015-01-03", expectedCreated: "2015-01-01" },
-	{ str: "x this is a @Task with a +note in it", expectedStatus: false, expectedPriority: null, expectedCompleted: null, expectedCreated: null },
-	{ str: "this is a Task with a note in it", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: null },
-	{ str: "xthis is a T+ask with a note@ in it", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: null },
-	{ str: "(B) 2015-01-03 x this ++is a @Task with @@a +note in it", expectedStatus: true, expectedPriority: "(B)", expectedCompleted: null, expectedCreated: "2015-01-03" },
-	{ str: "X 2015-01-03 this is+ a Task with a note in it +", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: "2015-01-03" },
-	{ str: "(A) 2015-01-03 this is a Task with a not@e in it", expectedStatus: true, expectedPriority: "(A)", expectedCompleted: null, expectedCreated: "2015-01-03" },
-	{ str: "A 2015-01-03 this is a Task with a note in it @", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: "2015-01-03" },
-	{ str: "(Z) 2015-01-03 this is a Task with a note in it", expectedStatus: true, expectedPriority: "(Z)", expectedCompleted: null, expectedCreated: "2015-01-03" },
-	{ str: "(A) this is a Task with a note in it", expectedStatus: true, expectedPriority: "(A)", expectedCompleted: null, expectedCreated: null },
-	{ str: "(A)this is a Task with a note in it", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: null },
-	{ str: "(1) this is a Task with a note in it", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: null },
-	{ str: "(a) 2015-01-03 this is a Task with a note in it", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: "2015-01-03" },
+	{ str: "x 2015-01-03 this is a +Task with a +note in it", expectedStatus: false, expectedPriority: null, expectedCompleted: "2015-01-03", expectedCreated: null, expectedProjects: ["+Task","+note"], expectedContexts: [] },
+	{ str: "2015-01-03 this is a @Task with a @note in it", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: "2015-01-03", expectedProjects: [], expectedContexts: ["@Task","@note"] },
+	{ str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", expectedStatus: false, expectedPriority: null, expectedCompleted: "2015-01-03", expectedCreated: "2015-01-01", expectedProjects: ["+Task"], expectedContexts: ["@note"] },
+	{ str: "x this is a @Task with a +note in it", expectedStatus: false, expectedPriority: null, expectedCompleted: null, expectedCreated: null, expectedProjects: ["+note"], expectedContexts: ["@Task"] },
+	{ str: "this is a @ Task with + a note in it", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: null, expectedProjects: [], expectedContexts: [] },
+	{ str: "xthis is a T+ask with a note@ in it", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: null, expectedProjects: [], expectedContexts: [] },
+	{ str: "(B) 2015-01-03 x this ++is a @Task with @@a +note in it", expectedStatus: true, expectedPriority: "(B)", expectedCompleted: null, expectedCreated: "2015-01-03", expectedProjects: ["+note"], expectedContexts: ["@Task"] },
+	{ str: "X 2015-01-03 this is+ a Task with a note in it +", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: "2015-01-03", expectedProjects: [], expectedContexts: [] },
+	{ str: "(A) 2015-01-03 this is a Task with a not@e in it", expectedStatus: true, expectedPriority: "(A)", expectedCompleted: null, expectedCreated: "2015-01-03", expectedProjects: [], expectedContexts: [] },
+	{ str: "A 2015-01-03 this is a Task with a note in it @", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: "2015-01-03", expectedProjects: [], expectedContexts: [] },
+	{ str: "(Z) 2015-01-03 this is a @Task with a @note in it", expectedStatus: true, expectedPriority: "(Z)", expectedCompleted: null, expectedCreated: "2015-01-03", expectedProjects: [], expectedContexts: ["@Task","@note"] },
+	{ str: "(A) this is a +Task with a +note in it", expectedStatus: true, expectedPriority: "(A)", expectedCompleted: null, expectedCreated: null, expectedProjects: ["+Task","+note"], expectedContexts: [] },
+	{ str: "(A)this is a Task with a note in it", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: null, expectedProjects: [], expectedContexts: [] },
+	{ str: "(1) this is a Task with a note in it", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: null, expectedProjects: [], expectedContexts: [] },
+	{ str: "(a) 2015-01-03 this is a Task with a note in it", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: "2015-01-03", expectedProjects: [], expectedContexts: [] },
 ];
 
 QUnit.module("TodoTxt.Task");
@@ -62,39 +62,49 @@ QUnit.test("each new task has a unique ID", function (assert) {
 		ids[t.id] = true;
 	}
 	var actual = 0;
-	for (var i in ids) {
+	for (var j in ids) {
 		actual++;
 	}
 	assert.equal(actual, count, "expected " + count + " unique ids to be created, but was: " + actual);
 });
 QUnit.cases(sampleTaskStrings).test("can parse status from string", function (p, assert) {
 	var t = new TodoTxt.Task();
-	t.parseStatusFromString(p.str);
+	t._parseStatusFromString(p.str);
 	var actual = t.isActive;
 	assert.equal(actual, p.expectedStatus, "task.isActive did not match expectedStatus");
 });
 QUnit.cases(sampleTaskStrings).test("can parse priority from string", function (p, assert) {
 	var t = new TodoTxt.Task();
-	t.parsePriorityFromString(p.str);
+	t._parsePriorityFromString(p.str);
 	var actual = t.priority;
 	assert.equal(actual, p.expectedPriority, "task.priority did not match expectedPriority");
 });
 QUnit.cases(sampleTaskStrings).test("can parse completed date from string", function (p, assert) {
 	var t = new TodoTxt.Task();
-	t.parseStatusFromString(p.str); // needed for completed date
-	t.parseCompletedDateFromString(p.str);
+	t._parseStatusFromString(p.str); // needed for completed date
+	t._parseCompletedDateFromString(p.str);
 	var actual = t.completedDate;
 	assert.equal(actual, p.expectedCompleted, "task.completedDate did not match expectedCompleted");
 });
 QUnit.cases(sampleTaskStrings).test("can parse created date from string", function (p, assert) {
 	var t = new TodoTxt.Task();
-	t.parseStatusFromString(p.str); // needed for created date
-	t.parseCreatedDateFromString(p.str);
+	t._parseStatusFromString(p.str); // needed for created date
+	t._parseCreatedDateFromString(p.str);
 	var actual = t.createdDate;
 	assert.equal(actual, p.expectedCreated, "task.createdDate did not match expectedCreated");
 });
-// TODO: add parseProjectsFromString tests
-// TODO: add parseContextsFromString tests
+QUnit.cases(sampleTaskStrings).test("can parse projects from string", function (p, assert) {
+	var t = new TodoTxt.Task();
+	t._parseProjectsFromString(p.str);
+	var actual = t.projects;
+	assert.deepEqual(actual, p.expectedProjects, "task.projects: " + JSON.stringify(actual) + " did not match expectedProjects: " + JSON.stringify(p.expectedProjects));
+});
+QUnit.cases(sampleTaskStrings).test("can parse contexts from string", function (p, assert) {
+	var t = new TodoTxt.Task();
+	t._parseContextsFromString(p.str);
+	var actual = t.contexts;
+	assert.deepEqual(actual, p.expectedContexts, "task.projects: " + JSON.stringify(actual) + " did not match expectedContexts: " + JSON.stringify(p.expectedContexts));
+});
 QUnit.cases(sampleTaskStrings).test("can create from string", function (p, assert) {
 	var t = new TodoTxt.Task(p.str);
 	var actual;
@@ -106,4 +116,8 @@ QUnit.cases(sampleTaskStrings).test("can create from string", function (p, asser
 	assert.equal(actual, p.expectedPriority, "task.priority did not match expectedPriority");
 	actual = t.isActive;
 	assert.equal(actual, p.expectedStatus, "task.isActive did not match expectedStatus");
+	actual = t.projects;
+	assert.deepEqual(actual, p.expectedProjects, "task.projects: " + JSON.stringify(actual) + " did not match expectedProjects: " + JSON.stringify(p.expectedProjects));
+	actual = t.contexts;
+	assert.deepEqual(actual, p.expectedContexts, "task.projects: " + JSON.stringify(actual) + " did not match expectedContexts: " + JSON.stringify(p.expectedContexts));
 });

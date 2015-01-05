@@ -31,251 +31,248 @@
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
 
-/**
- * Project container
- */
-var TodoTxt = TodoTxt || {};
+/** @namespace */
+var TodoTxt = {
+	/** @ignore */
+	namespace: "TodoTxt.",
 
-/**
- * this function represents a Filters tracking object used to
- * limit the list of Tasks displayed at any one time.
- */
-TodoTxt.Attributes = {
-	priorities: {},
-	projects: {},
-	contexts: {},
-};
+	/**
+	 * this function represents a Filters tracking object used to
+	 * limit the list of Tasks displayed at any one time.
+	 */
+	Attributes: {
+		/** hash containing all referenced priorities */
+		priorities: {},
+		/** hash containing all referenced projects */
+		projects: {},
+		/** hash containing all referenced contexts */
+		contexts: {},
+	},
 
-/**
- * function will return a sorted array of tasks as pulled from
- * localStorage.
- */
-TodoTxt.getSortedTaskArray = function () {
-	// sort the list and then add it
-	var taskArray = [];
-	for (var key in localStorage) {
-		var regex = new RegExp("^(" + TodoTxt.Resources.get("NAMESPACE") + ")");
-		if (key.match(regex)) {
-			var t = TodoTxt.getTask(key);
-			t.id = key;
-			taskArray.push(t);
-			TodoTxt.updateFilters(t);
+	/**
+	 * function will return a sorted array of tasks as pulled from
+	 * localStorage.
+	 * @returns {array} a sorted list of tasks from localStorage
+	 */
+	getSortedTaskArray: function () {
+		// sort the list and then add it
+		var taskArray = [];
+		var taskNamespace = new TodoTxt.Task().namespace;
+		TodoTxt._clearAttributes();
+		for (var key in localStorage) {
+			var regex = new RegExp("^(" + taskNamespace + ")");
+			if (key.match(regex)) {
+				var t = TodoTxt.getTask(key);
+				t.id = key;
+				taskArray.push(t);
+				TodoTxt._updateAttributes(t);
+			}
 		}
-	}
-	taskArray.sort(TodoTxt.compareTasks);
-	
-	return taskArray;
-},
+		taskArray.sort(TodoTxt._compareTasks);
+		
+		return taskArray;
+	},
 
-/**
- * function will return a filtered array of tasks based on the passed in
- * filter string.  Matching uses an ordered fuzzy match so for the following:
- * "(A) 2014-03-02 don't forget to file @report with +John" a passed in filter
- * string of "for John" will match, but "John report" will not match
- */
-TodoTxt.getFilteredTaskArray = function (filterStr) {
-	var filteredTasks = TodoTxt.getSortedTaskArray();
-	if (filterStr && filterStr !== "") {
-		// create the regex matcher
-		var filters = filterStr.split(" ");
-		var rStr = "[\.]*";
-		for (var i=0; i<filters.length; i++) {
-			var filter = filters[i].replace(/([-()\[\]{}+?*.$\^|,:#<!\\])/g, '\\$1').replace(/\x08/g, '\\x08');
-			rStr += "(" + filter + ")[\.]*";
+	/**
+	 * function will return a filtered array of tasks based on the passed in
+	 * filter string.  Matching uses an ordered fuzzy match so for the following:
+	 * "(A) 2014-03-02 don't forget to file @report with +John" a passed in filter
+	 * string of "for John" will match, but "John report" will not match
+	 * @param {string} filterStr - a string containing characters to match against the existing tasks
+	 * @returns {array} a sorted list of tasks matching the passed in <b><i>filterStr</i></b>
+	 */
+	getFilteredTaskArray: function (filterStr) {
+		var filteredTasks = TodoTxt.getSortedTaskArray();
+		if (filterStr && filterStr !== "") {
+			// create the regex matcher
+			var filters = filterStr.split(" ");
+			var rStr = ".*";
+			for (var i=0; i<filters.length; i++) {
+				var filter = filters[i].replace(/([-()\[\]{}+?*.$\^|,:#<!\\])/g, '\\$1').replace(/\x08/g, '\\x08');
+				rStr += "(" + filter + ").*";
+			}
+			var regex = new RegExp(rStr, "i");
+			var tasks = filteredTasks.filter(function (t) {
+				return t.toString().match(regex);
+			});
+			filteredTasks = tasks;
 		}
-		var regex = new RegExp(rStr, "i");
-		var tasks = filteredTasks.filter(function (t) {
-			return t.toString().match(regex);
-		});
-		filteredTasks = tasks;
-	}
-	
-	return filteredTasks;
-},
+		
+		return filteredTasks;
+	},
 
-/**
- * function will get a specified task from localstorage by id
- * @returns null if task not found
- */
-TodoTxt.getTask = function (taskId) {
-	var task, 
-		text = localStorage.getItem(taskId);
-	if (text) {
-		task = new TodoTxt.Task().parseFromString(text);
-		task.id = taskId;
-	}
-	return task;
-};
+	/**
+	 * function will get a specified task from localstorage by id
+	 * @param {string} taskId - the unique id of the task to be returned
+	 * @returns {TodoTxt.Task} a task or null if task not found
+	 */
+	getTask: function (taskId) {
+		var task,
+			text = localStorage.getItem(taskId);
+		if (text) {
+			task = new TodoTxt.Task(text);
+			task.id = taskId;
+		}
+		return task;
+	},
 
-/**
- * function adds this task to the browser's local cache allowing for
- * retained data on subsequent reloads of the page
- */
-TodoTxt.addTask = function (task) {
-	localStorage.setItem(task.id, task.toString());
-};
+	/**
+	 * function adds this task to the browser's local cache allowing for
+	 * retained data on subsequent reloads of the page
+	 * @param {TodoTxt.Task} task - a task to be added to localStorage
+	 */
+	addTask: function (task) {
+		localStorage.setItem(task.id, task.toString());
+		TodoTxt._updateAttributes(task);
+	},
 
-/**
- * function will process each line of the todo.txt, sort by priority,
- * creationDate, and state (active or closed).
- *
- * @param todoTxt the "\n" delimited lines from a todo.txt file
- * @param append a boolean indicating if existing tasks should be cleared
- * first or just appended to with the new file
- */
-TodoTxt.parseTodoTxtFile = function (todoTxt, append) {
-	if (!append) {
-		// confirm that the user really wants to wipe out the existing tasks load file
-		if (confirm(TodoTxt.Resources.get("OVERWRITE_CONFIRM"))) {
+	/**
+	 * function will process each line of the todo.txt, sort by priority,
+	 * creationDate, and state (active or closed).
+	 *
+	 * @param {string} todoTxt - the "\n" delimited lines from a todo.txt file
+	 * @param {boolean} append - a boolean indicating if existing tasks should be cleared
+	 * first or just appended to with the new file
+	 */
+	parseTodoTxtFile: function (todoTxt, append) {
+		if (!append) {
 			// clear the localStorage
 			localStorage.clear();
 		}
-	}
-	var lines = todoTxt.split("\n");
-	for (var i in lines) {
-		if (typeof lines[i] === "string") {
-			var line = lines[i];
-			// ignore empty lines
-			if (line && line !== "") {
-				// parse the individual line and return a Task
-				var task = new TodoTxt.Task().parseFromString(line);
-				
-				// add this taskObj to our global list in it's proper location
-				TodoTxt.addTask(task);
+		var lines = todoTxt.split("\n");
+		for (var i in lines) {
+			if (typeof lines[i] === "string") {
+				var line = lines[i];
+				// ignore empty lines
+				if (line && line !== "") {
+					// parse the individual line and return a Task
+					var task = new TodoTxt.Task(line);
+					
+					// add this taskObj to our global list in it's proper location
+					TodoTxt.addTask(task);
+				}
 			}
 		}
-	};
-};
+	},
 
-/**
- * function creates a new task
- */
-TodoTxt.createTask = function (textStr) {
-	var text = textStr || "";
-	TodoTxt.updateTask(TodoTxt.Utils.createId(), text);
-};
+	/**
+	 * function creates a new task and saves to localStorage
+	 * @param {string} textStr - a string representing a raw task
+	 */
+	createTask: function (textStr) {
+		var text = textStr || "";
+		var t = new TodoTxt.Task(textStr);
+		TodoTxt.updateTask(t.id, text);
+	},
 
-/**
- * function updates the task and saves it to the local storage cache
- */
-TodoTxt.updateTask = function (taskId, newText) {
-	// re-parse task
-	var task = new TodoTxt.Task().parseFromString(newText);
-	task.id = taskId;
+	/**
+	 * function updates the task and saves it to the local storage cache
+	 * @param {string} taskId - unique ID used to retrieve the task from localStorage
+	 * @param {string} newText - a string representing the updated, raw task text
+	 * @returns {boolean} true if task could be updated otherwise false
+	 */
+	updateTask: function (taskId, newText) {
+		// re-parse task
+		var task = new TodoTxt.Task(newText);
+		task.id = taskId;
 
-	// overwrite localstorage with updated task
-	TodoTxt.addTask(task);
-	
-	return true;
-};
-
-TodoTxt.updateFilters = function (task) {
-	// get the priority and add to global filter hashset
-	if (task.priority) {
-		TodoTxt.Attributes.priorities[task.priority] = true;
-	}
-	
-	// get each project and add to the global filter hashset
-	for (var j in task.projects) {
-		if (typeof task.projects[j] === "string") {
-			TodoTxt.Attributes.projects[task.projects[j]] = true;
-		}
-	}
-	
-	// get each context and add to the global filter hashset
-	for (var j in task.contexts) {
-		if (typeof task.contexts[j] === "string") {
-			TodoTxt.Attributes.contexts[task.contexts[j]] = true;
-		}
-	}
-};
-
-/**
- * function will remove an existing task following confirmation from user
- */
-TodoTxt.deleteTask = function (taskId) {
-	// first confirm that the user really intended to delete this task
-	if (confirm(TodoTxt.Resources.get("DELETE_CONFIRM") + "\n\t\"" + TodoTxt.getTask(taskId).toString() + "\"")) {
-		// delete the task from localStorage
-		localStorage.removeItem(taskId);
+		// overwrite localstorage with updated task
+		TodoTxt.addTask(task);
 		
 		return true;
-	}
-};
+	},
 
-/**
- * function will allow the user to download a copy of the todo.txt file
- */
-TodoTxt.exportTodoTxtFile = function () {
-	var taskArray = TodoTxt.getSortedTaskArray();
-	
-	// create the output string to be written
-	var content = "";
-	for (var i in taskArray) {
-		if (taskArray[i] instanceof TodoTxt.Task) {
-			var t = taskArray[i];
-			content += t.toString() + "\n";
-		}
-	}
-	
-	// set datatype to text/csv to initiate download prompt
-	var data = encodeURI("data:text/csv;charset=utf-8," + content);
-	
-	window.open(data);
-};
+	/**
+	 * function will remove an existing task from localStorage
+	 * @param {string} taskId - the id of the task to remove from localStorage
+	 * @returns {boolean} true if task could be deleted otherwise false
+	 */
+	deleteTask: function (taskId) {
+		localStorage.removeItem(taskId);
+		return true;
+	},
 
-/**
- * function will allow sorting of tasks by the following
- * criteria: (1) active vs. closed (2) priority (3) created date
- * (4) completed date
- */
-TodoTxt.compareTasks = function (taskA, taskB) {
-	var aActive = taskA.isActive;
-	var bActive = taskB.isActive;
-	var aPri = taskA.priority;
-	var bPri = taskB.priority;
-	var aCreated = taskA.createdDate;
-	var bCreated = taskB.createdDate;
-	var aCompleted = taskA.completedDate;
-	var bCompleted = taskB.completedDate;
-	
-	// (1) compare active vs. closed
-	if (aActive != bActive) {
-		// prioritize active over closed
-		if (aActive) {
-			return -1;
-		} else {
-			return 1;
+	/** @ignore */
+	_updateAttributes: function (task) {
+		// get the priority and add to global filter hashset
+		if (task.priority) {
+			TodoTxt.Attributes.priorities[task.priority] = true;
 		}
-	} else { // (2) compare priority
-		if (aPri != bPri) {
-			// order by priority, but favor having priority over not
-			if (bPri == null || aPri < bPri) {
+		
+		// get each project and add to the global filter hashset
+		for (var i in task.projects) {
+			if (typeof task.projects[i] === "string") {
+				TodoTxt.Attributes.projects[task.projects[i]] = true;
+			}
+		}
+		
+		// get each context and add to the global filter hashset
+		for (var j in task.contexts) {
+			if (typeof task.contexts[j] === "string") {
+				TodoTxt.Attributes.contexts[task.contexts[j]] = true;
+			}
+		}
+	},
+
+	/** @ignore */
+	_clearAttributes: function () {
+		TodoTxt.Attributes.priorities = {};
+		TodoTxt.Attributes.projects = {};
+		TodoTxt.Attributes.contexts = {};
+	},
+
+	/** @ignore */
+	_compareTasks: function (taskA, taskB) {
+		// function will allow sorting of tasks by the following
+		// criteria: (1) active vs. closed (2) priority (3) created date
+		// (4) completed date
+		var aActive = taskA.isActive;
+		var bActive = taskB.isActive;
+		var aPri = taskA.priority;
+		var bPri = taskB.priority;
+		var aCreated = taskA.createdDate;
+		var bCreated = taskB.createdDate;
+		var aCompleted = taskA.completedDate;
+		var bCompleted = taskB.completedDate;
+		
+		// (1) compare active vs. closed
+		if (aActive !== bActive) {
+			// prioritize active over closed
+			if (aActive) {
 				return -1;
-			} else if (aPri == null || aPri > bPri) {
+			} else {
 				return 1;
 			}
-		} else { // (3) compare created date
-			if (aCreated != bCreated) {
-				// order by created date ascending (oldest ones first)
-				if (aCreated < bCreated) {
+		} else { // (2) compare priority
+			if (aPri !== bPri) {
+				// order by priority, but favor having priority over not
+				if (!bPri || aPri < bPri) {
 					return -1;
-				} else {
+				} else if (!aPri || aPri > bPri) {
 					return 1;
 				}
-			} else { // (4) compare completed date
-				if (aCompleted != bCompleted) {
-					// order by completed date descending (latest ones first)
-					if (aCompleted > bCompleted) {
+			} else { // (3) compare created date
+				if (aCreated !== bCreated) {
+					// order by created date ascending (oldest ones first)
+					if (aCreated < bCreated) {
 						return -1;
 					} else {
 						return 1;
 					}
+				} else { // (4) compare completed date
+					if (aCompleted !== bCompleted) {
+						// order by completed date descending (latest ones first)
+						if (aCompleted > bCompleted) {
+							return -1;
+						} else {
+							return 1;
+						}
+					}
 				}
 			}
 		}
-	}
-	
-	// objects are equivalent
-	return 0;
+		
+		// objects are equivalent
+		return 0;
+	},
 };
