@@ -12,6 +12,10 @@ project are that it only use HTML, Javascript and CSS to accomplish all function
 compatible browser.  There must be no back-end server code, no local executables and no browser plugins
 utilized in supporting the functionality of this project.
 
+DEMO:
+------------
+[ResponsiveDemo](https://rawgit.com/bicarbon8/todoTxtWebUi/master/examples/mobile/index.html)
+
 FEATURES:
 ------------
 - Allows users to drag-and-drop in their todo.txt file (or select through a file dialog) for instant 
