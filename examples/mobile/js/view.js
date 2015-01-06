@@ -60,10 +60,13 @@ TodoTxt.View = {
 		var element = document.createElement("li");
 		element.id = TodoTxt.View.namespace + text;
 		element.className = "list-group-item";
-		element.onmouseover = function () {
+		element.onclick = function (e) {
+			TodoTxt.View.setFilters(text);
+		};
+		element.onmouseover = function (e) {
 			element.className += " active";
 		};
-		element.onmouseout = function () {
+		element.onmouseout = function (e) {
 			element.className = element.className.replace(/(( |^)active)/, "");
 		};
 		element.innerHTML = "<h4>" + text + "</h4>";
@@ -157,8 +160,8 @@ TodoTxt.View = {
 				<input type="text" id="modalEditTaskId-input" hidden value="' + task.id + '" /> \
 			</div> \
 			<div class="modal-footer"> \
-				<button type="button" id="modalEditDelete-button" class="btn btn-danger">Delete</button> \
-				<button type="button" id="modalEditSave-button" class="btn btn-primary">Save (Alt + Enter)</button> \
+				<button type="button" id="modalEditDelete-button" class="btn btn-lg btn-danger">Delete</button> \
+				<button type="button" id="modalEditSave-button" class="btn btn-lg btn-primary">Save (Alt + Enter)</button> \
 			</div> \
 		</div> \
 	</div> \
@@ -236,7 +239,6 @@ TodoTxt.View = {
 		{ el: function () { return document.querySelector("#fileDrop-div"); }, ev: "change", fn: function (e) { TodoTxt.View.handleDragOver(e); } },
 		{ el: function () { return document.querySelector("#fileDrop-div"); }, ev: "drop", fn: function (e) { TodoTxt.View.handleDrop(e); } },
 		{ el: function () { return document.querySelector("#fileUpload-input"); }, ev: "change", fn: function (e) { TodoTxt.View.handleDrop(e); } },
-		{ el: function () { return document.querySelector("#filter-input"); }, ev: "keyup", fn: function (e) { TodoTxt.View.handleFilter(e); } },
 	],
 
 	bindControlEvents: function (handlers) {
@@ -322,11 +324,12 @@ TodoTxt.View = {
 	},
 
 	filterTimoutId: null,
-	handleFilter: function (e) {
+	handleFilter: function () {
 		if (TodoTxt.View.filterTimoutId) {
 			window.clearTimeout(TodoTxt.View.filterTimoutId);
 		}
 		TodoTxt.View.filterTimoutId = setTimeout(function () {
+			// get the list of selected priorities from the filter
 			TodoTxt.View.filterDisplayedTasks();
 		}, 500);
 	},
@@ -372,6 +375,15 @@ TodoTxt.View = {
 
 		// enable keyboard shortcuts and click events for the controls area
 		TodoTxt.View.bindControlEvents(TodoTxt.View.mainEventHandlers);
+	},
+
+	setFilters: function (filterStr) {
+		if (filterStr) {
+			// set filter text input
+			var input = document.querySelector("#filter-input");
+			input.value = filterStr;
+			input.onkeyup();
+		}
 	},
 
 	clearFilters: function () {
@@ -455,15 +467,18 @@ TodoTxt.View = {
 	},
 
 	getShowPanelStatus: function (name) {
+		var show = true;
 		var showPanel = localStorage.getItem(TodoTxt.View.namespace + "show" + name);
 		if (showPanel) {
 			if (showPanel === "false") {
-				return false;
+				show = false;
 			}
 		} else {
 			localStorage.setItem(TodoTxt.View.namespace + "show" + name, true);
-			return true;
+			show = true;
 		}
+
+		return show;
 	},
 
 	/**
