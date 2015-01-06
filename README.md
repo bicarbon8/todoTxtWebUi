@@ -30,14 +30,5 @@ page reloads / refreshes.
 - Allows filtering of the displayed list of tasks by Priority, Project and Context
 - Supports both mouse clicks and keyboard shortcuts for command and control such as adding new tasks, 
 saving edits to tasks, deleting tasks currently being edited, and saving the task list to an external file
-- Provides a themable UI by way of a defaultTheme.css file describing the UI in CSS
 - Sorts the task list by Status (closed or active), Priority, Created Date, and then Completed Date with
 older items (those with an older created date) displaying higher than newer items
-
-KNOWN ISSUES:
-------------
-- Firefox does not currently support displaying the rounded corners on the top and bottom of the list
-- The "To Top" button at the bottom does not currently work
-- iOS does not support the current file upload controls in it's mobile devices (iPhone, iPad) for
-Safari, Chrome.
-- iOS Chrome Browser and Android Chrome and Firefox browsers exhibit delayed filtering of tasks (you must select the filter twice)
