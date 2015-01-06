@@ -46,9 +46,12 @@ QUnit.test("can add task to localStorage", function (assert) {
     actual = localStorage.getItem(task.id);
     assert.equal(actual, text, "expected that localStorage contained task text, but was: " + actual);
 });
-QUnit.test("can get task from localStorage", function (assert) {
-    var task = new TodoTxt.Task(text);
-    localStorage.setItem(task.id, text);
+QUnit.cases([
+    { txt: "sample task" + new Date().getTime() },
+    { txt: "" }
+]).test("can get task from localStorage", function (p, assert) {
+    var task = new TodoTxt.Task(p.txt);
+    localStorage.setItem(task.id, p.txt);
     var actual = TodoTxt.getTask(task.id);
     assert.deepEqual(actual, task, "expected task was not returned: " + actual);
 });

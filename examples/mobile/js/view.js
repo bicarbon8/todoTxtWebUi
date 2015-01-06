@@ -49,7 +49,7 @@ TodoTxt.View = {
 			element.className += " active";
 		};
 		element.onmouseout = function () {
-			element.className = element.className.replace(/( active)/, "");
+			element.className = element.className.replace(/(( |^)active)/, "");
 		};
 		element.innerHTML = "<h4>" + task.text + "</h4>";
 		
@@ -64,7 +64,7 @@ TodoTxt.View = {
 			element.className += " active";
 		};
 		element.onmouseout = function () {
-			element.className = element.className.replace(/( active)/, "");
+			element.className = element.className.replace(/(( |^)active)/, "");
 		};
 		element.innerHTML = "<h4>" + text + "</h4>";
 		
@@ -77,19 +77,19 @@ TodoTxt.View = {
 	getDisplayClassForTask: function (task) {
 		// get a list of the current tasks and iterate through
 		var cls = "";
-		if (task.priority !== null && !task.text.match(/^(x\s)/)) {
+		if (task.priority !== null && task.isActive) {
 			if (task.priority === "(A)") {
-				cls += " a";
+				cls += " text-danger";
 			}
 			if (task.priority === "(B)") {
-				cls += " b";
+				cls += " text-warning";
 			}
 			if (task.priority === "(C)") {
-				cls += " c";
+				cls += " text-primary";
 			}
 		}
 		if (!task.isActive) {
-			cls += " closed";
+			cls += " text-muted";
 		}
 		
 		return cls;
@@ -108,8 +108,7 @@ TodoTxt.View = {
 		// filter list by those matching selected filters
 		var filteredTasks = TodoTxt.getFilteredTaskArray(filterStr);
 
-		var showClosed = TodoTxt.View.getShowClosedStatus();
-		if (showClosed !== "true") {
+		if (!TodoTxt.View.getShowClosedStatus()) {
 			// filter out closed tasks
 			var tasks = filteredTasks.filter(function (t) {
 				return t.isActive;
@@ -122,8 +121,6 @@ TodoTxt.View = {
 			filteredTasks.forEach(function (t) {
 				TodoTxt.View.displayTask(t);
 			});
-		} else {
-			TodoTxt.View.showControls(document.querySelector("#mainContainerHeading-div"));
 		}
 	},
 
@@ -143,89 +140,54 @@ TodoTxt.View = {
 	displayModalForTask: function (taskId) {
 		// populate the modal textarea with this task string
 		var task = TodoTxt.getTask(taskId) || new TodoTxt.Task();
+
+		TodoTxt.View.unbindControlEvents(TodoTxt.View.mainEventHandlers);
+
+		/*jshint multistr: true */
+		var modal = ' \
+<div class="modal" id="modalEdit-div" tabindex="-1" role="dialog" aria-labelledby="modalEdit-label" aria-hidden="true"> \
+	<div class="modal-dialog"> \
+		<div class="modal-content"> \
+			<div class="modal-header"> \
+				<button type="button" id="modalEditClose-button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times;</span></button> \
+				<h4 class="modal-title" id="modalEdit-label"> Edit Task</h4> \
+			</div> \
+			<div class="modal-body"> \
+				<textarea id="modalEdit-textarea" class="form-control" rows="3">' + task.toString() + '</textarea> \
+				<input type="text" id="modalEditTaskId-input" hidden value="' + task.id + '" /> \
+			</div> \
+			<div class="modal-footer"> \
+				<button type="button" id="modalEditDelete-button" class="btn btn-danger">Delete</button> \
+				<button type="button" id="modalEditSave-button" class="btn btn-primary">Save (Alt + Enter)</button> \
+			</div> \
+		</div> \
+	</div> \
+</div>';
 		
-		var modalText = document.createElement("textarea");
-		modalText.id = "#modalEdit-textarea";
-		modalText.innerHTML = task.toString();
-		var updateButton = document.createElement("button");
-		updateButton.className = "btn btn-lg btn-primary";
-		updateButton.innerHTML = "Update Task (Alt + Enter)";
-		var cancelButton = document.createElement("button");
-		cancelButton.className = "btn btn-lg btn-primary";
-		cancelButton.innerHTML = "Cancel Edit (Esc)";
-		var deleteButton = document.createElement("button");
-		deleteButton.className = "btn btn-lg btn-primary";
-		deleteButton.innerHTML = "Delete Task";
-		var modalBody = document.createElement("div");
-		modalBody.className = "panel-body";
-		modalBody.appendChild(modalText);
-		modalBody.appendChild(updateButton);
-		modalBody.appendChild(cancelButton);
-		modalBody.appendChild(deleteButton);
-		var modalTitle = document.createElement("h3");
-		modalTitle.className = "panel-title";
-		modalTitle.innerHTML = "Edit Task";
-		var modalHeader = document.createElement("div");
-		modalHeader.className = "panel-heading";
-		modalHeader.appendChild(modalTitle);
-		var modalContainer = document.createElement("div");
-		modalContainer.className = "panel panel-primary";
-		modalContainer.appendChild(modalHeader);
-		modalContainer.appendChild(modalBody);
-		var modalBackground = document.createElement("div");
-		modalBackground.className = "modalBorder";
-		modalBackground.appendChild(modalContainer);
+		document.body.innerHTML += modal;
 
-		function update() {
-			if (TodoTxt.updateTask(task.id, modalText.value)) {
-				TodoTxt.View.refreshUi();
-				try {
-					document.body.removeChild(modalBackground);
-				} catch (e) {
-					// TODO: log this
-				}
-			} else {
-				// TODO: display error toast
-			}
-		}
+		$('#modalEdit-div').modal("show");
 
-		updateButton.onclick = update;
-		// enable submitting update via keyboard shortcut
-		document.addEventListener("keydown", function(e) {
-			if (e.keyCode == 13 && e.altKey) { // Alt + Enter
-	      		update();
-			}
-		}, false);
-		cancelButton.onclick = function () {
-			document.body.removeChild(modalBackground);
-		};
-		// enable cancelling update via keyboard shortcut
-		document.addEventListener("keydown", function(e) {
-			if (e.keyCode == 27) { // Esc
-	      		update();
-			}
-		}, false);
-		deleteButton.onclick = function () {
-			if (confirm(TodoTxt.View.Resources.get("DELETE_CONFIRM") + "\n\t\"" + TodoTxt.getTask(taskId).toString() + "\"")) {
-				if (TodoTxt.deleteTask(taskId)) {
-					TodoTxt.View.refreshUi();
-					try {
-						document.body.removeChild(modalBackground);
-					} catch (e) {
-						// TODO: log this
-					}
-				} else {
-					// TODO: display error toast
-				}
-			}
-		};
-
-		document.body.appendChild(modalBackground);
-		
-		// TODO: add additional details of the task to the div for display
+		TodoTxt.View.bindControlEvents(TodoTxt.View.modalEventHandlers);
 		
 		// place focus on the textarea
-		modalText.focus();
+		document.querySelector("#modalEdit-textarea").focus();
+	},
+
+	modalEventHandlers: [
+		{ el: function () { return document; }, ev: "keydown", fn: function (e) { TodoTxt.View.handleAltEnter(e); } },
+		{ el: function () { return document; }, ev: "keydown", fn: function (e) { TodoTxt.View.handleEsc(e); } },
+		{ el: function () { return document.querySelector('#modalEditSave-button'); }, ev: "click", fn: function (e) { TodoTxt.View.handleAltEnter(e); } },
+		{ el: function () { return document.querySelector('#modalEditClose-button'); }, ev: "click", fn: function (e) { TodoTxt.View.handleEsc(e); }, uc: true },
+		{ el: function () { return document.querySelector('#modalEditDelete-button'); }, ev: "click", fn: function (e) { TodoTxt.View.handleDeleteClick(e); } },
+	],
+
+	removeModal: function () {
+		$('#modalEdit-div').modal("hide");
+		TodoTxt.View.unbindControlEvents(TodoTxt.View.modalEventHandlers);
+		var modal = document.querySelector("#modalEdit-div");
+		document.body.removeChild(modal);
+		TodoTxt.View.bindControlEvents(TodoTxt.View.mainEventHandlers);
 	},
 
 	displayPriorities: function () {
@@ -267,20 +229,34 @@ TodoTxt.View = {
 		document.querySelector('#contexts-ul').innerHTML = "";
 	},
 
-	bindControlEvents: function () {
-		// enable saving the todo.txt content through keyboard shortcut
-		document.addEventListener("keydown", TodoTxt.View.handleAltS, false);
+	mainEventHandlers: [
+		{ el: function () { return document; }, ev: "keydown", fn: function (e) { TodoTxt.View.handleAltS(e); } },
+		{ el: function () { return document; }, ev: "keydown", fn: function (e) { TodoTxt.View.handleAltC(e); } },
+		{ el: function () { return document; }, ev: "keydown", fn: function (e) { TodoTxt.View.handleAltT(e); } },
+		{ el: function () { return document.querySelector("#fileDrop-div"); }, ev: "change", fn: function (e) { TodoTxt.View.handleDragOver(e); } },
+		{ el: function () { return document.querySelector("#fileDrop-div"); }, ev: "drop", fn: function (e) { TodoTxt.View.handleDrop(e); } },
+		{ el: function () { return document.querySelector("#fileUpload-input"); }, ev: "change", fn: function (e) { TodoTxt.View.handleDrop(e); } },
+		{ el: function () { return document.querySelector("#filter-input"); }, ev: "keyup", fn: function (e) { TodoTxt.View.handleFilter(e); } },
+	],
 
-		// enable clearing of filters through keyboard shortcut
-		document.addEventListener("keydown", TodoTxt.View.handleAltC, false);
-		
-		// enable adding new tasks through keyboard shortcut
-		document.addEventListener("keydown", TodoTxt.View.handleAltT, false);
-		
-		// enable drag-and-drop handling of file uploads
-		document.querySelector("#fileDrop-div").addEventListener("dragover", TodoTxt.View.handleDragOver, false);
-		document.querySelector("#fileDrop-div").addEventListener("drop", TodoTxt.View.handleDrop, false);
-		document.querySelector("#fileUpload-input").addEventListener("change", TodoTxt.View.handleDrop, false);
+	bindControlEvents: function (handlers) {
+		handlers.forEach(function (handler) {
+			var useCapture = false;
+			if (handler.uc) {
+				useCapture = handler.uc;
+			}
+			handler.el().addEventListener(handler.ev, handler.fn, useCapture);
+		});
+	},
+
+	unbindControlEvents: function (handlers) {
+		handlers.forEach(function (handler) {
+			var useCapture = false;
+			if (handler.uc) {
+				useCapture = handler.uc;
+			}
+			handler.el().removeEventListener(handler.ev, handler.fn, useCapture);
+		});
 	},
 
 	handleAltS: function(e) {
@@ -301,23 +277,58 @@ TodoTxt.View = {
 		}
 	},
 
-	handleDragOver: function (e) {
-		TodoTxt.View.handleDragOver(e);
-	},
-
 	handleDrop: function (e) {
 		TodoTxt.View.handleFileSelect(e);
 	},
 
-	unbindControlEvents: function () {
-		// disable adding new tasks through keyboard shortcut
-		document.removeEventListener("keydown", TodoTxt.View.handleAltS, false);
-		document.removeEventListener("keydown", TodoTxt.View.handleAltC, false);
-		document.removeEventListener("keydown", TodoTxt.View.handleAltT, false);
+	handleAltEnter: function (e) {
+		if ((e.keyCode === 13 && e.altKey) || e.keyCode === 0) { // Alt + Enter
+			var taskId = document.querySelector("#modalEditTaskId-input").value;
+			var text = document.querySelector("#modalEdit-textarea").value;
+			if (TodoTxt.updateTask(taskId, text)) {
+				TodoTxt.View.refreshUi();
+				try {
+					TodoTxt.View.removeModal();
+				} catch (e) {
+					// TODO: log this
+				}
+			} else {
+				// TODO: display error toast
+			}
+		}
+	},
 
-		document.querySelector("#fileDrop-div").removeEventListener("dragover", TodoTxt.View.handleDragOver, false);
-		document.querySelector("#fileDrop-div").removeEventListener("drop", TodoTxt.View.handleDrop, false);
-		document.querySelector("#fileUpload-input").removeEventListener("change", TodoTxt.View.handleDrop, false);
+	handleEsc: function (e) {
+		if (e.keyCode === 27 || e.keyCode === 0) { // Esc
+			TodoTxt.View.removeModal();
+			TodoTxt.View.refreshUi();
+		}
+	},
+
+	handleDeleteClick: function () {
+		var taskId = document.querySelector("#modalEditTaskId-input").value;
+		if (confirm(TodoTxt.View.Resources.get("DELETE_CONFIRM") + "\n\t\"" + TodoTxt.getTask(taskId).toString() + "\"")) {
+			if (TodoTxt.deleteTask(taskId)) {
+				TodoTxt.View.refreshUi();
+				try {
+					TodoTxt.View.removeModal();
+				} catch (e) {
+					// TODO: log this
+				}
+			} else {
+				// TODO: display error toast
+			}
+		}
+	},
+
+	filterTimoutId: null,
+	handleFilter: function (e) {
+		if (TodoTxt.View.filterTimoutId) {
+			window.clearTimeout(TodoTxt.View.filterTimoutId);
+		}
+		TodoTxt.View.filterTimoutId = setTimeout(function () {
+			TodoTxt.View.filterDisplayedTasks();
+		}, 500);
 	},
 
 	/**
@@ -325,14 +336,20 @@ TodoTxt.View = {
 	 * is sorted and displaying properly
 	 */
 	refreshUi: function () {
-		if (TodoTxt.View.getShowClosedStatus() === "true") {
+		if (TodoTxt.View.getShowClosedStatus()) {
 			TodoTxt.View.setShowClosedActive();
 		} else {
 			TodoTxt.View.setShowClosedInactive();
 		}
+		var heading = document.querySelector("#mainContainerHeading-div");
+		if (TodoTxt.View.getShowPanelStatus("Controls")) {
+			TodoTxt.View.showPanel(heading, "Controls");
+		} else {
+			TodoTxt.View.hidePanel(heading, "Controls");
+		}
 
 		// unbind any event handling
-		TodoTxt.View.unbindControlEvents();
+		TodoTxt.View.unbindControlEvents(TodoTxt.View.mainEventHandlers);
 
 		// clear the list
 		TodoTxt.View.clearTasks();
@@ -347,9 +364,6 @@ TodoTxt.View = {
 		
 		// now rebuild from localStorage
 		TodoTxt.View.displayTasks();
-	
-		// update the DOM with the new task details and filter changes
-		TodoTxt.View.updateFilters();
 
 		// update the DOM with task attributes
 		TodoTxt.View.displayPriorities();
@@ -357,16 +371,12 @@ TodoTxt.View = {
 		TodoTxt.View.displayContexts();
 
 		// enable keyboard shortcuts and click events for the controls area
-		TodoTxt.View.bindControlEvents();
+		TodoTxt.View.bindControlEvents(TodoTxt.View.mainEventHandlers);
 	},
 
 	clearFilters: function () {
 		// update filter input
 		document.querySelector("#filter-input").value = "";
-	},
-
-	updateFilters: function () {
-		
 	},
 
 	clearTasks: function () {
@@ -382,58 +392,78 @@ TodoTxt.View = {
 
 	toggleShowClosedStatus: function () {
 		var el = document.querySelector('#showClosed-label');
-		var active = el.className.match(/( active)/) ? true : false;
+		var active = el.className.match(/(( |^)btn-success)/) ? true : false;
 		// if active toggle to inactive
 		if (active) {
 			TodoTxt.View.setShowClosedInactive();
 		} else {
 			TodoTxt.View.setShowClosedActive();
 		}
-		localStorage.setItem("showClosed", !active);
 		TodoTxt.View.refreshUi();
 	},
 
 	setShowClosedActive: function () {
 		var el = document.querySelector('#showClosed-label');
-		el.className += " active";
+		el.className = el.className.replace(/(( |^)btn-danger)/, " btn-success");
 		var input = document.querySelector('#showClosed-input');
 		input.checked = true;
+		localStorage.setItem(TodoTxt.View.namespace + "showClosed", true);
 	},
 
 	setShowClosedInactive: function () {
 		var el = document.querySelector('#showClosed-label');
-		el.className = el.className.replace(/( active)/, "");
+		el.className = el.className.replace(/(( |^)btn-success)/, " btn-danger");
 		var input = document.querySelector('#showClosed-input');
 		input.checked = false;
+		localStorage.setItem(TodoTxt.View.namespace + "showClosed", false);
 	},
 
 	getShowClosedStatus: function () {
-		var showClosed = localStorage.getItem("showClosed");
-		return showClosed;
+		var showClosed = localStorage.getItem(TodoTxt.View.namespace + "showClosed");
+		if (showClosed) {
+			if (showClosed === "true") {
+				return true;
+			}
+		}
+		return false;
 	},
 
-	toggleControls: function (heading) {
+	togglePanel: function (heading, name) {
 		var el = heading.nextElementSibling;
-		var hidden = el.className.match(/( collapse)/) ? true : false;
+		var hidden = el.className.match(/(( |^)collapse)/) ? true : false;
 		if (hidden) {
-			TodoTxt.View.showControls(heading);
+			TodoTxt.View.showPanel(heading, name);
 		} else {
-			TodoTxt.View.hideControls(heading);
+			TodoTxt.View.hidePanel(heading, name);
 		}
 	},
 
-	showControls: function (heading) {
+	showPanel: function (heading, name) {
 		var indicator = heading.querySelector(".glyphicon");
 		var el = heading.nextElementSibling;
-		el.className = el.className.replace(/( collapse)/, "");
-		indicator.className = indicator.className.replace(/( glyphicon-plus)/, " glyphicon-minus");
+		el.className = el.className.replace(/(( |^)collapse)/g, "");
+		indicator.className = indicator.className.replace(/(( |^)glyphicon-plus)/, " glyphicon-minus");
+		localStorage.setItem(TodoTxt.View.namespace + "show" + name, true);
 	},
 
-	hideControls: function (heading) {
+	hidePanel: function (heading, name) {
 		var indicator = heading.querySelector(".glyphicon");
 		var el = heading.nextElementSibling;
 		el.className += " collapse";
-		indicator.className = indicator.className.replace(/( glyphicon-minus)/, " glyphicon-plus");
+		indicator.className = indicator.className.replace(/(( |^)glyphicon-minus)/, " glyphicon-plus");
+		localStorage.setItem(TodoTxt.View.namespace + "show" + name, false);
+	},
+
+	getShowPanelStatus: function (name) {
+		var showPanel = localStorage.getItem(TodoTxt.View.namespace + "show" + name);
+		if (showPanel) {
+			if (showPanel === "false") {
+				return false;
+			}
+		} else {
+			localStorage.setItem(TodoTxt.View.namespace + "show" + name, true);
+			return true;
+		}
 	},
 
 	/**

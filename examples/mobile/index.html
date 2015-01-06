@@ -60,8 +60,8 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 	<div class="container">
 		<div class="col-md-9">
 			<div id="mainContainer-div" class="panel panel-primary">
-				<div id="mainContainerHeading-div" class="panel-heading" onclick="TodoTxt.View.toggleControls(this);">
-					<h3 class="panel-title"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> TodoTxtWebUi <span class="">(click to toggle controls)</span></h3>
+				<div id="mainContainerHeading-div" class="panel-heading" onclick="TodoTxt.View.togglePanel(this, 'Controls');">
+					<h3 class="panel-title"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> TodoTxtWebUi (click to toggle controls)</h3>
 				</div>
 				<div class="panel-body collapse">
 					<div class="row">
@@ -80,9 +80,9 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 						</div>
 						<div class="col-md-9">
 							<div class="input-group input-group-lg">
-								<input id="filter-input" data-provide="typeahead" type="text" class="form-control" placeholder="Type or select filter" aria-describedby="basic-addon2" onchange="TodoTxt.View.filterDisplayedTasks();">
+								<input id="filter-input" type="text" class="form-control" placeholder="Type filter text">
 								<span class="input-group-btn">
-									<button class="btn btn-primary" onclick="TodoTxt.View.refreshUi();;" type="button">Clear (Alt + c)</button>
+									<button class="btn btn-primary" onclick="TodoTxt.View.refreshUi();" type="button">Clear (Alt + c)</button>
 								</span>
 							</div>
 						</div>
@@ -103,7 +103,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 		</div>
 		<div class="col-md-3">
 			<div id="priorities-div" class="panel panel-primary">
-				<div class="panel-heading" onclick="TodoTxt.View.toggleControls(this);">
+				<div class="panel-heading" onclick="TodoTxt.View.togglePanel(this, 'Priorities');">
 					<h3 class="panel-title"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> Priorities</h3>
 				</div>
 				<div class="panel-body">
@@ -111,7 +111,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 				</div>
 			</div>
 			<div id="projects-div" class="panel panel-primary">
-				<div class="panel-heading" onclick="TodoTxt.View.toggleControls(this);">
+				<div class="panel-heading" onclick="TodoTxt.View.togglePanel(this, 'Projects');">
 					<h3 class="panel-title"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> Projects</h3>
 				</div>
 				<div class="panel-body">
@@ -119,7 +119,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 				</div>
 			</div>
 			<div id="contexts-div" class="panel panel-primary">
-				<div class="panel-heading" onclick="TodoTxt.View.toggleControls(this);">
+				<div class="panel-heading" onclick="TodoTxt.View.togglePanel(this, 'Contexts');">
 					<h3 class="panel-title"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> Contexts</h3>
 				</div>
 				<div class="panel-body">

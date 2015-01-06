@@ -26,7 +26,7 @@
  */
 /* Customize Bootstrap */
 @media (max-width: 800px) {
-    body, .container, .panel-body, .row, [class*="col-md-"] {
+    body, .container, .panel-body, .row, .modal-dialog, [class*="col-md-"] {
         padding: 0;
         margin: 0;
     }
@@ -85,7 +85,7 @@
 	text-overflow: ellipsis;
 }
 
-button {
+.container button {
 	width: 100%;
 }
 

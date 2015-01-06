@@ -85,6 +85,11 @@ TodoTxt.Task = function (taskString) {
 	 * @defaultvalue []
 	 */
 	this.contexts = [];
+	/**
+	 * additional metadata in the form of <b><i>key:value</b></i>
+	 * @type {array}
+	 * @defaultvalue []
+	 */
 	this.metadatas = [];
 	/**
 	 * flag to indicate task status
@@ -216,7 +221,7 @@ TodoTxt.Task.prototype._parseProjectsFromString = function (str) {
 	if (str) {
 		// parse out the projects RegEx: /\+[0-9A-Za-z]+\s/ (words starting with "+")
 		// check for strings like "+ABC123"
-		var projPattern = /( \+[0-9A-Za-z]+)/g;
+		var projPattern = /(( |^)\+[0-9A-Za-z]+)/g;
 		var match = str.match(projPattern); // returns null if not found
 		if (match) {
 			// found an active match so get the projects as an array of projects
@@ -235,7 +240,7 @@ TodoTxt.Task.prototype._parseContextsFromString = function (str) {
 	if (str) {
 		// parse out the contexts RegEx: /\@[0-9A-Za-z]+\s/ (words starting with "+")
 		// check for strings like "@ABC123"
-		var ctxPattern = /( \@[0-9A-Za-z]+)/g;
+		var ctxPattern = /(( |^)\@[0-9A-Za-z]+)/g;
 		var match = str.match(ctxPattern); // returns null if not found
 		if (match) {
 			// found an active match so get the contexts as an array of contexts

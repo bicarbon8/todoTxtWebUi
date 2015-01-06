@@ -57,15 +57,16 @@ var TodoTxt = {
 	getSortedTaskArray: function () {
 		// sort the list and then add it
 		var taskArray = [];
-		var taskNamespace = new TodoTxt.Task().namespace;
+		var taskMatcher = new RegExp("^(" + new TodoTxt.Task().namespace + ")");
 		TodoTxt._clearAttributes();
 		for (var key in localStorage) {
-			var regex = new RegExp("^(" + taskNamespace + ")");
-			if (key.match(regex)) {
+			if (key.match(taskMatcher)) {
 				var t = TodoTxt.getTask(key);
-				t.id = key;
-				taskArray.push(t);
-				TodoTxt._updateAttributes(t);
+				if (t) {
+					t.id = key;
+					taskArray.push(t);
+					TodoTxt._updateAttributes(t);
+				}
 			}
 		}
 		taskArray.sort(TodoTxt._compareTasks);
@@ -109,7 +110,7 @@ var TodoTxt = {
 	getTask: function (taskId) {
 		var task,
 			text = localStorage.getItem(taskId);
-		if (text) {
+		if (text !== null && text !== undefined) {
 			task = new TodoTxt.Task(text);
 			task.id = taskId;
 		}
@@ -137,7 +138,7 @@ var TodoTxt = {
 	parseTodoTxtFile: function (todoTxt, append) {
 		if (!append) {
 			// clear the localStorage
-			localStorage.clear();
+			TodoTxt.deleteAllTasks();
 		}
 		var lines = todoTxt.split("\n");
 		for (var i in lines) {
@@ -190,6 +191,18 @@ var TodoTxt = {
 	deleteTask: function (taskId) {
 		localStorage.removeItem(taskId);
 		return true;
+	},
+
+	/**
+	 * function will remove all existing tasks from localStorage
+	 */
+	deleteAllTasks: function () {
+		var taskMatcher = new RegExp("^(" + new TodoTxt.Task().namespace + ")");
+		for (var key in localStorage) {
+			if (key.match(taskMatcher)) {
+				TodoTxt.deleteTask(key);
+			}
+		}
 	},
 
 	/** @ignore */
