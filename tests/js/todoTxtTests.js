@@ -86,7 +86,7 @@ QUnit.test("can update an existing task in localStorage", function (assert) {
     }
     assert.ok(found, "did not find newly created task.");
     text = "new text";
-    TodoTxt.updateTask(found, "new text");
+    TodoTxt.updateTask(found, text);
     found = null;
     for (var j in localStorage) {
         if (localStorage.getItem(j) === text) {
@@ -95,6 +95,21 @@ QUnit.test("can update an existing task in localStorage", function (assert) {
         }
     }
     assert.ok(found, "did not find updated task.");
+});
+QUnit.test("can close an existing task in localStorage", function (assert) {
+    TodoTxt.createTask(text);
+    var found = null;
+    for (var i in localStorage) {
+        if (localStorage.getItem(i) === text) {
+            found = i;
+            break;
+        }
+    }
+    assert.ok(found, "did not find newly created task.");
+    TodoTxt.closeTask(found);
+    var t = TodoTxt.getTask(found);
+    assert.ok(!t.isActive, "task was not closed, but should have been");
+    assert.ok(t.toString().match(/^(x )[0-9]{4}(-)[0-9]{2}(-)[0-9]{2}( )/, "closed task did not match expected format"));
 });
 QUnit.cases([
     { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "x", expectFound: true },

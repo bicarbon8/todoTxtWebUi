@@ -5,7 +5,6 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     files: {
       base: [
-      "js/polyfills.js",
       "js/todoTxt.js",
       "js/objects/utils.js",
       "js/classes/task.js",

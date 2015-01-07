@@ -43,9 +43,11 @@ TodoTxt.Utils = {
 	 */
 	formatDate: function (dateObj) {
 		var yyyy = dateObj.getFullYear();
-		var mm = dateObj.getMonth()+1; // getMonth() is zero-based
-		var dd  = dateObj.getDate();
-		return String(10000*yyyy + 100*mm + dd); // Leading zeros for mm and dd
+		var mm = (dateObj.getMonth()+1).toString(); // getMonth() is zero-based
+        mm = mm.length < 2 ? "0" + mm : mm;
+		var dd  = (dateObj.getDate()).toString();
+        dd = dd.length < 2 ? "0" + dd : dd;
+		return String(yyyy + "-" + mm + "-" + dd); // Leading zeros for mm and dd
 	},
 
 	/**
