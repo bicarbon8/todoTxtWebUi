@@ -62,26 +62,28 @@
     display: block;
 }
 .list-group {
-	margin-bottom: 0px;
+	margin-bottom: 0;
 }
 
 /** Task Styles **/
-.list-group-item h4, h3.panel-title {
-	white-space: nowrap;
-  	width: 100%;
-	overflow: hidden;
-	text-overflow: ellipsis;
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.btn-group button {
+    text-align: left;
+}
+#listContainer-div {
+    margin-bottom: 20px;
 }
 
-.container button {
-	width: 100%;
+.panel-body button {
+    width: 100%;
 }
 
 textarea {
 	width: 100%;
 	height: 50%;
-	margin-left:auto;
-	margin-right:auto;
-	margin-top:auto;
-	margin-bottom:auto;
+	margin: auto;
 }

@@ -57,7 +57,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 </script>
 </head>
 <body onload="TodoTxt.View.refreshUi();">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="col-md-9">
 			<div id="mainContainer-div" class="panel panel-primary">
 				<div id="mainContainerHeading-div" class="panel-heading" onclick="TodoTxt.View.togglePanel(this, 'Controls');">
@@ -98,7 +98,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 				</div>
 			</div>
 			<div class="row">
-				<ul id="listContainer-ul" class="list-group"></ul>
+				<div id="listContainer-div"></div>
 			</div>				
 		</div>
 		<div class="col-md-3">
