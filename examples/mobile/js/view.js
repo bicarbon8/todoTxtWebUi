@@ -97,9 +97,6 @@ TodoTxt.View = {
                 cls += " text-primary";
             }
         }
-        if (!task.isActive) {
-            cls += " text-muted";
-        }
         
         return cls;
     },
@@ -242,7 +239,7 @@ TodoTxt.View = {
         { el: function () { return document; }, ev: "keydown", fn: function (e) { TodoTxt.View.handleAltS(e); } },
         { el: function () { return document; }, ev: "keydown", fn: function (e) { TodoTxt.View.handleAltC(e); } },
         { el: function () { return document; }, ev: "keydown", fn: function (e) { TodoTxt.View.handleAltT(e); } },
-        { el: function () { return document.querySelector("#fileDrop-div"); }, ev: "change", fn: function (e) { TodoTxt.View.handleDragOver(e); } },
+        { el: function () { return document.querySelector("#fileDrop-div"); }, ev: "dragover", fn: function (e) { TodoTxt.View.handleDragOver(e); } },
         { el: function () { return document.querySelector("#fileDrop-div"); }, ev: "drop", fn: function (e) { TodoTxt.View.handleDrop(e); } },
         { el: function () { return document.querySelector("#fileUpload-input"); }, ev: "change", fn: function (e) { TodoTxt.View.handleDrop(e); } },
     ],
