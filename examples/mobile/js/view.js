@@ -39,20 +39,26 @@ TodoTxt.View = {
      * function generates the DOM element for the passed in task
      */
     generateTaskElement: function (task) {
-        var element = document.createElement("li");
+        var icon = "glyphicon-ok";
+        var status = "btn-default";
+        var text = '<span class="' + TodoTxt.View.getDisplayClassForTask(task) + '">' + task.toString() + '</span>';
+        if (!task.isActive) {
+            icon = "glyphicon-remove";
+            status = "btn-danger";
+        }
+
+        var element = document.createElement("div");
+        element.className = "btn-group btn-block";
         element.id = task.id;
-        element.className = "list-group-item" + TodoTxt.View.getDisplayClassForTask(task);
-        element.onclick = function () {
-            TodoTxt.View.displayModalForTask(task.id);
-        };
-        element.onmouseover = function () {
-            element.className += " active";
-        };
-        element.onmouseout = function () {
-            element.className = element.className.replace(/(( |^)active)/, "");
-        };
-        element.innerHTML = '<h4><input id="closeTask-input" onclick="TodoTxt.closeTask(' + task.id + ')" type="checkbox"> ' + task.text + '</h4>';
-        
+
+        /*jshint multistr: true */
+        var elementTxt = ' \
+<span class="col-xs-2 btn btn-lg ' + status + '" onclick="TodoTxt.View.toggleTaskStatus(\'' + task.id + '\');"> \
+    <span class="glyphicon ' + icon + '"></span> \
+</span> \
+<button class="col-xs-10 ellipsis btn btn-lg ' + status + '" onclick="TodoTxt.View.displayModalForTask(\'' + task.id + '\');">' + text + '</button>';
+
+		element.innerHTML = elementTxt;
         return element;
     },
 
@@ -69,7 +75,7 @@ TodoTxt.View = {
         element.onmouseout = function (e) {
             element.className = element.className.replace(/(( |^)active)/, "");
         };
-        element.innerHTML = "<h4>" + text + "</h4>";
+        element.innerHTML = '<h4 class="ellipsis">' + text + '</h4>';
         
         return element;
     },
@@ -129,12 +135,12 @@ TodoTxt.View = {
 
     displayTask: function (task) {
         // add task to DOM
-        document.querySelector("#listContainer-ul").appendChild(TodoTxt.View.generateTaskElement(task));
+        document.querySelector("#listContainer-div").appendChild(TodoTxt.View.generateTaskElement(task));
     },
 
     removeTask: function (taskId) {
         // delete the task from the DOM
-        document.querySelector("#listContainer-ul").removeChild(document.querySelector("#" + taskId));
+        document.querySelector("#listContainer-div").removeChild(document.querySelector("#" + taskId));
     },
 
     /**
@@ -392,7 +398,7 @@ TodoTxt.View = {
     },
 
     clearTasks: function () {
-        document.querySelector("#listContainer-ul").innerHTML = "";
+        document.querySelector("#listContainer-div").innerHTML = "";
     },
 
     filterDisplayedTasks: function () {
@@ -479,6 +485,18 @@ TodoTxt.View = {
         }
 
         return show;
+    },
+
+    toggleTaskStatus: function (taskId) {
+        var task = TodoTxt.getTask(taskId);
+        if (task) {
+            if (task.isActive) {
+                TodoTxt.closeTask(taskId);
+            } else {
+                TodoTxt.activateTask(taskId);
+            }
+            TodoTxt.View.refreshUi();
+        }
     },
 
     /**

@@ -187,6 +187,7 @@ var TodoTxt = {
      * function will append an "x YYYY-MM-DD " to a stored
      * task if not already closed
      * @param {string} taskId - unique ID used to retrieve the task from localStorage
+     * @returns {boolean} true if task could be closed, otherwise false
      */
     closeTask: function (taskId) {
         var task = TodoTxt.getTask(taskId);
@@ -197,7 +198,28 @@ var TodoTxt = {
             }
             text = "x " + TodoTxt.Utils.formatDate(new Date()) + " " + text;
             TodoTxt.updateTask(task.id, text);
+            return true;
         }
+        
+        return false;
+    },
+
+    /**
+     * function will remove "x YYYY-MM-DD " from a stored
+     * task if not already active
+     * @param {string} taskId - unique ID used to retrieve the task from localStorage
+     * @returns {boolean} true if task could be activated, otherwise false
+     */
+    activateTask: function (taskId) {
+        var task = TodoTxt.getTask(taskId);
+        if (task && !task.isActive) {
+            var text = task.toString();
+            text = text.replace(/^(x )/, "").replace(task.completedDate + " ", "");
+            TodoTxt.updateTask(task.id, text);
+            return true;
+        }
+        
+        return false;
     },
 
     /**

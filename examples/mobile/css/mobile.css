@@ -66,15 +66,13 @@
 }
 
 /** Task Styles **/
-.list-group-item h4, h3.panel-title {
-	white-space: nowrap;
-  	width: 100%;
-	overflow: hidden;
-	text-overflow: ellipsis;
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
-.container button {
-	width: 100%;
+.btn-group button {
+    text-align: left;
 }
 
 textarea {
