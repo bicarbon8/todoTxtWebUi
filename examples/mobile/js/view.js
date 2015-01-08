@@ -58,7 +58,7 @@ TodoTxt.View = {
 </span> \
 <button class="col-xs-10 ellipsis btn btn-lg ' + status + '" onclick="TodoTxt.View.displayModalForTask(\'' + task.id + '\');">' + text + '</button>';
 
-		element.innerHTML = elementTxt;
+        element.innerHTML = elementTxt;
         return element;
     },
 
@@ -200,8 +200,11 @@ TodoTxt.View = {
         var priList = document.querySelector('#priorities-ul');
         for (var i in TodoTxt.Attributes.priorities) {
             var attr = i;
-            var element = TodoTxt.View.generateListElement(attr);
-            priList.appendChild(element);
+            // only display active
+            if (TodoTxt.Attributes.priorities[i] || TodoTxt.View.getShowClosedStatus()) {
+                var element = TodoTxt.View.generateListElement(attr);
+                priList.appendChild(element);
+            }
         }
     },
 
@@ -213,8 +216,11 @@ TodoTxt.View = {
         var projList = document.querySelector('#projects-ul');
         for (var i in TodoTxt.Attributes.projects) {
             var attr = i;
-            var element = TodoTxt.View.generateListElement(attr);
-            projList.appendChild(element);
+            // only display active
+            if (TodoTxt.Attributes.projects[i] || TodoTxt.View.getShowClosedStatus()) {
+                var element = TodoTxt.View.generateListElement(attr);
+                projList.appendChild(element);
+            }
         }
     },
 
@@ -226,8 +232,11 @@ TodoTxt.View = {
         var ctxList = document.querySelector('#contexts-ul');
         for (var i in TodoTxt.Attributes.contexts) {
             var attr = i;
-            var element = TodoTxt.View.generateListElement(attr);
-            ctxList.appendChild(element);
+            // only display active
+            if (TodoTxt.Attributes.contexts[i] || TodoTxt.View.getShowClosedStatus()) {
+                var element = TodoTxt.View.generateListElement(attr);
+                ctxList.appendChild(element);
+            }
         }
     },
 

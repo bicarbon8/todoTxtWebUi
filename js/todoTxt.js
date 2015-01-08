@@ -248,20 +248,20 @@ var TodoTxt = {
     _updateAttributes: function (task) {
         // get the priority and add to global filter hashset
         if (task.priority) {
-            TodoTxt.Attributes.priorities[task.priority] = true;
+            TodoTxt.Attributes.priorities[task.priority] = task.isActive;
         }
 
         // get each project and add to the global filter hashset
         for (var i in task.projects) {
             if (typeof task.projects[i] === "string") {
-                TodoTxt.Attributes.projects[task.projects[i]] = true;
+                TodoTxt.Attributes.projects[task.projects[i]] = task.isActive;
             }
         }
 
         // get each context and add to the global filter hashset
         for (var j in task.contexts) {
             if (typeof task.contexts[j] === "string") {
-                TodoTxt.Attributes.contexts[task.contexts[j]] = true;
+                TodoTxt.Attributes.contexts[task.contexts[j]] = task.isActive;
             }
         }
     },
