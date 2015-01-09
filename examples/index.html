@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!-- 
+ - todoTxtWebUi
+ - 
+ - This HTML5 web page was created according to the specifications at
+ - http://todotxt.com/ and is intended to allow users to access their
+ - todo.txt files in a user-friendly and easy to visualize manner.
+ -
+ - Once initially uploaded, the todo.txt file will
+ - be loaded into an HTML5 localStorage and managed from there.
+ - The web page then allows downloading changes back to the user
+ - in a txt format compliant with the todo.txt specifications, but
+ - having re-sorted the tasks.
+ - 
+ - @Created: 08/14/2012
+ - @Author: Jason Holt Smith (bicarbon8@gmail.com)
+ - @Version: 0.0.1
+ - Copyright (c) 2012 Jason Holt Smith. todoTxtWebUi is distributed under
+ - the terms of the GNU General Public License.
+ - 
+ - This file is part of todoTxtWebUi.
+ - 
+ - todoTxtWebUi is free software: you can redistribute it and/or modify
+ - it under the terms of the GNU General Public License as published by
+ - the Free Software Foundation, either version 3 of the License, or
+ - (at your option) any later version.
+ - 
+ - todoTxtWebUi is distributed in the hope that it will be useful,
+ - but WITHOUT ANY WARRANTY; without even the implied warranty of
+ - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ - GNU General Public License for more details.
+ - 
+ - You should have received a copy of the GNU General Public License
+ - along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+<html>
+<head>
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="css/examples.css">
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-35011839-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div role="tabpanel">
+            <ul class="nav nav-tabs nav-justified" id="myTabs">
+                <li class="active"><a href="#mobile" data-toggle="tab">Mobile-Friendly</a></li>
+                <li><a href="#plugin" data-toggle="tab">Plugin-Friendly</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" data-src="mobile/index.html" id="mobile">
+                    <iframe src="mobile/index.html" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="plugin" data-src="plugin/index.html">
+                    <iframe src="" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="js/examples.js"></script>
+</body>
+</html>

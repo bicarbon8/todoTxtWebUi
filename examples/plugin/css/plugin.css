@@ -1,0 +1,9 @@
+/** Task Styles **/
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.btn-group button {
+    text-align: left;
+}
