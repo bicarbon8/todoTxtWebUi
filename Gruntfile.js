@@ -4,13 +4,20 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     files: {
-      base: [
-      "js/todoTxt.js",
-      "js/objects/utils.js",
-      "js/classes/task.js",
-    ],
-    tests: "tests/allTests.html"
-  },
+      js: [
+        "js/todoTxt.js",
+        "js/objects/utils.js",
+        "js/classes/task.js",
+        "js/objects/view.js",
+        "js/objects/resources.js",
+        "js/objects/resources/en-us.js",
+        "js/wrapper.js",
+      ],
+      css: [
+        "css/todoTxt.css",
+      ],
+      tests: "tests/allTests.html"
+    },
     clean: {
       build: {
         src: ['dist/**/*'],
@@ -25,19 +32,26 @@ module.exports = function(grunt) {
       },
       build: {
         options: {
-          banner: '/*! <%= pkg.name %> v<%= pkg.version %>, created by: <%= pkg.author %> <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %> */\n'
+          banner: '/*! <%= pkg.name %> v<%= pkg.version %>, created by: <%= pkg.author %> <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %> */'
         },
         files: {
-          'dist/<%= pkg.main %>.min.js': ['<%= files.base %>']
+          'dist/<%= pkg.main %>.min.js': ['<%= files.js %>']
         }
-      }
+      },
+    },
+    cssmin: {
+      build: {
+        files: {
+          'dist/<%= pkg.main %>.min.css': ['<%= files.css %>']
+        }
+      },
     },
     qunit: {
       all: ['<%= files.tests %>']
     },
     jsdoc: {
       dist: {
-        src: ['<%= files.base %>'],
+        src: ['<%= files.js %>'],
         dest: 'dist/doc'
       }
     }
@@ -45,6 +59,9 @@ module.exports = function(grunt) {
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
+
+  // Load the plugin that provides the "cssmin" task.
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
 
   // Load the plugin that provides the "clean" task.
   grunt.loadNpmTasks('grunt-contrib-clean');
@@ -56,10 +73,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jsdoc');
 
   // Default task(s).
-  grunt.registerTask('default', ['clean','qunit','uglify','jsdoc']);
+  grunt.registerTask('default', ['clean','qunit','uglify','cssmin','jsdoc']);
 
   // Build only task(s).
-  grunt.registerTask('build', ['clean','uglify']);
+  grunt.registerTask('build', ['clean','uglify','cssmin']);
 
   // test only task(s).
   grunt.registerTask('test', ['qunit']);
