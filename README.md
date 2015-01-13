@@ -47,3 +47,21 @@ KEYBOARD SHORTCUTS:
 - ```Alt-p``` preview changes to an open task
 - ```Alt-s``` export tasks
 - ```Alt-c``` clear any filters
+
+INCLUDING IN OTHER WEBSITES:
+------------
+- download the latest minified script from [github](https://rawgit.com/bicarbon8/todoTxtWebUi/master/dist/todoTxt.min.js)
+- ensure you have the following css and javascript references in your html file:
+```
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css" />
+<link rel="stylesheet" type="text/css" href="dist/todoTxt.min.css" />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="dist/todoTxt.min.js"></script>
+```
+- place a ```div``` element in your html body with an id of ```todotxt```. Ex: 
+```
+<div id="todotxt"></div>
+```
+- open the webpage and the magic happens automatically :)
