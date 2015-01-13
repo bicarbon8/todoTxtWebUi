@@ -31,16 +31,15 @@
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
 var TodoTxt = TodoTxt || {};
-TodoTxt.View = TodoTxt.View || {};
-TodoTxt.View.Resources = {
+TodoTxt.Resources = {
 	recs: {},
 	register: function(langLocale, resourceObj) {
-		TodoTxt.View.Resources.recs[langLocale] = resourceObj;
+		TodoTxt.Resources.recs[langLocale] = resourceObj;
 	},
 	get: function(key) {
-		var rec = TodoTxt.View.Resources.recs[TodoTxt.Utils.getLanguage()];
+		var rec = TodoTxt.Resources.recs[TodoTxt.Utils.getLanguage()];
 		if (!rec) {
-			rec = TodoTxt.View.Resources.recs["en-us"]; // fallback to en-US
+			rec = TodoTxt.Resources.recs["en-us"]; // fallback to en-US
 		}
 		var val = rec[key];
 		if (!val) {
