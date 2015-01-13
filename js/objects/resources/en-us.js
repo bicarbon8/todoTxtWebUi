@@ -30,8 +30,21 @@
  * You should have received a copy of the GNU General Public License
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
-TodoTxt.View.Resources.register("en-us", {
-	NAMESPACE: "TodoTxt-",
+TodoTxt.Resources.register("en-us", {
 	OVERWRITE_CONFIRM: "This will overwrite any existing list.  Are you sure you wish to proceed?",
 	DELETE_CONFIRM: "Are you sure you want to delete task?",
+    IMPORT: "Import",
+    ADD_TASK: "Add Task",
+    EXPORT: "Export",
+    SHOW_CLOSED: "Show Closed",
+    FILTER_PLACEHOLDER_TEXT: "Type filter(s)",
+    CLEAR_FILTER: "Clear Filter",
+    PRIORITIES: "Priorities",
+    PROJECTS: "Projects",
+    CONTEXTS: "Contexts",
+    CLOSE: "Close",
+    EDIT_TASK_HEADER: "Edit Task",
+    UPDATE: "Update",
+    PREVIEW: "Preview",
+    DELETE: "Delete",
 });

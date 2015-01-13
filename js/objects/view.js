@@ -41,7 +41,7 @@ TodoTxt.View = {
     generateTaskElement: function (task) {
         var icon = "glyphicon-ok";
         var status = "btn-default";
-        var text = TodoTxt.View.taskToMarkupString(task); // '<span class="' + TodoTxt.View.getDisplayClassForTask(task) + '">' + task.toString() + '</span>';
+        var text = TodoTxt.View.taskToMarkupString(task);
         if (!task.isActive) {
             icon = "glyphicon-remove";
             status = "btn-danger";
@@ -134,18 +134,18 @@ TodoTxt.View = {
     <div class="modal-dialog"> \
         <div class="modal-content"> \
             <div class="modal-header"> \
-                <button type="button" id="modalEditClose-button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"> &times;</span></button> \
-                <h4 class="modal-title" id="modalEdit-label"> Edit Task</h4> \
+                <button type="button" id="modalEditClose-button" class="close" data-dismiss="modal" aria-label="' + TodoTxt.Resources.get("CLOSE") + '"><span aria-hidden="true"> &times;</span></button> \
+                <h4 class="modal-title" id="modalEdit-label"> ' + TodoTxt.Resources.get("EDIT_TASK_HEADER") + '</h4> \
             </div> \
             <div class="modal-body"> \
-                <div id="modalEdit-textarea" class="textarea" contenteditable>' + TodoTxt.View.taskToMarkupString(task) + '</div> \
+                <div id="modalEdit-textarea" class="textarea" contenteditable>' + TodoTxt.View.taskToMarkupString(task).replace(/hidden-xs/,"") + '</div> \
                 <input type="text" id="modalEditTaskId-input" hidden value="' + task.id + '" /> \
             </div> \
             <div class="modal-footer"> \
                 <div class="btn-group btn-group-justified"> \
-                    <a type="button" id="modalEditSave-button" class="btn btn-lg btn-success"><span class="glyphicon glyphicon-ok"></span> <span class="hidden-xs">Update</span></a> \
-                    <a type="button" id="modalEditPreview-button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs">Preview</span</a> \
-                    <a type="button" id="modalEditDelete-button" class="btn btn-lg btn-danger"><span class="glyphicon glyphicon-floppy-remove"></span> <span class="hidden-xs">Delete</span></a> \
+                    <a type="button" id="modalEditSave-button" class="btn btn-lg btn-success" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("UPDATE") + '"><span class="glyphicon glyphicon-ok"></span> <span class="hidden-xs">' + TodoTxt.Resources.get("UPDATE") + '</span></a> \
+                    <a type="button" id="modalEditPreview-button" class="btn btn-lg btn-primary" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("PREVIEW") + '"><span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs">' + TodoTxt.Resources.get("PREVIEW") + '</span</a> \
+                    <a type="button" id="modalEditDelete-button" class="btn btn-lg btn-danger" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("DELETE") + '"><span class="glyphicon glyphicon-floppy-remove"></span> <span class="hidden-xs">' + TodoTxt.Resources.get("DELETE") + '</span></a> \
                 </div> \
             </div> \
         </div> \
@@ -322,7 +322,7 @@ TodoTxt.View = {
 
     handleDeleteClick: function () {
         var taskId = document.querySelector("#modalEditTaskId-input").value;
-        if (confirm(TodoTxt.View.Resources.get("DELETE_CONFIRM") + "\n\t\"" + TodoTxt.getTask(taskId).toString() + "\"")) {
+        if (confirm(TodoTxt.Resources.get("DELETE_CONFIRM") + "\n\t\"" + TodoTxt.getTask(taskId).toString() + "\"")) {
             if (TodoTxt.deleteTask(taskId)) {
                 TodoTxt.View.refreshUi();
                 try {
@@ -528,7 +528,7 @@ TodoTxt.View = {
 
             // get the content as a String
             reader.onloadend = function (e) {
-                if (confirm(TodoTxt.View.Resources.get("OVERWRITE_CONFIRM"))) {
+                if (confirm(TodoTxt.Resources.get("OVERWRITE_CONFIRM"))) {
                     TodoTxt.parseTodoTxtFile(e.target.result);
                     TodoTxt.View.refreshUi();
                 }
@@ -566,8 +566,8 @@ TodoTxt.View = {
     taskToMarkupString: function (task) {
         var text = task.toString();
         // markup priority
-        var cls = TodoTxt.View.getDisplayClassForTask(task);
-        text = text.replace(task.priority, "<span class=\"" + cls + "\"><b>" + task.priority + "</b></span>");
+        var priCls = TodoTxt.View.getDisplayClassForTask(task);
+        text = text.replace(task.priority, "<span class=\"" + priCls + "\"><b>" + task.priority + "</b></span>");
 
         // markup projects
         var projects = task.projects;
@@ -581,6 +581,12 @@ TodoTxt.View = {
         for (var j=0; j<contexts.length; j++) {
             var context = contexts[j];
             text = text.replace(context, "<span class=\"text-muted\"><b><i>" + context + "</i></b></span>");
+        }
+
+        // markup created date
+        var date = task.createdDate;
+        if (date) {
+            text = text.replace(date, "<span class=\"text-muted hidden-xs\"><b><i>" + date + "</i></b></span>");
         }
 
         return text;
@@ -615,21 +621,25 @@ TodoTxt.View = {
     <div class="col-md-9"> \
         <div class="row"> \
             <div class="btn-group btn-group-justified"> \
-                <a class="btn btn-block btn-primary btn-lg btn-file ellipsis"> \
-                    <span class="glyphicon glyphicon-open"></span> <span class="hidden-xs">Import</span> <input id="fileUpload-input" type="file" placeholder="Select todo.txt File"> \
+                <a class="btn btn-block btn-primary btn-lg btn-file ellipsis" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("IMPORT") + '"> \
+                    <span class="glyphicon glyphicon-open"></span> <span class="hidden-xs">' + TodoTxt.Resources.get("IMPORT") + '</span> <input id="fileUpload-input" type="file" placeholder="Select todo.txt File"> \
                 </a> \
-                <a id="addTaskButton-button" class="btn btn-lg btn-primary ellipsis"><span class="glyphicon glyphicon-plus"></span> <span class="hidden-xs">Add Task</span></a> \
-                <a id="saveFileButton-button" class="btn btn-lg btn-primary ellipsis"><span class="glyphicon glyphicon-save"></span> <span class="hidden-xs">Export</span></a> \
-                <a id="showClosed-label" class="btn btn-lg btn-danger ellipsis"> \
-                    <span class="hidden-xs">Show </span>Closed \
+                <a id="addTaskButton-button" class="btn btn-lg btn-primary ellipsis" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("ADD_TASK") + '"> \
+                    <span class="glyphicon glyphicon-plus"></span> <span class="hidden-xs">' + TodoTxt.Resources.get("ADD_TASK") + '</span> \
+                </a> \
+                <a id="saveFileButton-button" class="btn btn-lg btn-primary ellipsis" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("EXPORT") + '"> \
+                    <span class="glyphicon glyphicon-save"></span> <span class="hidden-xs">' + TodoTxt.Resources.get("EXPORT") + '</span> \
+                </a> \
+                <a id="showClosed-label" class="btn btn-lg btn-danger ellipsis" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("SHOW_CLOSED") + '"> \
+                    <span class="glyphicon glyphicon-ok-circle"></span> <span class="hidden-xs">' + TodoTxt.Resources.get("SHOW_CLOSED") + '</span> \
                 </a> \
             </div> \
         </div> \
         <div class="row"> \
             <div class="input-group input-group-lg"> \
-                <input id="filter-input" type="text" class="form-control" placeholder="Type filter text"> \
+                <input id="filter-input" type="text" class="form-control" placeholder="' + TodoTxt.Resources.get("FILTER_PLACEHOLDER_TEXT") + '"> \
                 <span class="input-group-btn"> \
-                    <button id="clearFilter-button" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-remove-circle"></span> <span class="hidden-xs">Clear Filter</span></button> \
+                    <button id="clearFilter-button" class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("CLEAR_FILTER") + '"><span class="glyphicon glyphicon-remove-circle"></span> <span class="hidden-xs">' + TodoTxt.Resources.get("CLEAR_FILTER") + '</span></button> \
                 </span> \
             </div> \
         </div> \
@@ -640,7 +650,7 @@ TodoTxt.View = {
     <div class="col-md-3"> \
         <div id="priorities-div" class="panel panel-primary"> \
             <div class="panel-heading"> \
-                <h3 class="panel-title"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Priorities</h3> \
+                <h3 class="panel-title"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> ' + TodoTxt.Resources.get("PRIORITIES") + '</h3> \
             </div> \
             <div class="panel-body"> \
                 <ul id="priorities-ul" class="list-group"></ul> \
@@ -648,7 +658,7 @@ TodoTxt.View = {
         </div> \
         <div id="projects-div" class="panel panel-primary"> \
             <div class="panel-heading"> \
-                <h3 class="panel-title"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Projects</h3> \
+                <h3 class="panel-title"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> ' + TodoTxt.Resources.get("PROJECTS") + '</h3> \
             </div> \
             <div class="panel-body"> \
                 <ul id="projects-ul" class="list-group"></ul> \
@@ -656,7 +666,7 @@ TodoTxt.View = {
         </div> \
         <div id="contexts-div" class="panel panel-primary"> \
             <div class="panel-heading"> \
-                <h3 class="panel-title"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Contexts</h3> \
+                <h3 class="panel-title"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> ' + TodoTxt.Resources.get("CONTEXTS") + '</h3> \
             </div> \
             <div class="panel-body"> \
                 <ul id="contexts-ul" class="list-group"></ul> \

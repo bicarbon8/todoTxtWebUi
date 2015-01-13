@@ -68,7 +68,7 @@ TodoTxt.View = {
     generateTaskElement: function (task) {
         var icon = "glyphicon-ok";
         var status = "btn-default";
-        var text = TodoTxt.View.taskToMarkupString(task); // '&lt;span class="' + TodoTxt.View.getDisplayClassForTask(task) + '">' + task.toString() + '&lt;/span>';
+        var text = TodoTxt.View.taskToMarkupString(task);
         if (!task.isActive) {
             icon = "glyphicon-remove";
             status = "btn-danger";
@@ -161,18 +161,18 @@ TodoTxt.View = {
     &lt;div class="modal-dialog"> \
         &lt;div class="modal-content"> \
             &lt;div class="modal-header"> \
-                &lt;button type="button" id="modalEditClose-button" class="close" data-dismiss="modal" aria-label="Close">&lt;span aria-hidden="true"> &times;&lt;/span>&lt;/button> \
-                &lt;h4 class="modal-title" id="modalEdit-label"> Edit Task&lt;/h4> \
+                &lt;button type="button" id="modalEditClose-button" class="close" data-dismiss="modal" aria-label="' + TodoTxt.Resources.get("CLOSE") + '">&lt;span aria-hidden="true"> &times;&lt;/span>&lt;/button> \
+                &lt;h4 class="modal-title" id="modalEdit-label"> ' + TodoTxt.Resources.get("EDIT_TASK_HEADER") + '&lt;/h4> \
             &lt;/div> \
             &lt;div class="modal-body"> \
-                &lt;div id="modalEdit-textarea" class="textarea" contenteditable>' + TodoTxt.View.taskToMarkupString(task) + '&lt;/div> \
+                &lt;div id="modalEdit-textarea" class="textarea" contenteditable>' + TodoTxt.View.taskToMarkupString(task).replace(/hidden-xs/,"") + '&lt;/div> \
                 &lt;input type="text" id="modalEditTaskId-input" hidden value="' + task.id + '" /> \
             &lt;/div> \
             &lt;div class="modal-footer"> \
                 &lt;div class="btn-group btn-group-justified"> \
-                    &lt;a type="button" id="modalEditSave-button" class="btn btn-lg btn-success">&lt;span class="glyphicon glyphicon-ok">&lt;/span> &lt;span class="hidden-xs">Update&lt;/span>&lt;/a> \
-                    &lt;a type="button" id="modalEditPreview-button" class="btn btn-lg btn-primary">&lt;span class="glyphicon glyphicon-eye-open">&lt;/span> &lt;span class="hidden-xs">Preview&lt;/span&lt;/a> \
-                    &lt;a type="button" id="modalEditDelete-button" class="btn btn-lg btn-danger">&lt;span class="glyphicon glyphicon-floppy-remove">&lt;/span> &lt;span class="hidden-xs">Delete&lt;/span>&lt;/a> \
+                    &lt;a type="button" id="modalEditSave-button" class="btn btn-lg btn-success" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("UPDATE") + '">&lt;span class="glyphicon glyphicon-ok">&lt;/span> &lt;span class="hidden-xs">' + TodoTxt.Resources.get("UPDATE") + '&lt;/span>&lt;/a> \
+                    &lt;a type="button" id="modalEditPreview-button" class="btn btn-lg btn-primary" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("PREVIEW") + '">&lt;span class="glyphicon glyphicon-eye-open">&lt;/span> &lt;span class="hidden-xs">' + TodoTxt.Resources.get("PREVIEW") + '&lt;/span&lt;/a> \
+                    &lt;a type="button" id="modalEditDelete-button" class="btn btn-lg btn-danger" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("DELETE") + '">&lt;span class="glyphicon glyphicon-floppy-remove">&lt;/span> &lt;span class="hidden-xs">' + TodoTxt.Resources.get("DELETE") + '&lt;/span>&lt;/a> \
                 &lt;/div> \
             &lt;/div> \
         &lt;/div> \
@@ -349,7 +349,7 @@ TodoTxt.View = {
 
     handleDeleteClick: function () {
         var taskId = document.querySelector("#modalEditTaskId-input").value;
-        if (confirm(TodoTxt.View.Resources.get("DELETE_CONFIRM") + "\n\t\"" + TodoTxt.getTask(taskId).toString() + "\"")) {
+        if (confirm(TodoTxt.Resources.get("DELETE_CONFIRM") + "\n\t\"" + TodoTxt.getTask(taskId).toString() + "\"")) {
             if (TodoTxt.deleteTask(taskId)) {
                 TodoTxt.View.refreshUi();
                 try {
@@ -555,7 +555,7 @@ TodoTxt.View = {
 
             // get the content as a String
             reader.onloadend = function (e) {
-                if (confirm(TodoTxt.View.Resources.get("OVERWRITE_CONFIRM"))) {
+                if (confirm(TodoTxt.Resources.get("OVERWRITE_CONFIRM"))) {
                     TodoTxt.parseTodoTxtFile(e.target.result);
                     TodoTxt.View.refreshUi();
                 }
@@ -593,8 +593,8 @@ TodoTxt.View = {
     taskToMarkupString: function (task) {
         var text = task.toString();
         // markup priority
-        var cls = TodoTxt.View.getDisplayClassForTask(task);
-        text = text.replace(task.priority, "&lt;span class=\"" + cls + "\">&lt;b>" + task.priority + "&lt;/b>&lt;/span>");
+        var priCls = TodoTxt.View.getDisplayClassForTask(task);
+        text = text.replace(task.priority, "&lt;span class=\"" + priCls + "\">&lt;b>" + task.priority + "&lt;/b>&lt;/span>");
 
         // markup projects
         var projects = task.projects;
@@ -608,6 +608,12 @@ TodoTxt.View = {
         for (var j=0; j&lt;contexts.length; j++) {
             var context = contexts[j];
             text = text.replace(context, "&lt;span class=\"text-muted\">&lt;b>&lt;i>" + context + "&lt;/i>&lt;/b>&lt;/span>");
+        }
+
+        // markup created date
+        var date = task.createdDate;
+        if (date) {
+            text = text.replace(date, "&lt;span class=\"text-muted hidden-xs\">&lt;b>&lt;i>" + date + "&lt;/i>&lt;/b>&lt;/span>");
         }
 
         return text;
@@ -642,21 +648,25 @@ TodoTxt.View = {
     &lt;div class="col-md-9"> \
         &lt;div class="row"> \
             &lt;div class="btn-group btn-group-justified"> \
-                &lt;a class="btn btn-block btn-primary btn-lg btn-file ellipsis"> \
-                    &lt;span class="glyphicon glyphicon-open">&lt;/span> &lt;span class="hidden-xs">Import&lt;/span> &lt;input id="fileUpload-input" type="file" placeholder="Select todo.txt File"> \
+                &lt;a class="btn btn-block btn-primary btn-lg btn-file ellipsis" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("IMPORT") + '"> \
+                    &lt;span class="glyphicon glyphicon-open">&lt;/span> &lt;span class="hidden-xs">' + TodoTxt.Resources.get("IMPORT") + '&lt;/span> &lt;input id="fileUpload-input" type="file" placeholder="Select todo.txt File"> \
                 &lt;/a> \
-                &lt;a id="addTaskButton-button" class="btn btn-lg btn-primary ellipsis">&lt;span class="glyphicon glyphicon-plus">&lt;/span> &lt;span class="hidden-xs">Add Task&lt;/span>&lt;/a> \
-                &lt;a id="saveFileButton-button" class="btn btn-lg btn-primary ellipsis">&lt;span class="glyphicon glyphicon-save">&lt;/span> &lt;span class="hidden-xs">Export&lt;/span>&lt;/a> \
-                &lt;a id="showClosed-label" class="btn btn-lg btn-danger ellipsis"> \
-                    &lt;span class="hidden-xs">Show &lt;/span>Closed \
+                &lt;a id="addTaskButton-button" class="btn btn-lg btn-primary ellipsis" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("ADD_TASK") + '"> \
+                    &lt;span class="glyphicon glyphicon-plus">&lt;/span> &lt;span class="hidden-xs">' + TodoTxt.Resources.get("ADD_TASK") + '&lt;/span> \
+                &lt;/a> \
+                &lt;a id="saveFileButton-button" class="btn btn-lg btn-primary ellipsis" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("EXPORT") + '"> \
+                    &lt;span class="glyphicon glyphicon-save">&lt;/span> &lt;span class="hidden-xs">' + TodoTxt.Resources.get("EXPORT") + '&lt;/span> \
+                &lt;/a> \
+                &lt;a id="showClosed-label" class="btn btn-lg btn-danger ellipsis" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("SHOW_CLOSED") + '"> \
+                    &lt;span class="glyphicon glyphicon-ok-circle">&lt;/span> &lt;span class="hidden-xs">' + TodoTxt.Resources.get("SHOW_CLOSED") + '&lt;/span> \
                 &lt;/a> \
             &lt;/div> \
         &lt;/div> \
         &lt;div class="row"> \
             &lt;div class="input-group input-group-lg"> \
-                &lt;input id="filter-input" type="text" class="form-control" placeholder="Type filter text"> \
+                &lt;input id="filter-input" type="text" class="form-control" placeholder="' + TodoTxt.Resources.get("FILTER_PLACEHOLDER_TEXT") + '"> \
                 &lt;span class="input-group-btn"> \
-                    &lt;button id="clearFilter-button" class="btn btn-primary" type="button">&lt;span class="glyphicon glyphicon-remove-circle">&lt;/span> &lt;span class="hidden-xs">Clear Filter&lt;/span>&lt;/button> \
+                    &lt;button id="clearFilter-button" class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="top" text="' + TodoTxt.Resources.get("CLEAR_FILTER") + '">&lt;span class="glyphicon glyphicon-remove-circle">&lt;/span> &lt;span class="hidden-xs">' + TodoTxt.Resources.get("CLEAR_FILTER") + '&lt;/span>&lt;/button> \
                 &lt;/span> \
             &lt;/div> \
         &lt;/div> \
@@ -667,7 +677,7 @@ TodoTxt.View = {
     &lt;div class="col-md-3"> \
         &lt;div id="priorities-div" class="panel panel-primary"> \
             &lt;div class="panel-heading"> \
-                &lt;h3 class="panel-title">&lt;span class="glyphicon glyphicon-chevron-up" aria-hidden="true">&lt;/span> Priorities&lt;/h3> \
+                &lt;h3 class="panel-title">&lt;span class="glyphicon glyphicon-chevron-up" aria-hidden="true">&lt;/span> ' + TodoTxt.Resources.get("PRIORITIES") + '&lt;/h3> \
             &lt;/div> \
             &lt;div class="panel-body"> \
                 &lt;ul id="priorities-ul" class="list-group">&lt;/ul> \
@@ -675,7 +685,7 @@ TodoTxt.View = {
         &lt;/div> \
         &lt;div id="projects-div" class="panel panel-primary"> \
             &lt;div class="panel-heading"> \
-                &lt;h3 class="panel-title">&lt;span class="glyphicon glyphicon-chevron-up" aria-hidden="true">&lt;/span> Projects&lt;/h3> \
+                &lt;h3 class="panel-title">&lt;span class="glyphicon glyphicon-chevron-up" aria-hidden="true">&lt;/span> ' + TodoTxt.Resources.get("PROJECTS") + '&lt;/h3> \
             &lt;/div> \
             &lt;div class="panel-body"> \
                 &lt;ul id="projects-ul" class="list-group">&lt;/ul> \
@@ -683,7 +693,7 @@ TodoTxt.View = {
         &lt;/div> \
         &lt;div id="contexts-div" class="panel panel-primary"> \
             &lt;div class="panel-heading"> \
-                &lt;h3 class="panel-title">&lt;span class="glyphicon glyphicon-chevron-up" aria-hidden="true">&lt;/span> Contexts&lt;/h3> \
+                &lt;h3 class="panel-title">&lt;span class="glyphicon glyphicon-chevron-up" aria-hidden="true">&lt;/span> ' + TodoTxt.Resources.get("CONTEXTS") + '&lt;/h3> \
             &lt;/div> \
             &lt;div class="panel-body"> \
                 &lt;ul id="contexts-ul" class="list-group">&lt;/ul> \
@@ -714,7 +724,7 @@ TodoTxt.View = {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Mon Jan 12 2015 18:01:32 GMT-0000 (GMT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.2</a> on Tue Jan 13 2015 11:54:46 GMT-0000 (GMT)
 </footer>
 
 <script> prettyPrint(); </script>
