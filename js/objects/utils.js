@@ -71,4 +71,36 @@ TodoTxt.Utils = {
         }
         return s4()+s4()+'-'+s4()+'-'+s4()+'-'+s4()+'-'+s4()+s4()+s4();
     },
+
+    /**
+     * function will strip out any characters from the passed in string that are
+     * not compatible with html and replace with html-friendly versions
+     * @param {string} str - the string to be html encoded
+     * @returns {string} a html encoded version of the string that can be used safely
+     * within a html page
+     */
+    htmlEncode: function (str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/\s{2}/g, ' &nbsp;');
+    },
+
+    /**
+     * function will strip out any characters from the passed in string that are
+     * html character entities and replace with standard string versions
+     * @param {string} str - the string to be html unencoded
+     * @returns {string} a version of the string that can contains non-html-friendly
+     * strings
+     */
+    htmlUnencode: function (str) {
+        return String(str)
+            .replace(/&amp;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"')
+            .replace(/&nbsp;/g, ' ');
+    }
 };

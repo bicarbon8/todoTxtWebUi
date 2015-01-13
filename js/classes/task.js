@@ -153,7 +153,7 @@ TodoTxt.Task.prototype._parsePriorityFromString = function (str) {
 	if (str) {
 		// parse out the priority RegEx: /\^([A-Z]\).*/ 
 		// check for strings starting with something like "(A) "
-		var priPattern = /^(\([A-Z]\) )/;
+		var priPattern = /^(\([A-Z]\)[\s]+)/;
 		var match = str.match(priPattern); // returns null if not found
 		if (match) {
 			// found an active match so get the priority
@@ -205,7 +205,7 @@ TodoTxt.Task.prototype._parseDatesFromString = function (str) {
 	var dates = null;
 	if (str) {
 		// check for strings with something like "2012-08-09"
-		var datePattern = /(\d{4}-\d{2}-\d{2}\s)/g;
+		var datePattern = /(?:\s|^)(\d{4}-\d{2}-\d{2})(?=\s)/g;
 		match = str.match(datePattern); // returns null if not found
 		if (match) {
 			dates = match;
@@ -221,7 +221,7 @@ TodoTxt.Task.prototype._parseProjectsFromString = function (str) {
 	if (str) {
 		// parse out the projects RegEx: /\+[0-9A-Za-z]+\s/ (words starting with "+")
 		// check for strings like "+ABC123"
-		var projPattern = /(( |^)[\(\{\["']?\+[0-9A-Za-z]+[\)\}\]"']?( |$))/g;
+		var projPattern = /((\s|^)[\(\{\["']?\+[0-9A-Za-z]+[\)\}\]"']?( |$))/g;
 		var match = str.match(projPattern); // returns null if not found
 		if (match) {
 			// found an active match so get the projects as an array of projects
@@ -240,7 +240,7 @@ TodoTxt.Task.prototype._parseContextsFromString = function (str) {
 	if (str) {
 		// parse out the contexts RegEx: /\@[0-9A-Za-z]+\s/ (words starting with "+")
 		// check for strings like "@ABC123"
-		var ctxPattern = /(( |^)[\(\{\["']?\@[0-9A-Za-z]+[\)\}\]"']?( |$))/g;
+		var ctxPattern = /((\s|^)[\(\{\["']?\@[0-9A-Za-z]+[\)\}\]"']?( |$))/g;
 		var match = str.match(ctxPattern); // returns null if not found
 		if (match) {
 			// found an active match so get the contexts as an array of contexts
