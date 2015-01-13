@@ -299,7 +299,7 @@ TodoTxt.View = {
     handleAltEnter: function (e) {
         if ((e.keyCode === 13 && e.altKey) || e.keyCode === 0) { // Alt + Enter
             var taskId = document.querySelector("#modalEditTaskId-input").value;
-            var text = document.querySelector("#modalEdit-textarea").textContent;
+            var text = document.querySelector("#modalEdit-textarea").textContent.replace(/(&nbsp;)/g," ").replace(/(&lt;)/g,"<").replace(/(&gt;)/g,">").replace(/(&amp;)/,"&");
             if (TodoTxt.updateTask(taskId, text)) {
                 TodoTxt.View.refreshUi();
                 try {
@@ -588,6 +588,9 @@ TodoTxt.View = {
         if (date) {
             text = text.replace(date, "<span class=\"text-muted hidden-xs\"><b><i>" + date + "</i></b></span>");
         }
+
+        // make <, > and & html compatible
+        text = text.replace(/(<)/g,"&lt;").replace(/(>)/g,"&gt;").replace(/(&)/,"&amp;");
 
         return text;
     },
