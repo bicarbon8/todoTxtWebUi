@@ -14,21 +14,36 @@ utilized in supporting the functionality of this project.
 
 DEMO:
 ------------
-[ResponsiveDemo](https://rawgit.com/bicarbon8/todoTxtWebUi/master/examples/mobile/index.html)
+[ResponsiveDemo](https://rawgit.com/bicarbon8/todoTxtWebUi/master/index.html)
 
 FEATURES:
 ------------
-- Allows users to drag-and-drop in their todo.txt file (or select through a file dialog) for instant 
-syncronization with existing task list
-- Allows exporting of displayed tasks back out of the browser to the user's local filesystem thereby
-supporting saving of updates to the task list
-- Stores the task list in the browser's localStorage cache so that changes are not lost between browser
-page reloads / refreshes.
+- Can easily be added to any existing webpage by simply adding a ```<div id="todotxt"></div>``` element and the external dependencies
+- Allows users to drag-and-drop in their todo.txt file (or select through a file dialog) for instant syncronization with existing task list
+- Allows exporting of displayed tasks back out of the browser to the user's local filesystem thereby supporting saving of updates to the task list
+- Stores the task list in the browser's localStorage cache so that changes are not lost between browser page reloads / refreshes.
 - Allows editing of current task list
 - Allows creating of new tasks
 - Allows deleting of existing tasks
 - Allows filtering of the displayed list of tasks by Priority, Project and Context
-- Supports both mouse clicks and keyboard shortcuts for command and control such as adding new tasks, 
-saving edits to tasks, deleting tasks currently being edited, and saving the task list to an external file
-- Sorts the task list by Status (closed or active), Priority, Created Date, and then Completed Date with
-older items (those with an older created date) displaying higher than newer items
+- Supports both mouse clicks and keyboard shortcuts for command and control such as adding new tasks, saving edits to tasks, deleting tasks currently being edited, and saving the task list to an external file
+- Sorts the task list by Status (closed or active), Priority, Created Date, and then Completed Date with older items (those with an older created date) displaying higher than newer items
+
+EXTERNAL DEPENDENCIES:
+------------
+- [Bootstrap 3.3.1](http://getbootstrap.com/)
+- [JQuery 1.11.1](http://jquery.com/)
+
+RUNNING LOCALLY:
+------------
+- download the latest from: [github](https://github.com/bicarbon8/todoTxtWebUi/archive/master.zip)
+- extract the download and open the ```todoTxtWebUi-master``` folder
+- open the ```index.html``` file in a Webkit compatible browser
+
+KEYBOARD SHORTCUTS:
+------------
+- ```Alt-t``` add a new task
+- ```Alt-Enter``` save an open task
+- ```Alt-p``` preview changes to an open task
+- ```Alt-s``` export tasks
+- ```Alt-c``` clear any filters
