@@ -41,7 +41,7 @@ TodoTxt.View = {
     generateTaskElement: function (task) {
         var icon = "glyphicon-ok";
         var status = "btn-default";
-        var text = TodoTxt.View.taskToMarkupString(task);
+        var htmlText = TodoTxt.View.taskToMarkupString(task);
         if (!task.isActive) {
             icon = "glyphicon-remove";
             status = "btn-danger";
@@ -56,7 +56,7 @@ TodoTxt.View = {
 <span class="col-xs-2 btn btn-lg ' + status + '" onclick="TodoTxt.View.toggleTaskStatus(\'' + task.id + '\');"> \
     <span class="glyphicon ' + icon + '"></span> \
 </span> \
-<button class="col-xs-10 ellipsis btn btn-lg ' + status + '" onclick="TodoTxt.View.displayModalForTask(\'' + task.id + '\');">' + text + '</button>';
+<button class="col-xs-10 ellipsis btn btn-lg ' + status + '" onclick="TodoTxt.View.displayModalForTask(\'' + task.id + '\');">' + htmlText + '</button>';
 
         element.innerHTML = elementTxt;
         return element;
@@ -128,6 +128,8 @@ TodoTxt.View = {
 
         TodoTxt.View.unbindControlEvents(TodoTxt.View.mainEventHandlers);
 
+        var htmlText = TodoTxt.View.taskToMarkupString(task).replace(/hidden-xs/,"");
+
         /*jshint multistr: true */
         var modal = ' \
 <div class="modal" id="modalEdit-div" tabindex="-1" role="dialog" aria-labelledby="modalEdit-label" aria-hidden="true"> \
@@ -138,7 +140,7 @@ TodoTxt.View = {
                 <h4 class="modal-title" id="modalEdit-label"> ' + TodoTxt.Resources.get("EDIT_TASK_HEADER") + '</h4> \
             </div> \
             <div class="modal-body"> \
-                <div id="modalEdit-textarea" class="textarea" contenteditable>' + TodoTxt.View.taskToMarkupString(task).replace(/hidden-xs/,"") + '</div> \
+                <div id="modalEdit-textarea" class="textarea" contenteditable>' + htmlText + '</div> \
                 <input type="text" id="modalEditTaskId-input" hidden value="' + task.id + '" /> \
             </div> \
             <div class="modal-footer"> \
@@ -299,7 +301,8 @@ TodoTxt.View = {
     handleAltEnter: function (e) {
         if ((e.keyCode === 13 && e.altKey) || e.keyCode === 0) { // Alt + Enter
             var taskId = document.querySelector("#modalEditTaskId-input").value;
-            var text = document.querySelector("#modalEdit-textarea").textContent.replace(/(&nbsp;)/g," ").replace(/(&lt;)/g,"<").replace(/(&gt;)/g,">").replace(/(&amp;)/,"&");
+            var text = document.querySelector("#modalEdit-textarea").textContent;
+            text = TodoTxt.Utils.htmlUnencode(text);
             if (TodoTxt.updateTask(taskId, text)) {
                 TodoTxt.View.refreshUi();
                 try {
@@ -565,6 +568,10 @@ TodoTxt.View = {
      */
     taskToMarkupString: function (task) {
         var text = task.toString();
+        
+        // make html compatible
+        text = TodoTxt.Utils.htmlEncode(text);
+
         // markup priority
         var priCls = TodoTxt.View.getDisplayClassForTask(task);
         text = text.replace(task.priority, "<span class=\"" + priCls + "\"><b>" + task.priority + "</b></span>");
@@ -588,9 +595,6 @@ TodoTxt.View = {
         if (date) {
             text = text.replace(date, "<span class=\"text-muted hidden-xs\"><b><i>" + date + "</i></b></span>");
         }
-
-        // make <, > and & html compatible
-        text = text.replace(/(<)/g,"&lt;").replace(/(>)/g,"&gt;").replace(/(&)/,"&amp;");
 
         return text;
     },
