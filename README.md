@@ -52,7 +52,7 @@ INCLUDING IN OTHER WEBSITES:
 ------------
 - download the latest minified script from [github](https://rawgit.com/bicarbon8/todoTxtWebUi/master/dist/todoTxt.min.js)
 - ensure you have the following css and javascript references in your html file:
-```
+```html
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css" />
 <link rel="stylesheet" type="text/css" href="dist/todoTxt.min.css" />
@@ -61,7 +61,7 @@ INCLUDING IN OTHER WEBSITES:
 <script type="text/javascript" src="dist/todoTxt.min.js"></script>
 ```
 - place a ```div``` element in your html body with an id of ```todotxt```. Ex: 
-```
+```html
 <div id="todotxt"></div>
 ```
 - open the webpage and the magic happens automatically :)
