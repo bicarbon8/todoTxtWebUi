@@ -17,7 +17,7 @@ module.exports = function(grunt) {
         "css/todoTxt.css",
       ],
       tests: "tests/qunit/allTests.html",
-      functionalTests: ["tests/casper/viewTests.js"]
+      functionalTests: ["tests/pft/tests/**/*.js"]
     },
     clean: {
       build: {
@@ -50,16 +50,12 @@ module.exports = function(grunt) {
     qunit: {
       all: ['<%= files.tests %>']
     },
-    casperjs: {
+    pft: {
       options: {
-        casperjsOptions: ['test'],
-        // verbose: true,
-        // "log-level": "debug",
-        // "--ignore-ssl-errors": "yes",
-        // "--ssl-protocol": "any",
-        // "web-security": "no",
+        // parallel: 3,
+        debug: true
       },
-      files: ['<%= files.functionalTests %>'],
+      src: ['<%= files.functionalTests %>'],
     },
     jsdoc: {
       dist: {
@@ -82,22 +78,22 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-qunit');
 
   // This plugin provides the "casper" task.
-  grunt.loadNpmTasks('grunt-casperjs');
+  grunt.loadNpmTasks('grunt-pft');
 
   // This plugin provides the "qunit" task.
   grunt.loadNpmTasks('grunt-jsdoc');
 
   // Default task(s).
-  grunt.registerTask('default', ['clean','qunit','uglify','cssmin','casperjs','jsdoc']);
+  grunt.registerTask('default', ['clean','qunit','uglify','cssmin','pft','jsdoc']);
 
   // Build only task(s).
   grunt.registerTask('build', ['clean','uglify','cssmin']);
 
   // test only task(s).
-  grunt.registerTask('test', ['qunit','casperjs']);
+  grunt.registerTask('test', ['qunit','pft']);
 
   // test only task(s).
-  grunt.registerTask('ftest', ['casperjs']);
+  grunt.registerTask('ftest', ['pft']);
 
   // document only task(s).
   grunt.registerTask('doc', ['jsdoc']);

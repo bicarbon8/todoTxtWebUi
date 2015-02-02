@@ -1,0 +1,68 @@
+3 - TEST: Starting: 'Page loads with expected controls'...
+
+2 - TEST: Starting: 'can add task with html-unfriendly characters'...
+	Data: "(A) Call Mom & Dad @Phone +Family <tuesday>"
+
+1 - TEST: Starting: 'can mark task as completed from list view'...
+
+3 - TEST: PASS: Page loads with expected controls
+
+3 - TEST: Completed: 'Page loads with expected controls' in 1 second 542 milliseconds with 2 passes, 0 failures, 0 errors.
+
+3 - TEST: Completed '1' tests in 1 second 567 milliseconds with 2 passes, 0 failures, 0 errors.
+
+
+2 - TEST: Assert failed - 'can add task with html-unfriendly characters'
+	Expected that task text would remain unchanged after preview. actual: "" !== expected: "(A) Call Mom & Dad @Phone +Family <tuesday>"
+
+2 - INFO: capturing page image: ./img/canaddtaskwithhtmlunfriendlycharacters.1422899778483.jpg
+
+1 - TEST: Assert failed - 'can mark task as completed from list view'
+	Expected that task text would remain unchanged after preview. actual: "" !== expected: "(A) Call Mom & Dad @Phone +Family <tuesday>"
+
+1 - INFO: capturing page image: ./img/canmarktaskascompletedfromlistview.1422899778625.jpg
+
+2 - TEST: Assert failed - 'can add task with html-unfriendly characters'
+	Expected that task text would remain unchanged after preview. actual: "" !== expected: "(A) Call Mom & Dad @Phone +Family <tuesday>"
+
+2 - INFO: capturing page image: ./img/canaddtaskwithhtmlunfriendlycharacters.1422899778694.jpg
+
+1 - TEST: Assert failed - 'can mark task as completed from list view'
+	Expected that task text would remain unchanged after preview. actual: "" !== expected: "(A) Call Mom & Dad @Phone +Family <tuesday>"
+1 - INFO: capturing page image: ./img/canmarktaskascompletedfromlistview.1422899778801.jpg
+
+2 - TEST: Completed: 'can add task with html-unfriendly characters' in 3 seconds 97 milliseconds with 4 passes, 2 failures, 0 errors.
+
+2 - TEST: Starting: 'can add task with html-unfriendly characters'...
+	Data: "& I have > you do &amp;"
+
+1 - TEST: Completed: 'can mark task as completed from list view' in 2 seconds 933 milliseconds with 4 passes, 2 failures, 0 errors.
+
+1 - TEST: Completed '1' tests in 2 seconds 946 milliseconds with 4 passes, 2 failures, 0 errors.
+
+FAILURES:
+	'can mark task as completed from list view'
+	Expected that task text would remain unchanged after preview. actual: "" !== expected: "(A) Call Mom & Dad @Phone +Family <tuesday>"
+	'can mark task as completed from list view'
+	Expected that task text would remain unchanged after preview. actual: "" !== expected: "(A) Call Mom & Dad @Phone +Family <tuesday>"
+
+
+2 - INFO: timing out. '#addTaskButton-button' not found by: Mon Feb 02 2015 17:56:23 GMT+0000 (GMT Standard Time)
+
+2 - TEST: Assert failed - 'can add task with html-unfriendly characters'
+	'#addTaskButton-button' not found by: Mon Feb 02 2015 17:56:23 GMT+0000 (GMT Standard Time)
+2 - INFO: capturing page image: ./img/canaddtaskwithhtmlunfriendlycharacters.1422899782891.jpg
+
+2 - TEST: Completed: 'can add task with html-unfriendly characters' in 4 seconds 104 milliseconds with 0 passes, 1 failures, 0 errors.
+2 - TEST: Completed '2' tests in 7 seconds 222 milliseconds with 4 passes, 3 failures, 0 errors.
+
+FAILURES:
+	'can add task with html-unfriendly characters'
+	'#addTaskButton-button' not found by: Mon Feb 02 2015 17:56:23 GMT+0000 (GMT Standard Time)
+	'can add task with html-unfriendly characters'
+	Expected that task text would remain unchanged after preview. actual: "" !== expected: "(A) Call Mom & Dad @Phone +Family <tuesday>"
+	'can add task with html-unfriendly characters'
+	Expected that task text would remain unchanged after preview. actual: "" !== expected: "(A) Call Mom & Dad @Phone +Family <tuesday>"
+
+
+All threads completed with total of '5' failures / errors in: 9 seconds 53 milliseconds
