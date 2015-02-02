@@ -1,22 +1,19 @@
+var fs = require('fs');
+var cwd = fs.workingDirectory;
+
 PFT.tester.onAssertionFailure = function (details) {
     PFT.renderPage(details.test.page, details.test.name);
 };
 
 var TH = {
-    projectPath: "file:///",
+    projectPath: null,
 
     openIndexPage: function(page, callback) {
-        // Since Casper has control, the invoked script is deep in the argument stack
-        var currentFile = require('system').args[3];
-        var curFilePath = fs.absolute(currentFile).split('/');
-
-        // I only bother to change the directory if we weren't already there when invoking casperjs
-        if (curFilePath.length > 1) {
-            curFilePath.pop(); // PhantomJS does not have an equivalent path.baseName()-like method
-            TH.projectPath += curFilePath.join('/') + "/index.html";
+        if (!TH.projectPath) { // then we haven't set it yet
+            TH.projectPath = "file:///" + cwd.replace(/\\/g,'/') + "/index.html";
         }
         page.baseUrl = TH.projectPath;
-        page.open(callback);
+        page.open(function () { callback.call(this, page); });
     },
 
     addTask: function(text, curPage, assert, callback) {
@@ -25,7 +22,6 @@ var TH = {
             curPage.click('#addTaskButton-button');
             curPage.waitFor('#modalEdit-textarea', function modalFound(found, errMessage) {
                 assert.isTrue(found, errMessage);
-                debugger;
                 curPage.sendKeys('#modalEdit-textarea', text, function afterKeys() {
                     curPage.waitFor('#modalEditPreview-button', function modalPreviewFound(found, errMessage) {
                         assert.isTrue(found, errMessage);
@@ -40,7 +36,7 @@ var TH = {
                             assert.isTrue(!curPage.exists('#modalEditSave-button'), 'Expected modal to be dismissed, but was not');
                             var actualText = curPage.getText('#listContainer-div button');
                             assert.isTrue(actualText === text, 'Expected that task text would display in list after save. actual: "' + actualText + '" !== expected: "' + text + '"');
-                            callback();
+                            callback.call(this, curPage);
                         }, 2000);
                     }, 2000);
                 });

@@ -4,8 +4,7 @@ var TH = require(cwd + '/tests/pft/testHelper.js');
 
 PFT.tester.test('Page loads with expected controls', function (page, data, assert) {
     var curPage = new PFT.BasePage(page);
-    TH.openIndexPage(curPage, function() {
-        var curPage = new PFT.BasePage(page);
+    TH.openIndexPage(curPage, function(curPage) {
         curPage.registerKeyElement('#fileDrop-div');
         curPage.registerKeyElement('#fileUpload-input');
         curPage.registerKeyElement('#addTaskButton-button');

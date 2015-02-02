@@ -21,7 +21,7 @@ module.exports = function(grunt) {
     },
     clean: {
       build: {
-        src: ['dist/**/*','results/**/*'],
+        src: ['dist/**/*','results/**/*','img/**/*'],
         filter: 'isFile',
       },
     },
@@ -52,8 +52,8 @@ module.exports = function(grunt) {
     },
     pft: {
       options: {
-        // parallel: 3,
-        debug: true
+        parallel: 3,
+        // debug: true
       },
       src: ['<%= files.functionalTests %>'],
     },

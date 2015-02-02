@@ -4,7 +4,7 @@ var TH = require(cwd + '/tests/pft/testHelper.js');
 
 PFT.tester.test('can mark task as completed from list view', function (page, data, assert) {
     var curPage = new PFT.BasePage(page);
-    TH.openIndexPage(curPage, function () {
+    TH.openIndexPage(curPage, function (curPage) {
         var text = '(A) Call Mom & Dad @Phone +Family <tuesday>';
         TH.addTask(text, curPage, assert, function afterAddTask() {
             /*jshint evil:true*/
