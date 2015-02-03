@@ -221,13 +221,18 @@ TodoTxt.Task.prototype._parseProjectsFromString = function (str) {
 	if (str) {
 		// parse out the projects RegEx: /\+[0-9A-Za-z]+\s/ (words starting with "+")
 		// check for strings like "+ABC123"
-		var projPattern = /((\s|^)[\(\{\["']?\+[0-9A-Za-z]+[\)\}\]"']?( |$))/g;
+		var projPattern = /((\s|^)[\(\{\["']?\+[0-9A-Za-z]+[\)\}\]"']?(?=\s|$))/g;
 		var match = str.match(projPattern); // returns null if not found
 		if (match) {
-			// found an active match so get the projects as an array of projects
-			projArray = match.map(function (p) {
-				return p.replace(/[\s]*/g, "").replace(/[\(\{\[\)\}\]"']/g, "");
-			});
+			// only store one instance of duplicate project entries
+			var tmpHash = {};
+			for (var i=0; i<match.length; i++) {
+				var p = match[i].replace(/[\s]*/g, "").replace(/[\(\{\[\)\}\]"']/g, "");;
+				tmpHash[p] = true;
+			}
+			for (var key in tmpHash) {
+				projArray.push(key);
+			}
 		}
 	}
 	
@@ -240,13 +245,18 @@ TodoTxt.Task.prototype._parseContextsFromString = function (str) {
 	if (str) {
 		// parse out the contexts RegEx: /\@[0-9A-Za-z]+\s/ (words starting with "+")
 		// check for strings like "@ABC123"
-		var ctxPattern = /((\s|^)[\(\{\["']?\@[0-9A-Za-z]+[\)\}\]"']?( |$))/g;
+		var ctxPattern = /((\s|^)[\(\{\["']?\@[0-9A-Za-z]+[\)\}\]"']?(?=\s|$))/g;
 		var match = str.match(ctxPattern); // returns null if not found
 		if (match) {
-			// found an active match so get the contexts as an array of contexts
-			ctxArray = match.map(function (p) {
-				return p.replace(/[\s]*/g, "").replace(/[\(\{\[\)\}\]"']/g, "");
-			});
+			// only store one instance of duplicate project entries
+			var tmpHash = {};
+			for (var i=0; i<match.length; i++) {
+				var c = match[i].replace(/[\s]*/g, "").replace(/[\(\{\[\)\}\]"']/g, "");;
+				tmpHash[c] = true;
+			}
+			for (var key in tmpHash) {
+				ctxArray.push(key);
+			}
 		}
 	}
 	

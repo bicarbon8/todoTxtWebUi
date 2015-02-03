@@ -54,6 +54,8 @@ var sampleTaskStrings = [
 	{ str: "{@Task with a @note} in it {+Task with a +note}", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: null, expectedProjects: ["+Task","+note"], expectedContexts: ["@Task","@note"] },
 	{ str: "\"@Task with a @note\" in it \"+Task with a +note\"", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: null, expectedProjects: ["+Task","+note"], expectedContexts: ["@Task","@note"] },
 	{ str: "'@Task with a @note' in it '+Task with a +note'", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: null, expectedProjects: ["+Task","+note"], expectedContexts: ["@Task","@note"] },
+	{ str: "@Task @Tasks with a @Task in it and +note with a +note and +notes", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: null, expectedProjects: ["+note","+notes"], expectedContexts: ["@Task","@Tasks"] },
+	{ str: "+Task with a @note", expectedStatus: true, expectedPriority: null, expectedCompleted: null, expectedCreated: null, expectedProjects: ["+Task"], expectedContexts: ["@note"] },
 ];
 
 QUnit.module("TodoTxt.Task");

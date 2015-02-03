@@ -580,14 +580,16 @@ TodoTxt.View = {
         var projects = task.projects;
         for (var i=0; i<projects.length; i++) {
             var project = projects[i];
-            text = text.replace(project, "<span class=\"text-muted\"><b><i>" + project + "</i></b></span>");
+            var regex = new RegExp(project.replace(/\+/g, "\\+") + "(?![0-9A-Za-z])", "g");
+            text = text.replace(regex, "<span class=\"text-muted\"><b><i>" + project + "</i></b></span>");
         }
 
         // markup contexts
         var contexts = task.contexts;
         for (var j=0; j<contexts.length; j++) {
             var context = contexts[j];
-            text = text.replace(context, "<span class=\"text-muted\"><b><i>" + context + "</i></b></span>");
+            var regex = new RegExp(context + "(?![0-9A-Za-z])", "g");
+            text = text.replace(regex, "<span class=\"text-muted\"><b><i>" + context + "</i></b></span>");
         }
 
         // markup created date

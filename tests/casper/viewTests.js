@@ -108,3 +108,42 @@ casper.test.begin('can mark task as completed from list view', function (test) {
         test.done();
     });
 });
+casper.test.begin('all instances of same-named projects and contexts are marked up', function (test) {
+    openIndexPage();
+
+    var text = '@One +Two @Ones @One +Two +Twos';
+    addTask(text, test);
+
+    casper.then(function () {
+        var innerHTML = this.evaluate(function () {
+            return document.querySelector('#listContainer-div button').innerHTML;
+        });
+        var project = "+Two";
+        var regex = new RegExp('(<span class="text-muted"><b><i>' + project.replace(/\+/g, "\\+") + '<\\/i><\\/b><\\/span>)');
+        var matches = innerHTML.match(regex);
+        test.assert(matches && matches.length === 2, 'Expected both matching projects to be marked up correctly: ' +
+            innerHTML + "; " + regex);
+
+        project = "+Twos";
+        regex = new RegExp('(<span class="text-muted"><b><i>' + project.replace(/\+/g, "\\+") + '<\\/i><\\/b><\\/span>)');
+        matches = innerHTML.match(regex);
+        test.assertTruthy(matches, 'Expected unique project is marked up correctly: ' +
+            innerHTML + "; " + regex);
+
+        var context = "@One";
+        regex = new RegExp('(<span class="text-muted"><b><i>' + context + '<\\/i><\\/b><\\/span>)');
+        matches = innerHTML.match(regex);
+        test.assert(matches && matches.length === 2, 'Expected both matching contexts to be marked up correctly: ' +
+            innerHTML + "; " + regex);
+
+        context = "@Ones";
+        regex = new RegExp('(<span class="text-muted"><b><i>' + context + '<\\/i><\\/b><\\/span>)');
+        matches = innerHTML.match(regex);
+        test.assertTruthy(matches, 'Expected unique context is marked up correctly: ' +
+            innerHTML + "; " + regex);
+    });
+
+    casper.run(function() {
+        test.done();
+    });
+});
