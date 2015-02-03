@@ -15,7 +15,7 @@ PFT.tester.test('can mark task as completed from list view', function (page, dat
             curPage.click('#listContainer-div span');
             assert.isTrue(!curPage.exists('#listContainer-div button'));
             curPage.click('#showClosed-label');
-            className = this.evaluate(function () {
+            className = curPage.eval(function () {
                 return document.querySelector('#listContainer-div span').className;
             });
             assert.isTrue(className.match(/(btn-danger)/), 'Expected that task was closed');

@@ -4,7 +4,7 @@ var TH = require(cwd + '/tests/pft/testHelper.js');
 
 var cases = [
 '(A) Call Mom & Dad @Phone +Family <tuesday>',
-'& I have > you do &amp;'
+'& I have > you do &'
 ];
 /*jshint loopfunc: true*/
 for (var i=0; i<cases.length; i++) {

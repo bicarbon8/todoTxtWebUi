@@ -2,7 +2,10 @@ var fs = require('fs');
 var cwd = fs.workingDirectory;
 
 PFT.tester.onAssertionFailure = function (details) {
-    PFT.renderPage(details.test.page, details.test.name);
+    PFT.renderPage(details.test.page, 'FAIL_' + details.test.name);
+};
+PFT.tester.onTimeout = function (details) {
+    PFT.renderPage(details.test.page, "FAIL_" + details.message);
 };
 
 var TH = {
@@ -13,7 +16,13 @@ var TH = {
             TH.projectPath = "file:///" + cwd.replace(/\\/g,'/') + "/index.html";
         }
         page.baseUrl = TH.projectPath;
-        page.open(function () { callback.call(this, page); });
+        /*jshint evil:true*/
+        page.open(function () {
+            page.eval(function () {
+                localStorage.clear();
+            });
+            callback.call(this, page);
+        });
     },
 
     addTask: function(text, curPage, assert, callback) {

@@ -1,6 +1,6 @@
 {
   "name": "todoTxtWebUi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "HTML, CSS, Javascript only TodoTxt compliant framework for building Web UI components to display a todo.txt file",
   "main": "todoTxt",
   "directories": {
@@ -29,7 +29,7 @@
   "homepage": "https://github.com/bicarbon8/todoTxtWebUi",
   "devDependencies": {
     "grunt": "~0.4.5",
-    "grunt-pft": ">= 1.0.0",
+    "grunt-pft": "~1.0.0",
     "grunt-contrib-clean": "~0.6.0",
     "grunt-contrib-cssmin": "^0.11.0",
     "grunt-contrib-jshint": "~0.10.0",

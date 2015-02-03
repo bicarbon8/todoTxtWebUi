@@ -55,7 +55,7 @@ module.exports = function(grunt) {
         parallel: 3,
         // debug: true
       },
-      src: ['<%= files.functionalTests %>'],
+      src: ['<%= files.functionalTests %>']
     },
     jsdoc: {
       dist: {
@@ -88,12 +88,6 @@ module.exports = function(grunt) {
 
   // Build only task(s).
   grunt.registerTask('build', ['clean','uglify','cssmin']);
-
-  // test only task(s).
-  grunt.registerTask('test', ['qunit','pft']);
-
-  // test only task(s).
-  grunt.registerTask('ftest', ['pft']);
 
   // document only task(s).
   grunt.registerTask('doc', ['jsdoc']);
