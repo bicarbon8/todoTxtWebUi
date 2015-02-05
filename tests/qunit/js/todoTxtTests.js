@@ -8,29 +8,30 @@
  * The web page then allows downloading changes back to the user
  * in a txt format compliant with the todo.txt specifications, but
  * having re-sorted the tasks.
- * 
+ *
  * @Created: 08/14/2012
  * @Author: Jason Holt Smith (bicarbon8@gmail.com)
  * @Version: 0.0.1
  * Copyright (c) 2012 Jason Holt Smith. todoTxtWebUi is distributed under
  * the terms of the GNU General Public License.
- * 
+ *
  * This file is part of todoTxtWebUi.
- * 
+ *
  * todoTxtWebUi is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * todoTxtWebUi is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
 var text = "";
+var cases = [];
 function setup() {
     text = "sample task" + new Date().getTime();
 }
@@ -46,15 +47,26 @@ QUnit.test("can add task to localStorage", function (assert) {
     actual = localStorage.getItem(task.id);
     assert.equal(actual, text, "expected that localStorage contained task text, but was: " + actual);
 });
-QUnit.cases([
+
+/**
+ * Data-driven tests
+ */
+cases = [
     { txt: "sample task" + new Date().getTime() },
     { txt: "" }
-]).test("can get task from localStorage", function (p, assert) {
-    var task = new TodoTxt.Task(p.txt);
-    localStorage.setItem(task.id, p.txt);
-    var actual = TodoTxt.getTask(task.id);
-    assert.deepEqual(actual, task, "expected task was not returned: " + actual);
-});
+];
+/*jshint loopfunc:true*/
+for (var i=0; i<cases.length; i++) {
+    (function (p) {
+        QUnit.test("can get task from localStorage: " + JSON.stringify(p), function (assert) {
+            var task = new TodoTxt.Task(p.txt);
+            localStorage.setItem(task.id, p.txt);
+            var actual = TodoTxt.getTask(task.id);
+            assert.deepEqual(actual, task, "expected task was not returned: " + actual);
+        });
+    })(cases[i]);
+}
+
 QUnit.test("can delete task from localStorage", function (assert) {
     var task = new TodoTxt.Task(text);
     localStorage.setItem(task.id, text);
@@ -130,24 +142,34 @@ QUnit.test("can activate an existing closed task in localStorage", function (ass
     assert.ok(t.isActive, "task was not active, but should have been");
     assert.equal(t.toString(), expectedText, "activated task did not match expected format");
 });
-QUnit.cases([
-    { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "x", expectFound: true },
-    { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "x 15", expectFound: true },
-    { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "x 15 is", expectFound: true },
-    { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "x 15 ask it", expectFound: true },
-    { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "@note", expectFound: true },
-    { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "+Task", expectFound: true },
-    { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "+Task @note", expectFound: true },
-    { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "@note +Task", expectFound: false },
-    { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "John", expectFound: false },
-    { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: ".*", expectFound: false },
-]).test("can filter tasks", function (p, assert) {
-    // create task
-    TodoTxt.createTask(p.str);
-    var actual = TodoTxt.getFilteredTaskArray(p.filter);
-    if (p.expectFound) {
-        assert.ok(actual.length === 1);
-    } else {
-        assert.ok(actual.length === 0);
-    }
-});
+
+/**
+ * Data-driven tests
+ */
+cases = [
+     { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "x", expectFound: true },
+     { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "x 15", expectFound: true },
+     { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "x 15 is", expectFound: true },
+     { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "x 15 ask it", expectFound: true },
+     { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "@note", expectFound: true },
+     { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "+Task", expectFound: true },
+     { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "+Task @note", expectFound: true },
+     { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "@note +Task", expectFound: false },
+     { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: "John", expectFound: false },
+     { str: "x 2015-01-03 2015-01-01 this is a +Task with a @note in it", filter: ".*", expectFound: false },
+];
+/*jshint loopfunc:true*/
+for (var i=0; i<cases.length; i++) {
+    (function (p) {
+        QUnit.test("can filter tasks: " + JSON.stringify(p), function (assert) {
+            // create task
+            TodoTxt.createTask(p.str);
+            var actual = TodoTxt.getFilteredTaskArray(p.filter);
+            if (p.expectFound) {
+                assert.ok(actual.length === 1);
+            } else {
+                assert.ok(actual.length === 0);
+            }
+        });
+    })(cases[i]);
+}
