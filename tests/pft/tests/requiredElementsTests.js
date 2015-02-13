@@ -2,7 +2,7 @@ var fs = require('fs');
 var cwd = fs.workingDirectory;
 var TH = require(cwd + '/tests/pft/testHelper.js');
 
-PFT.tester.test('Page loads with expected controls', function (page, data, assert) {
+PFT.tester.run('Page loads with expected controls', function (page, assert) {
     var curPage = new PFT.BasePage(page);
     TH.openIndexPage(curPage, function(curPage) {
         curPage.registerKeyElement('#fileDrop-div');
@@ -21,9 +21,7 @@ PFT.tester.test('Page loads with expected controls', function (page, data, asser
         curPage.registerKeyElement('#contexts-ul');
         curPage.checkValidity(function (valid, errMessage) {
             assert.isTrue(valid, errMessage);
-            assert.pass();
+            assert.done();
         });
     });
 });
-
-PFT.tester.start();
