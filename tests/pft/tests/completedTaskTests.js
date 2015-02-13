@@ -2,7 +2,7 @@ var fs = require('fs');
 var cwd = fs.workingDirectory;
 var TH = require(cwd + '/tests/pft/testHelper.js');
 
-PFT.tester.test('can mark task as completed from list view', function (page, data, assert) {
+PFT.tester.run('can mark task as completed from list view', function (page, assert) {
     var curPage = new PFT.BasePage(page);
     TH.openIndexPage(curPage, function (curPage) {
         var text = '(A) Call Mom & Dad @Phone +Family <tuesday>';
@@ -19,9 +19,10 @@ PFT.tester.test('can mark task as completed from list view', function (page, dat
                 return document.querySelector('#listContainer-div span').className;
             });
             assert.isTrue(className.match(/(btn-danger)/), 'Expected that task was closed');
-            assert.pass();
+            // make async to prevent inline exception
+            setTimeout(function () {
+                assert.done();
+            }, 0);
         });
     });
 });
-
-PFT.tester.start();

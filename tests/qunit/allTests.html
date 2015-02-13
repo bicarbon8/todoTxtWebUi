@@ -10,25 +10,25 @@
  * The web page then allows downloading changes back to the user
  * in a txt format compliant with the todo.txt specifications, but
  * having re-sorted the tasks.
- * 
+ *
  * @Created: 08/14/2012
  * @Author: Jason Holt Smith (bicarbon8@gmail.com)
  * @Version: 0.0.1
  * Copyright (c) 2012 Jason Holt Smith. todoTxtWebUi is distributed under
  * the terms of the GNU General Public License.
- * 
+ *
  * This file is part of todoTxtWebUi.
- * 
+ *
  * todoTxtWebUi is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * todoTxtWebUi is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
@@ -44,10 +44,10 @@
 <div id="qunit"></div>
 <div id="qunit-fixture"></div>
 <script src="http://code.jquery.com/qunit/qunit-1.15.0.js"></script>
-<script src="deps/qunit-parameterize-0.4.js"></script>
-<script src="../../js/todoTxt.js"></script>
-<script src="../../js/objects/utils.js"></script>
-<script src="../../js/classes/task.js"></script>
+<script src="../../node_modules/blanket/dist/qunit/blanket.min.js"></script>
+<script src="../../js/todoTxt.js" data-cover></script>
+<script src="../../js/objects/utils.js" data-cover></script>
+<script src="../../js/classes/task.js" data-cover></script>
 <script src="js/todoTxtTests.js"></script>
 <script src="js/todoTxtTaskTests.js"></script>
 </body>
