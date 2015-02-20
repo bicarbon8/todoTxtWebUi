@@ -19,10 +19,7 @@ PFT.tester.run('can mark task as completed from list view', function (page, asse
                 return document.querySelector('#listContainer-div span').className;
             });
             assert.isTrue(className.match(/(btn-danger)/), 'Expected that task was closed');
-            // make async to prevent inline exception
-            setTimeout(function () {
-                assert.done();
-            }, 0);
+            assert.done();
         });
     });
 });

@@ -14,10 +14,7 @@ for (var i=0; i<cases.length; i++) {
             TH.openIndexPage(curPage, function (curPage) {
                 var text = data;
                 TH.addTask(text, curPage, assert, function afterAddTask() {
-                    // make async to prevent inline exception
-                    setTimeout(function () {
-                        assert.pass();
-                    }, 0);
+                    assert.pass();
                 });
             });
         }, 60000);
