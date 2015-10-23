@@ -262,7 +262,11 @@ TodoTxt.View = {
             if (handler.uc) {
                 useCapture = handler.uc;
             }
-            handler.el().addEventListener(handler.ev, handler.fn, useCapture);
+            try {
+              handler.el().addEventListener(handler.ev, handler.fn, useCapture);
+            } catch (e) {
+              // TODO: log this
+            }
         });
     },
 
@@ -272,7 +276,11 @@ TodoTxt.View = {
             if (handler.uc) {
                 useCapture = handler.uc;
             }
-            handler.el().removeEventListener(handler.ev, handler.fn, useCapture);
+            try {
+              handler.el().removeEventListener(handler.ev, handler.fn, useCapture);
+            } catch (e) {
+              // TODO: Log this
+            }
         });
     },
 
@@ -568,7 +576,7 @@ TodoTxt.View = {
      */
     taskToMarkupString: function (task) {
         var text = task.toString();
-        
+
         // make html compatible
         text = TodoTxt.Utils.htmlEncode(text);
 
