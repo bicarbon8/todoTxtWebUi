@@ -262,7 +262,11 @@ TodoTxt.View = {
             if (handler.uc) {
                 useCapture = handler.uc;
             }
-            handler.el().addEventListener(handler.ev, handler.fn, useCapture);
+            try {
+              handler.el().addEventListener(handler.ev, handler.fn, useCapture);
+            } catch (e) {
+              // TODO: log this
+            }
         });
     },
 
@@ -272,7 +276,11 @@ TodoTxt.View = {
             if (handler.uc) {
                 useCapture = handler.uc;
             }
-            handler.el().removeEventListener(handler.ev, handler.fn, useCapture);
+            try {
+              handler.el().removeEventListener(handler.ev, handler.fn, useCapture);
+            } catch (e) {
+              // TODO: Log this
+            }
         });
     },
 
@@ -299,7 +307,7 @@ TodoTxt.View = {
     },
 
     handleAltEnter: function (e) {
-        if ((e.keyCode === 13 && e.altKey) || e.keyCode === 0) { // Alt + Enter
+        if ((e.keyCode && (e.keyCode === 13 && e.altKey)) || (e.type && e.type == "click")) { // Alt + Enter
             var taskId = document.querySelector("#modalEditTaskId-input").value;
             var text = document.querySelector("#modalEdit-textarea").textContent;
             text = TodoTxt.Utils.htmlUnencode(text);
@@ -351,7 +359,7 @@ TodoTxt.View = {
     },
 
     handleAltP: function (e) {
-        if ((e.keyCode === 80 && e.altKey) || e.keyCode === 0) { // Alt + Enter
+        if ((e.keyCode && (e.keyCode === 80 && e.altKey)) || (e.type && e.type == "click")) { // Alt + p
             // update the markup of the displayed task in the Modal
             TodoTxt.View.updateModalPreview();
         }
@@ -568,7 +576,7 @@ TodoTxt.View = {
      */
     taskToMarkupString: function (task) {
         var text = task.toString();
-        
+
         // make html compatible
         text = TodoTxt.Utils.htmlEncode(text);
 
