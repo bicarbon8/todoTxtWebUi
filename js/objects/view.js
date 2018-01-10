@@ -333,16 +333,20 @@ TodoTxt.View = {
 
     handleDeleteClick: function () {
         var taskId = document.querySelector("#modalEditTaskId-input").value;
-        if (confirm(TodoTxt.Resources.get("DELETE_CONFIRM") + "\n\t\"" + TodoTxt.getTask(taskId).toString() + "\"")) {
-            if (TodoTxt.deleteTask(taskId)) {
-                TodoTxt.View.refreshUi();
-                try {
-                    TodoTxt.View.removeModal();
-                } catch (e) {
-                    // TODO: log this
+        var task = TodoTxt.getTask(taskId);
+        if (task)
+        {
+            if (confirm(TodoTxt.Resources.get("DELETE_CONFIRM") + "\n\t\"" + task.toString() + "\"")) {
+                if (TodoTxt.deleteTask(taskId)) {
+                    TodoTxt.View.refreshUi();
+                    try {
+                        TodoTxt.View.removeModal();
+                    } catch (e) {
+                        // TODO: log this
+                    }
+                } else {
+                    // TODO: display error toast
                 }
-            } else {
-                // TODO: display error toast
             }
         }
     },
