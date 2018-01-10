@@ -173,12 +173,17 @@ TodoTxt.View = {
         }
     },
 
+    closeModal: function () {
+        TodoTxt.View.removeModal();
+        TodoTxt.View.refreshUi();
+    },
+
     modalEventHandlers: [
         { el: function () { return document; }, ev: "keydown", fn: function (e) { TodoTxt.View.handleAltEnter(e); } },
         { el: function () { return document; }, ev: "keydown", fn: function (e) { TodoTxt.View.handleEsc(e); } },
         { el: function () { return document; }, ev: "keydown", fn: function (e) { TodoTxt.View.handleAltP(e); } },
         { el: function () { return document.querySelector('#modalEditSave-button'); }, ev: "click", fn: function (e) { TodoTxt.View.handleAltEnter(e); } },
-        { el: function () { return document.querySelector('#modalEditClose-button'); }, ev: "click", fn: function (e) { TodoTxt.View.handleEsc(e); }, uc: true },
+        { el: function () { return document.querySelector('#modalEditClose-button'); }, ev: "click", fn: function (e) { TodoTxt.View.closeModal(); } },
         { el: function () { return document.querySelector('#modalEditDelete-button'); }, ev: "click", fn: function (e) { TodoTxt.View.handleDeleteClick(e); } },
         { el: function () { return document.querySelector('#modalEditPreview-button'); }, ev: "click", fn: function (e) { TodoTxt.View.handleAltP(e); } },
     ],
@@ -326,8 +331,7 @@ TodoTxt.View = {
 
     handleEsc: function (e) {
         if (e.keyCode === 27 || e.keyCode === 0) { // Esc
-            TodoTxt.View.removeModal();
-            TodoTxt.View.refreshUi();
+            TodoTxt.View.closeModal();
         }
     },
 
