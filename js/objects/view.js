@@ -173,12 +173,17 @@ TodoTxt.View = {
         }
     },
 
+    closeModal: function () {
+        TodoTxt.View.removeModal();
+        TodoTxt.View.refreshUi();
+    },
+
     modalEventHandlers: [
         { el: function () { return document; }, ev: "keydown", fn: function (e) { TodoTxt.View.handleAltEnter(e); } },
         { el: function () { return document; }, ev: "keydown", fn: function (e) { TodoTxt.View.handleEsc(e); } },
         { el: function () { return document; }, ev: "keydown", fn: function (e) { TodoTxt.View.handleAltP(e); } },
         { el: function () { return document.querySelector('#modalEditSave-button'); }, ev: "click", fn: function (e) { TodoTxt.View.handleAltEnter(e); } },
-        { el: function () { return document.querySelector('#modalEditClose-button'); }, ev: "click", fn: function (e) { TodoTxt.View.handleEsc(e); }, uc: true },
+        { el: function () { return document.querySelector('#modalEditClose-button'); }, ev: "click", fn: function (e) { TodoTxt.View.closeModal(); } },
         { el: function () { return document.querySelector('#modalEditDelete-button'); }, ev: "click", fn: function (e) { TodoTxt.View.handleDeleteClick(e); } },
         { el: function () { return document.querySelector('#modalEditPreview-button'); }, ev: "click", fn: function (e) { TodoTxt.View.handleAltP(e); } },
     ],
@@ -326,23 +331,26 @@ TodoTxt.View = {
 
     handleEsc: function (e) {
         if (e.keyCode === 27 || e.keyCode === 0) { // Esc
-            TodoTxt.View.removeModal();
-            TodoTxt.View.refreshUi();
+            TodoTxt.View.closeModal();
         }
     },
 
     handleDeleteClick: function () {
         var taskId = document.querySelector("#modalEditTaskId-input").value;
-        if (confirm(TodoTxt.Resources.get("DELETE_CONFIRM") + "\n\t\"" + TodoTxt.getTask(taskId).toString() + "\"")) {
-            if (TodoTxt.deleteTask(taskId)) {
-                TodoTxt.View.refreshUi();
-                try {
-                    TodoTxt.View.removeModal();
-                } catch (e) {
-                    // TODO: log this
+        var task = TodoTxt.getTask(taskId);
+        if (task)
+        {
+            if (confirm(TodoTxt.Resources.get("DELETE_CONFIRM") + "\n\t\"" + task.toString() + "\"")) {
+                if (TodoTxt.deleteTask(taskId)) {
+                    TodoTxt.View.refreshUi();
+                    try {
+                        TodoTxt.View.removeModal();
+                    } catch (e) {
+                        // TODO: log this
+                    }
+                } else {
+                    // TODO: display error toast
                 }
-            } else {
-                // TODO: display error toast
             }
         }
     },
