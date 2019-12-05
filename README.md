@@ -50,18 +50,23 @@ KEYBOARD SHORTCUTS:
 
 INCLUDING IN OTHER WEBSITES:
 ------------
-- download the latest minified script from [github](https://rawgit.com/bicarbon8/todoTxtWebUi/master/dist/todoTxt.min.js)
+- download the latest bundle from [github](https://rawgit.com/bicarbon8/todoTxtWebUi/master/dist/bundle.js)
 - ensure you have the following css and javascript references in your html file:
 ```html
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css" />
-<link rel="stylesheet" type="text/css" href="dist/todoTxt.min.css" />
+<link rel="stylesheet" type="text/css" href="dist/todo-txt.css" />
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="dist/todoTxt.min.js"></script>
+<script type="text/javascript" src="dist/bundle.js"></script>
 ```
 - place a ```div``` element in your html body with an id of ```todotxt```. Ex: 
 ```html
 <div id="todotxt"></div>
 ```
 - open the webpage and the magic happens automatically :)
+
+# NOTE:
+- if you are tracking more than 1000 Tasks, the performance will start to degrade (~5 seconds per add / edit / delete operation)
+- it is not recommended to track more than 5000 Tasks
+- exporting your _todo-txt_ file will exclude all closed tasks so exporting and re-importing can serve as a way of keeping the number of tracked tasks under control
