@@ -757,7 +757,12 @@ export module TodoTxtView {
      * function will allow the user to download a copy of the todo.txt file
      */
     export function exportTodoTxtFile() {
-        var taskArray = TodoTxt.getSortedTaskArray();
+        let tasks: TodoTxtTask[] = TodoTxt.getSortedTaskArray();
+        let taskArray: string[] = [];
+        
+        for (var i=0; i<tasks.length; i++) {
+            taskArray.push(tasks[i].text);
+        }
 
         // create the output string to be written
         var content = taskArray.join("\n");
