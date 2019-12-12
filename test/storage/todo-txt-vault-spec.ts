@@ -11,7 +11,12 @@ describe('TodoTxtVault', () => {
         TodoTxtVault._clear();
     });
     
-    it('can add massive number of tasks', () => {
+    /**
+     * NOTE: this test places too heavy a burden on the build agent so it
+     * has been disabled with the expectation it should be run locally on 
+     * major changes
+     */
+    xit('can add massive number of tasks', () => {
         let max: number = 5000;
         let startTime = Date.now();
         for (var i=0; i<max; i++) {
@@ -21,7 +26,7 @@ describe('TodoTxtVault', () => {
         let endTime = Date.now();
         let elapsed = endTime - startTime;
 
-        expect(elapsed).toBeLessThan(40000);
+        expect(elapsed).toBeLessThan(30000);
     }, 120000);
 
     it('can save without localStorage', () => {
