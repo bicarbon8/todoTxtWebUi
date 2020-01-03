@@ -204,24 +204,26 @@ export module TodoTxt {
 
     /** @ignore */
     function updateAttributes(task: TodoTxtTask): void {
-        // get the priority and add to global filter hashset
-        if (task.priority) {
-            TodoTxtAttributes.priorities.add(task.priority);
+        if (task.isActive || TodoTxtVault.getConfig().showClosed) {
+            // get the priority and add to global filter hashset
+            if (task.priority) {
+                TodoTxtAttributes.priorities.add(task.priority);
+            }
+
+            // get each project and add to the global filter hashset
+            task.projects.forEach((project) => {
+                if (project) {
+                    TodoTxtAttributes.projects.add(project);
+                }
+            });
+
+            // get each context and add to the global filter hashset
+            task.contexts.forEach((context) => {
+                if (context) {
+                    TodoTxtAttributes.contexts.add(context);
+                }
+            });
         }
-
-        // get each project and add to the global filter hashset
-        task.projects.forEach((project) => {
-            if (project) {
-                TodoTxtAttributes.projects.add(project);
-            }
-        });
-
-        // get each context and add to the global filter hashset
-        task.contexts.forEach((context) => {
-            if (context) {
-                TodoTxtAttributes.contexts.add(context);
-            }
-        });
     }
 
     /** @ignore */
