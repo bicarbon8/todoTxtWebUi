@@ -140,4 +140,46 @@ describe('TodoTxtView', () => {
         el = document.querySelector('#contexts-ul') as HTMLElement;
         expect(el).not.toBeNull();
     });
+
+    it('does not display Projects from completed tasks', async () => {
+        // ensure configuration is set to NOT display closed tasks
+        if (TodoTxtVault.getConfig().showClosed) {
+            TodoTxtVault.setConfig({showClosed: false});
+            await waitUntil(() => {
+                return !TodoTxtVault.getConfig().showClosed;
+            }, 1000);
+        }
+        
+        // add a new completed Task
+        let text: string = 'x 2019-12-01 Call +Family on the @Phone';
+        let id: string = TodoTxt.createTask(text);
+        TodoTxtView.displayTasks();
+
+        let task: TodoTxtTask = TodoTxt.getTask(id);
+        expect(task.isActive).toBeFalse();
+        let projList: HTMLUListElement = document.querySelector('#projects-ul');
+        let projects: NodeListOf<Element> = projList.querySelectorAll('li');
+        expect(projects.length).toEqual(0);
+    });
+
+    it('does not display Contexts from completed tasks', async () => {
+        // ensure configuration is set to NOT display closed tasks
+        if (TodoTxtVault.getConfig().showClosed) {
+            TodoTxtVault.setConfig({showClosed: false});
+            await waitUntil(() => {
+                return !TodoTxtVault.getConfig().showClosed;
+            }, 1000);
+        }
+        
+        // add a new completed Task
+        let text: string = 'x 2019-12-01 Call +Family on the @Phone';
+        let id: string = TodoTxt.createTask(text);
+        TodoTxtView.displayTasks();
+
+        let task: TodoTxtTask = TodoTxt.getTask(id);
+        expect(task.isActive).toBeFalse();
+        let projList: HTMLUListElement = document.querySelector('#contexts-ul');
+        let projects: NodeListOf<Element> = projList.querySelectorAll('li');
+        expect(projects.length).toEqual(0);
+    });
 });

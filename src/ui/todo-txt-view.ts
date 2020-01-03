@@ -400,8 +400,7 @@ export module TodoTxtView {
     export function displayPriorities(): void {
         let priList: Element = document.querySelector('#priorities-ul');
         TodoTxtAttributes.priorities.forEach((pri) => {
-            // only display active
-            if (pri || TodoTxtVault.getConfig().showClosed) {
+            if (pri) {
                 var element = generateListElement(pri);
                 priList.appendChild(element);
             }
@@ -415,8 +414,7 @@ export module TodoTxtView {
     export function displayProjects(): void {
         let projList: Element = document.querySelector('#projects-ul');
         TodoTxtAttributes.projects.forEach((proj) => {
-            // only display active
-            if (proj || TodoTxtVault.getConfig().showClosed) {
+            if (proj) {
                 var element = generateListElement(proj);
                 projList.appendChild(element);
             }
@@ -430,8 +428,7 @@ export module TodoTxtView {
     export function displayContexts(): void {
         let ctxList: Element = document.querySelector('#contexts-ul');
         TodoTxtAttributes.contexts.forEach((ctx) => {
-            // only display active
-            if (ctx || TodoTxtVault.getConfig().showClosed) {
+            if (ctx) {
                 var element = generateListElement(ctx);
                 ctxList.appendChild(element);
             }
@@ -522,6 +519,7 @@ export module TodoTxtView {
         let modal: HTMLDivElement = (document.querySelector("#modalEdit-div") as HTMLDivElement);
         let taskId: string = $(modal).attr('task-id');
         let text: string = document.querySelector("#modalEdit-textarea").textContent;
+        text = text.trim(); // remove any leading or trailing whitespace
         text = TodoTxtUtils.htmlUnencode(text);
         if (TodoTxt.updateTask(taskId, text)) {
             refreshUi();
