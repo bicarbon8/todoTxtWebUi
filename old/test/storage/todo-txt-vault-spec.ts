@@ -1,6 +1,6 @@
 import { TodoTxtTask } from "../../../src/app/todo-txt-web-ui/tasks/todo-txt-task";
 import { TodoTxtVault } from "../../../src/app/todo-txt-web-ui/storage/todo-txt-vault";
-import { TodoTxt } from "../../src/todo-txt";
+import { TodoTxt } from "../../../src/app/todo-txt-web-ui/todo-txt";
 
 describe('TodoTxtVault', () => {
     beforeEach(() => {

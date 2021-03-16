@@ -30,7 +30,7 @@
  * You should have received a copy of the GNU General Public License
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
-import { TodoTxt } from '../src/todo-txt';
+import { TodoTxt } from '../../src/app/todo-txt-web-ui/todo-txt';
 import { TodoTxtTask } from '../../src/app/todo-txt-web-ui/tasks/todo-txt-task';
 import { TodoTxtVault } from '../../src/app/todo-txt-web-ui/storage/todo-txt-vault';
 

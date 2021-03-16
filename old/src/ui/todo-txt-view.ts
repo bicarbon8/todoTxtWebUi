@@ -31,7 +31,7 @@
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
 import { TodoTxtTask } from "../../../src/app/todo-txt-web-ui/tasks/todo-txt-task";
-import { TodoTxt } from '../todo-txt';
+import { TodoTxt } from '../../../src/app/todo-txt-web-ui/todo-txt';
 import * as $ from 'jquery';
 import { TodoTxtResources } from "./todo-txt-resources";
 import { TodoTxtUtils } from "../../../src/app/todo-txt-web-ui/helpers/todo-txt-utils";

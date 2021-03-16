@@ -1,6 +1,6 @@
 import * as $ from 'jquery';
 import * as bootstrap from 'bootstrap';
-import { TodoTxt } from '../../src/todo-txt';
+import { TodoTxt } from '../../../src/app/todo-txt-web-ui/todo-txt';
 import { TodoTxtView } from '../../src/ui/todo-txt-view';
 import { TodoTxtVault } from '../../../src/app/todo-txt-web-ui/storage/todo-txt-vault';
 import { waitUntil } from '../test-helper';

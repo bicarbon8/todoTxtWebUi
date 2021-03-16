@@ -30,10 +30,11 @@
  * You should have received a copy of the GNU General Public License
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
-import { TodoTxtAttributes } from '../../src/app/todo-txt-web-ui/tasks/todo-txt-attributes';
-import { TodoTxtTask } from '../../src/app/todo-txt-web-ui/tasks/todo-txt-task';
-import { TodoTxtUtils } from '../../src/app/todo-txt-web-ui/helpers/todo-txt-utils';
-import { TodoTxtVault } from '../../src/app/todo-txt-web-ui/storage/todo-txt-vault';
+import { TodoTxtAttributes } from './tasks/todo-txt-attributes';
+import { TodoTxtTask } from './tasks/todo-txt-task';
+import { TodoTxtTaskParser } from './tasks/todo-txt-task-parser';
+import { TodoTxtUtils } from './helpers/todo-txt-utils';
+import { TodoTxtVault } from './storage/todo-txt-vault';
 
 export module TodoTxt {
     /**
@@ -114,7 +115,7 @@ export module TodoTxt {
      */
     export function createTask(textStr: string): string {
         let text: string = textStr || '';
-        let t: TodoTxtTask = new TodoTxtTask(text);
+        let t: TodoTxtTask = TodoTxtTaskParser.parse(text);
         addTask(t);
         return t.id;
     }
@@ -136,14 +137,8 @@ export module TodoTxt {
      * @returns {boolean} true if task could be updated otherwise false
      */
     export function updateTask(taskId: string, newText: string): boolean {
-        // re-parse task
-        let task: TodoTxtTask;
-        try {
-            task = getTask(taskId);
-        } catch (e) {
-            task = new TodoTxtTask();
-        }
-        task.parseInput(newText);
+        let task: TodoTxtTask = TodoTxtTaskParser.parse(newText);
+        task.id = taskId;
 
         // overwrite storage with updated task
         TodoTxt.addTask(task);
@@ -157,7 +152,7 @@ export module TodoTxt {
      * @param {TodoTxtTask} task - a task to be added to Storage
      */
     export function addTask(task: TodoTxtTask) {
-        TodoTxtVault.addTask(task);
+        TodoTxtVault.addTasks(task);
         updateAttributes(task);
     }
 

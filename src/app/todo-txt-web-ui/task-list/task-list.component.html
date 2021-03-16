@@ -1,15 +1,43 @@
-<div *ngFor="let t of getTasks()">
-    <div class="btn-group d-flex flex-nowrap pt-1" role="group">
-        <button *ngIf="t.isActive && editingTask != t.id" class="col-xs-2 btn btn-lg btn-light" (click)="click_MarkComplete(t.id)" aria-label="mark as complete"><i class="bi bi-circle"></i></button>
-        <button *ngIf="!t.isActive && editingTask != t.id" class="col-xs-2 btn btn-lg btn-success" (click)="click_MarkActive(t.id)" aria-label="mark as incomplete"><i class="bit bi-check-circle"></i></button>
-        <button *ngIf="editingTask != t.id" class="btn btn-lg {{(t.isActive) ? 'btn-light' : 'btn-outline-success'}} text-start w-100" (click)="click_EditTask(t.id)" aria-label="edit task" [innerHTML]="getMarkupForTask(t.id)"></button>
-    </div>
-    <div class="btn-group d-flex flex-wrap pt-1" role="group">
-        <div *ngIf="editingTask == t.id" class="btn btn-lg btn-light w-90">
-            <div id="textarea_{{t.id}}" contenteditable="true" class="textarea text-start">{{t.text}}</div>
+<div class="d-flex flex-row justify-content-evenly">
+    <div class="d-flex flex-column flex-grow-1">
+        <div class="btn-group btn-group-justified">
+            <button class="file-upload btn btn-secondary btn-lg" (click)="fileUpload.click()" aria-label="upload file">
+                <i class="bi bi-cloud-upload"> </i><span class="fw-light d-none d-lg-inline"> {{fileName || 'Select todo.txt File'}}</span>
+            </button>
+            <button class="btn btn-lg btn-primary" (click)="click_AddTask()" aria-label="add task">
+                <i class="bi bi-clipboard-plus"> </i><span class="fw-light d-none d-lg-inline"> Add Task</span>
+            </button>
+            <button class="btn btn-lg {{(isDirty) ? 'btn-warning' : 'btn-success'}}" (click)="click_SaveTasks()" aria-label="save tasks to file">
+                <i class="bi bi-save"> </i><span class="fw-light d-none d-lg-inline"> Save Tasks</span>
+            </button>
         </div>
-        <button *ngIf="editingTask == t.id" class="btn btn-lg flex-shrink-1 btn-success" (click)="click_SaveTaskEdit(t.id)" aria-label="save changes"><i class="bi bi-check"></i></button>
-        <button *ngIf="editingTask == t.id" class="btn btn-lg flex-shrink-1 btn-warning" (click)="click_CancelTaskEdit()" aria-label="discard changes"><i class="bi bi-x"></i></button>
-        <button *ngIf="editingTask == t.id" class="btn btn-lg flex-shrink-1 btn-danger" (click)="click_DeleteTask(t.id)" aria-label="delete task"><i class="bi bi-trash"></i></button>
+    </div>
+    <div class="d-flex flex-column p-2">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" (change)="toggleShowClosed()" [checked]="showClosed">
+            <label class="form-check-label d-none d-lg-inline" for="flexSwitchCheckDefault">{{(showClosed) ? 'Hide Closed Tasks' : 'Show Closed Tasks'}}</label>
+        </div>
+    </div>
+</div>
+<input type="file" class="file-input visually-hidden" [accept]="requiredFileType" (change)="processToDoFile($event)" #fileUpload />
+<div class="input-group input-group-lg">
+    <input #todoTxtFilter type="text" class="form-control" placeholder="Type filter(s)" aria-label="task filter" aria-describedby="button-addon2" (keyup)="keyup_UpdateFilter(todoTxtFilter.value)">
+    <button class="btn btn-primary" type="button" id="button-addon2" (click)="click_ClearFilter($event)">
+        <span class="bi bi-x-circle"></span> <span class="fw-light d-none d-lg-inline" aria-label="clear filter"> Clear Filter</span>
+    </button>
+</div>
+<div *ngFor="let t of getTasks()">
+    <div *ngIf="editingTaskId != t.id" class="btn-group d-flex flex-nowrap pt-1" role="group">
+        <button *ngIf="t.isActive" class="col-xs-2 btn btn-lg btn-light" (click)="click_MarkComplete(t.id)" aria-label="mark as complete"><i class="bi bi-circle"></i></button>
+        <button *ngIf="!t.isActive" class="col-xs-2 btn btn-lg btn-success" (click)="click_MarkActive(t.id)" aria-label="mark as incomplete"><i class="bit bi-check-circle"></i></button>
+        <button class="btn btn-lg {{(t.isActive) ? 'btn-light' : 'btn-outline-success'}} text-start w-100" (click)="click_StartEditTask(t.id)" aria-label="edit task" [innerHTML]="getMarkupForTask(t.text)"></button>
+    </div>
+    <div *ngIf="editingTaskId == t.id">
+        <div id="textarea_{{t.id}}" contenteditable="true" class="textarea btn btn-lg pt-1 text-start w-100" [innerHTML]="getMarkupForTask(t.text)"></div>
+        <div class="btn-group d-flex flex-wrap pt-1" role="group">
+            <button class="btn btn-success" (click)="click_SaveTaskEdit(t.id)" aria-label="save changes"><i class="bi bi-check"></i><span class="fw-light d-none d-lg-inline"> {{(isAddingNew) ? 'Save' : 'Update'}} Task</span></button>
+            <button class="btn btn-warning" (click)="click_CancelTaskEdit()" aria-label="discard changes"><i class="bi bi-x"></i><span class="fw-light d-none d-lg-inline"> Discard Changes</span></button>
+            <button *ngIf="!isAddingNew" class="btn btn-danger" (click)="click_DeleteTask(t.id)" aria-label="delete task"><i class="bi bi-trash"></i><span class="fw-light d-none d-lg-inline"> Delete Task</span></button>
+        </div>
     </div>
 </div>

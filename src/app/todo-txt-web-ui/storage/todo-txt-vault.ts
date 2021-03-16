@@ -33,7 +33,6 @@
 import { TodoTxtTask } from "../tasks/todo-txt-task";
 import { TodoTxtConfig } from "./todo-txt-config";
 import { TodoTextCache } from "./todo-txt-cache";
-import { TodoTxtTaskParser } from "../tasks/todo-txt-task-parser";
 
 export module TodoTxtVault {
     var _tasks: Map<string, TodoTxtTask> = new Map<string, TodoTxtTask>();

@@ -2,24 +2,25 @@ import { TodoTxtUtils } from "../helpers/todo-txt-utils";
 import { TodoTxtTask } from "./todo-txt-task";
 
 export module TodoTxtTaskParser {
-    export function parseInput(...taskStrs: string[]): TodoTxtTask[] {
+    export function parse(text: string): TodoTxtTask {
+        let task: TodoTxtTask = {
+            id: TodoTxtUtils.guid(),
+            text: text,
+            isActive: parseStatus(text),
+            priority: parsePriority(text),
+            completedDate: parseCompletedDate(text),
+            createdDate: parseCreatedDate(text),
+            projects: parseProjects(text),
+            contexts: parseContexts(text)
+        };
+        return task;
+    }
+
+    export function parseMany(...texts: string[]): TodoTxtTask[] {
         let tasks: TodoTxtTask[] = [];
-        if (taskStrs) {
-            for (var i=0; i<taskStrs.length; i++) {
-                let input: string = taskStrs[i];
-                if (input) {
-                    let task: TodoTxtTask = {
-                        id: TodoTxtUtils.guid(),
-                        text: input,
-                        isActive: parseStatus(input),
-                        priority: parsePriority(input),
-                        completedDate: parseCompletedDate(input),
-                        createdDate: parseCreatedDate(input),
-                        projects: parseProjects(input),
-                        contexts: parseContexts(input)
-                    };
-                    tasks.push(task);
-                }
+        if (texts) {
+            for (var i=0; i<texts.length; i++) {
+                tasks.push(parse(texts[i]));
             }
         }
         return tasks;
