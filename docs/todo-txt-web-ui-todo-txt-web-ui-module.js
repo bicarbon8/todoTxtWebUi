@@ -1,25 +1,74 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["todo-txt-web-ui-todo-txt-web-ui-module"],{
 
-/***/ "0W9t":
-/*!******************************************************************!*\
-  !*** ./src/app/todo-txt-web-ui/task-list/task-list.component.ts ***!
-  \******************************************************************/
-/*! exports provided: TaskListComponent */
+/***/ "6gkx":
+/*!***********************************************************!*\
+  !*** ./src/app/todo-txt-web-ui/todo-txt-web-ui.module.ts ***!
+  \***********************************************************/
+/*! exports provided: TodoTxtWebUiModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TaskListComponent", function() { return TaskListComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodoTxtWebUiModule", function() { return TodoTxtWebUiModule; });
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _todo_txt_web_ui_routing_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todo-txt-web-ui-routing.module */ "p1Bm");
+/* harmony import */ var _todo_txt_web_ui_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./todo-txt-web-ui.component */ "S1do");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
+
+
+
+
+class TodoTxtWebUiModule {
+}
+TodoTxtWebUiModule.ɵfac = function TodoTxtWebUiModule_Factory(t) { return new (t || TodoTxtWebUiModule)(); };
+TodoTxtWebUiModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineNgModule"]({ type: TodoTxtWebUiModule });
+TodoTxtWebUiModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjector"]({ imports: [[
+            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+            _todo_txt_web_ui_routing_module__WEBPACK_IMPORTED_MODULE_1__["TodoTxtWebUiRoutingModule"]
+        ]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsetNgModuleScope"](TodoTxtWebUiModule, { declarations: [_todo_txt_web_ui_component__WEBPACK_IMPORTED_MODULE_2__["TodoTxtWebUiComponent"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+        _todo_txt_web_ui_routing_module__WEBPACK_IMPORTED_MODULE_1__["TodoTxtWebUiRoutingModule"]] }); })();
+
+
+/***/ }),
+
+/***/ "Iab2":
+/*!*******************************************************!*\
+  !*** ./node_modules/file-saver/dist/FileSaver.min.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(a,b){if(true)!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (b),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));else {}})(this,function(){"use strict";function b(a,b){return"undefined"==typeof b?b={autoBom:!1}:"object"!=typeof b&&(console.warn("Deprecated: Expected third argument to be a object"),b={autoBom:!b}),b.autoBom&&/^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a.type)?new Blob(["\uFEFF",a],{type:a.type}):a}function c(a,b,c){var d=new XMLHttpRequest;d.open("GET",a),d.responseType="blob",d.onload=function(){g(d.response,b,c)},d.onerror=function(){console.error("could not download file")},d.send()}function d(a){var b=new XMLHttpRequest;b.open("HEAD",a,!1);try{b.send()}catch(a){}return 200<=b.status&&299>=b.status}function e(a){try{a.dispatchEvent(new MouseEvent("click"))}catch(c){var b=document.createEvent("MouseEvents");b.initMouseEvent("click",!0,!0,window,0,0,0,80,20,!1,!1,!1,!1,0,null),a.dispatchEvent(b)}}var f="object"==typeof window&&window.window===window?window:"object"==typeof self&&self.self===self?self:"object"==typeof global&&global.global===global?global:void 0,a=f.navigator&&/Macintosh/.test(navigator.userAgent)&&/AppleWebKit/.test(navigator.userAgent)&&!/Safari/.test(navigator.userAgent),g=f.saveAs||("object"!=typeof window||window!==f?function(){}:"download"in HTMLAnchorElement.prototype&&!a?function(b,g,h){var i=f.URL||f.webkitURL,j=document.createElement("a");g=g||b.name||"download",j.download=g,j.rel="noopener","string"==typeof b?(j.href=b,j.origin===location.origin?e(j):d(j.href)?c(b,g,h):e(j,j.target="_blank")):(j.href=i.createObjectURL(b),setTimeout(function(){i.revokeObjectURL(j.href)},4E4),setTimeout(function(){e(j)},0))}:"msSaveOrOpenBlob"in navigator?function(f,g,h){if(g=g||f.name||"download","string"!=typeof f)navigator.msSaveOrOpenBlob(b(f,h),g);else if(d(f))c(f,g,h);else{var i=document.createElement("a");i.href=f,i.target="_blank",setTimeout(function(){e(i)})}}:function(b,d,e,g){if(g=g||open("","_blank"),g&&(g.document.title=g.document.body.innerText="downloading..."),"string"==typeof b)return c(b,d,e);var h="application/octet-stream"===b.type,i=/constructor/i.test(f.HTMLElement)||f.safari,j=/CriOS\/[\d]+/.test(navigator.userAgent);if((j||h&&i||a)&&"undefined"!=typeof FileReader){var k=new FileReader;k.onloadend=function(){var a=k.result;a=j?a:a.replace(/^data:[^;]*;/,"data:attachment/file;"),g?g.location.href=a:location=a,g=null},k.readAsDataURL(b)}else{var l=f.URL||f.webkitURL,m=l.createObjectURL(b);g?g.location=m:location.href=m,g=null,setTimeout(function(){l.revokeObjectURL(m)},4E4)}});f.saveAs=g.saveAs=g, true&&(module.exports=g)});
+
+//# sourceMappingURL=FileSaver.min.js.map
+
+/***/ }),
+
+/***/ "S1do":
+/*!**************************************************************!*\
+  !*** ./src/app/todo-txt-web-ui/todo-txt-web-ui.component.ts ***!
+  \**************************************************************/
+/*! exports provided: TodoTxtWebUiComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodoTxtWebUiComponent", function() { return TodoTxtWebUiComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
-/* harmony import */ var file_saver__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! file-saver */ "Iab2");
-/* harmony import */ var file_saver__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(file_saver__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _helpers_todo_txt_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/todo-txt-utils */ "aOL1");
-/* harmony import */ var _storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../storage/todo-txt-vault */ "vn/f");
-/* harmony import */ var _tasks_todo_txt_task_parser__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tasks/todo-txt-task-parser */ "t5cd");
-/* harmony import */ var _todo_txt__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../todo-txt */ "aomO");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/platform-browser */ "jhN1");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _helpers_todo_txt_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers/todo-txt-utils */ "aOL1");
+/* harmony import */ var _storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./storage/todo-txt-vault */ "vn/f");
+/* harmony import */ var _tasks_todo_txt_task_parser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./tasks/todo-txt-task-parser */ "t5cd");
+/* harmony import */ var _todo_txt__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./todo-txt */ "aomO");
+/* harmony import */ var file_saver__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! file-saver */ "Iab2");
+/* harmony import */ var file_saver__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(file_saver__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _tasks_todo_txt_attributes__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./tasks/todo-txt-attributes */ "bN3D");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/platform-browser */ "jhN1");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/common */ "ofXK");
 
 
 
@@ -29,110 +78,146 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function TaskListComponent_div_29_div_1_button_1_Template(rf, ctx) { if (rf & 1) {
-    const _r10 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "button", 29);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function TaskListComponent_div_29_div_1_button_1_Template_button_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵrestoreView"](_r10); const t_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](2).$implicit; const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](); return ctx_r8.click_MarkComplete(t_r3.id); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](1, "i", 30);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
+
+function TodoTxtWebUiComponent_div_32_div_1_button_1_Template(rf, ctx) { if (rf & 1) {
+    const _r13 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "button", 38);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function TodoTxtWebUiComponent_div_32_div_1_button_1_Template_button_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r13); const t_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](2).$implicit; const ctx_r11 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](); return ctx_r11.click_MarkComplete(t_r6.id); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](1, "i", 39);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
 } }
-function TaskListComponent_div_29_div_1_button_2_Template(rf, ctx) { if (rf & 1) {
-    const _r13 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "button", 31);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function TaskListComponent_div_29_div_1_button_2_Template_button_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵrestoreView"](_r13); const t_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](2).$implicit; const ctx_r11 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](); return ctx_r11.click_MarkActive(t_r3.id); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](1, "i", 32);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
+function TodoTxtWebUiComponent_div_32_div_1_button_2_Template(rf, ctx) { if (rf & 1) {
+    const _r16 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "button", 40);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function TodoTxtWebUiComponent_div_32_div_1_button_2_Template_button_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r16); const t_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](2).$implicit; const ctx_r14 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](); return ctx_r14.click_MarkActive(t_r6.id); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](1, "i", 41);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
 } }
-function TaskListComponent_div_29_div_1_Template(rf, ctx) { if (rf & 1) {
-    const _r16 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "div", 25);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](1, TaskListComponent_div_29_div_1_button_1_Template, 2, 0, "button", 26);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](2, TaskListComponent_div_29_div_1_button_2_Template, 2, 0, "button", 27);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](3, "button", 28);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function TaskListComponent_div_29_div_1_Template_button_click_3_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵrestoreView"](_r16); const t_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"]().$implicit; const ctx_r14 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](); return ctx_r14.click_StartEditTask(t_r3.id); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
+function TodoTxtWebUiComponent_div_32_div_1_Template(rf, ctx) { if (rf & 1) {
+    const _r19 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 34);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](1, TodoTxtWebUiComponent_div_32_div_1_button_1_Template, 2, 0, "button", 35);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](2, TodoTxtWebUiComponent_div_32_div_1_button_2_Template, 2, 0, "button", 36);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](3, "button", 37);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function TodoTxtWebUiComponent_div_32_div_1_Template_button_click_3_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r19); const t_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]().$implicit; const ctx_r17 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](); return ctx_r17.click_StartEditTask(t_r6.id); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const t_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"]().$implicit;
-    const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngIf", t_r3.isActive);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngIf", !t_r3.isActive);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵclassMapInterpolate1"]("btn btn-lg ", t_r3.isActive ? "btn-light" : "btn-outline-success", " text-start w-100");
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("innerHTML", ctx_r4.getMarkupForTask(t_r3.text), _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵsanitizeHtml"]);
+    const t_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]().$implicit;
+    const ctx_r7 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngIf", t_r6.isActive);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngIf", !t_r6.isActive);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵclassMapInterpolate1"]("btn btn-lg ", t_r6.isActive ? "btn-light" : "btn-outline-success", " text-start w-100");
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("innerHTML", ctx_r7.getMarkupForTask(t_r6.text), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵsanitizeHtml"]);
 } }
-function TaskListComponent_div_29_div_2_button_11_Template(rf, ctx) { if (rf & 1) {
-    const _r21 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "button", 40);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function TaskListComponent_div_29_div_2_button_11_Template_button_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵrestoreView"](_r21); const t_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](2).$implicit; const ctx_r19 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](); return ctx_r19.click_DeleteTask(t_r3.id); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](1, "i", 41);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](2, "span", 5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](3, " Delete Task");
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
+function TodoTxtWebUiComponent_div_32_div_2_button_11_Template(rf, ctx) { if (rf & 1) {
+    const _r24 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "button", 49);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function TodoTxtWebUiComponent_div_32_div_2_button_11_Template_button_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r24); const t_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](2).$implicit; const ctx_r22 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](); return ctx_r22.click_DeleteTask(t_r6.id); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](1, "i", 50);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](2, "span", 8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](3, " Delete Task");
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
 } }
-function TaskListComponent_div_29_div_2_Template(rf, ctx) { if (rf & 1) {
-    const _r24 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "div");
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](1, "div", 33);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](2, "div", 34);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](3, "button", 35);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function TaskListComponent_div_29_div_2_Template_button_click_3_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵrestoreView"](_r24); const t_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"]().$implicit; const ctx_r22 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](); return ctx_r22.click_SaveTaskEdit(t_r3.id); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](4, "i", 36);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](5, "span", 5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](7, "button", 37);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function TaskListComponent_div_29_div_2_Template_button_click_7_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵrestoreView"](_r24); const ctx_r25 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"](2); return ctx_r25.click_CancelTaskEdit(); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](8, "i", 38);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](9, "span", 5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](10, " Discard Changes");
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](11, TaskListComponent_div_29_div_2_button_11_Template, 4, 0, "button", 39);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
+function TodoTxtWebUiComponent_div_32_div_2_Template(rf, ctx) { if (rf & 1) {
+    const _r27 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div");
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](1, "div", 42);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("keydown.enter", function TodoTxtWebUiComponent_div_32_div_2_Template_div_keydown_enter_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r27); const t_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]().$implicit; const ctx_r25 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](); return ctx_r25.click_SaveTaskEdit(t_r6.id); })("keydown.esc", function TodoTxtWebUiComponent_div_32_div_2_Template_div_keydown_esc_1_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r27); const ctx_r28 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](2); return ctx_r28.click_CancelTaskEdit(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](2, "div", 43);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](3, "button", 44);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function TodoTxtWebUiComponent_div_32_div_2_Template_button_click_3_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r27); const t_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]().$implicit; const ctx_r29 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](); return ctx_r29.click_SaveTaskEdit(t_r6.id); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](4, "i", 45);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](5, "span", 8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](7, "button", 46);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function TodoTxtWebUiComponent_div_32_div_2_Template_button_click_7_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r27); const ctx_r31 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](2); return ctx_r31.click_CancelTaskEdit(); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](8, "i", 47);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](9, "span", 8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](10, " Discard Changes");
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](11, TodoTxtWebUiComponent_div_32_div_2_button_11_Template, 4, 0, "button", 48);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const t_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"]().$implicit;
-    const ctx_r5 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵpropertyInterpolate1"]("id", "textarea_", t_r3.id, "");
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("innerHTML", ctx_r5.getMarkupForTask(t_r3.text), _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵsanitizeHtml"]);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate1"](" ", ctx_r5.isAddingNew ? "Save" : "Update", " Task");
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngIf", !ctx_r5.isAddingNew);
+    const t_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]().$implicit;
+    const ctx_r8 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵpropertyInterpolate1"]("id", "textarea_", t_r6.id, "");
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("innerHTML", ctx_r8.getMarkupForTask(t_r6.text), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵsanitizeHtml"]);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtextInterpolate1"](" ", ctx_r8.isAddingNew ? "Save" : "Update", " Task");
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngIf", !ctx_r8.isAddingNew);
 } }
-function TaskListComponent_div_29_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "div");
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](1, TaskListComponent_div_29_div_1_Template, 4, 6, "div", 23);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](2, TaskListComponent_div_29_div_2_Template, 12, 4, "div", 24);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
+function TodoTxtWebUiComponent_div_32_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div");
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](1, TodoTxtWebUiComponent_div_32_div_1_Template, 4, 6, "div", 32);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](2, TodoTxtWebUiComponent_div_32_div_2_Template, 12, 4, "div", 33);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
 } if (rf & 2) {
-    const t_r3 = ctx.$implicit;
-    const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngIf", ctx_r2.editingTaskId != t_r3.id);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngIf", ctx_r2.editingTaskId == t_r3.id);
+    const t_r6 = ctx.$implicit;
+    const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngIf", ctx_r2.editingTaskId != t_r6.id);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngIf", ctx_r2.editingTaskId == t_r6.id);
 } }
-class TaskListComponent {
+function TodoTxtWebUiComponent_button_40_Template(rf, ctx) { if (rf & 1) {
+    const _r35 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "button", 51);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function TodoTxtWebUiComponent_button_40_Template_button_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r35); const p_r33 = ctx.$implicit; const ctx_r34 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](); return ctx_r34.keyup_UpdateFilter(p_r33); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const p_r33 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtextInterpolate1"](" ", p_r33, "");
+} }
+function TodoTxtWebUiComponent_button_46_Template(rf, ctx) { if (rf & 1) {
+    const _r38 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "button", 51);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function TodoTxtWebUiComponent_button_46_Template_button_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r38); const p_r36 = ctx.$implicit; const ctx_r37 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](); return ctx_r37.keyup_UpdateFilter(p_r36); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const p_r36 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtextInterpolate1"](" ", p_r36, "");
+} }
+function TodoTxtWebUiComponent_button_52_Template(rf, ctx) { if (rf & 1) {
+    const _r41 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "button", 51);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function TodoTxtWebUiComponent_button_52_Template_button_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r41); const p_r39 = ctx.$implicit; const ctx_r40 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵnextContext"](); return ctx_r40.keyup_UpdateFilter(p_r39); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const p_r39 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtextInterpolate1"](" ", p_r39, "");
+} }
+class TodoTxtWebUiComponent {
     constructor(sanitiser) {
         this.sanitiser = sanitiser;
         this.requiredFileType = '.txt';
         this.isDirty = false;
-        this.showClosed = _storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_3__["TodoTxtVault"].getConfig().showClosed;
+        this.showClosed = _storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_2__["TodoTxtVault"].getConfig().showClosed;
         this.downloadFileName = 'todo.txt';
     }
     toggleShowClosed() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            let cfg = _storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_3__["TodoTxtVault"].getConfig();
+            let cfg = _storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_2__["TodoTxtVault"].getConfig();
             cfg.showClosed = !cfg.showClosed;
             this.showClosed = cfg.showClosed;
-            _storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_3__["TodoTxtVault"].setConfig(cfg);
+            _storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_2__["TodoTxtVault"].setConfig(cfg);
         });
     }
     processToDoFile(event) {
@@ -143,12 +228,12 @@ class TaskListComponent {
                 if (files && files.length > 0) {
                     let file = files[0];
                     if (file) {
-                        _storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_3__["TodoTxtVault"].removeAllTasks();
+                        _storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_2__["TodoTxtVault"].removeAllTasks();
                         this.fileName = file.name;
                         this.downloadFileName = this.fileName;
                         let text = yield file.text();
                         let lines = text.split('\n');
-                        _storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_3__["TodoTxtVault"].addTasks(..._tasks_todo_txt_task_parser__WEBPACK_IMPORTED_MODULE_4__["TodoTxtTaskParser"].parseMany(...lines));
+                        _storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_2__["TodoTxtVault"].addTasks(..._tasks_todo_txt_task_parser__WEBPACK_IMPORTED_MODULE_3__["TodoTxtTaskParser"].parseMany(...lines));
                     }
                 }
             }
@@ -157,8 +242,8 @@ class TaskListComponent {
     click_AddTask() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
             this.isAddingNew = true;
-            let t = _tasks_todo_txt_task_parser__WEBPACK_IMPORTED_MODULE_4__["TodoTxtTaskParser"].parse('');
-            _todo_txt__WEBPACK_IMPORTED_MODULE_5__["TodoTxt"].addTask(t);
+            let t = _tasks_todo_txt_task_parser__WEBPACK_IMPORTED_MODULE_3__["TodoTxtTaskParser"].parse('');
+            _todo_txt__WEBPACK_IMPORTED_MODULE_4__["TodoTxt"].addTask(t);
             this.click_StartEditTask(t.id);
             this.isDirty = true;
             return false;
@@ -170,7 +255,7 @@ class TaskListComponent {
             let data = (_a = this.getTasks().map((t) => { var _a; return (_a = t.text) === null || _a === void 0 ? void 0 : _a.trim(); })) === null || _a === void 0 ? void 0 : _a.join('\n');
             if (data) {
                 let blob = new Blob([data], { type: 'data:attachment/text; charset=utf-8' });
-                Object(file_saver__WEBPACK_IMPORTED_MODULE_1__["saveAs"])(blob, this.downloadFileName);
+                Object(file_saver__WEBPACK_IMPORTED_MODULE_5__["saveAs"])(blob, this.downloadFileName);
             }
             this.isDirty = false;
         });
@@ -188,23 +273,42 @@ class TaskListComponent {
     }
     click_MarkComplete(id) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            _todo_txt__WEBPACK_IMPORTED_MODULE_5__["TodoTxt"].closeTask(id);
+            _todo_txt__WEBPACK_IMPORTED_MODULE_4__["TodoTxt"].closeTask(id);
         });
     }
     click_MarkActive(id) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            _todo_txt__WEBPACK_IMPORTED_MODULE_5__["TodoTxt"].activateTask(id);
+            _todo_txt__WEBPACK_IMPORTED_MODULE_4__["TodoTxt"].activateTask(id);
         });
     }
     click_StartEditTask(id) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
             this.editingTaskId = id;
+            setTimeout(() => this.setFocus(id), 0);
+        });
+    }
+    setFocus(id) {
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            let div = document.getElementById(`textarea_${id}`);
+            if (div) {
+                console.info(`found element 'textarea_${id}'`);
+                div.focus();
+                // let s = window.getSelection();
+                // let r = document.createRange();
+                // r.setStart(div, 0);
+                // r.setEnd(div, 0);
+                // s.removeAllRanges();
+                // s.addRange(r);
+            }
+            else {
+                console.warn(`unable to find element 'textarea_${id}'`);
+            }
         });
     }
     click_SaveTaskEdit(id) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
             let text = document.querySelector(`#textarea_${id}`).innerText;
-            _todo_txt__WEBPACK_IMPORTED_MODULE_5__["TodoTxt"].updateTask(id, text);
+            _todo_txt__WEBPACK_IMPORTED_MODULE_4__["TodoTxt"].updateTask(id, text);
             this.isDirty = true;
             this.doneEditing();
             return false;
@@ -221,7 +325,7 @@ class TaskListComponent {
     }
     click_DeleteTask(id) {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            _storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_3__["TodoTxtVault"].removeTask(id);
+            _storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_2__["TodoTxtVault"].removeTask(id);
             this.isDirty = true;
             this.doneEditing();
         });
@@ -231,8 +335,8 @@ class TaskListComponent {
         this.isAddingNew = false;
     }
     getTasks() {
-        let tasks = _todo_txt__WEBPACK_IMPORTED_MODULE_5__["TodoTxt"].getFilteredTaskArray(this.filterStr);
-        if (!_storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_3__["TodoTxtVault"].getConfig().showClosed) {
+        let tasks = _todo_txt__WEBPACK_IMPORTED_MODULE_4__["TodoTxt"].getFilteredTaskArray(this.filterStr);
+        if (!_storage_todo_txt_vault__WEBPACK_IMPORTED_MODULE_2__["TodoTxtVault"].getConfig().showClosed) {
             let active = [];
             for (var i = 0; i < tasks.length; i++) {
                 if (tasks[i].isActive) {
@@ -249,9 +353,9 @@ class TaskListComponent {
      * @returns {string} the HTML marked up task text
      */
     getMarkupForTask(text) {
-        let task = _tasks_todo_txt_task_parser__WEBPACK_IMPORTED_MODULE_4__["TodoTxtTaskParser"].parse(text);
+        let task = _tasks_todo_txt_task_parser__WEBPACK_IMPORTED_MODULE_3__["TodoTxtTaskParser"].parse(text);
         // make html compatible
-        text = _helpers_todo_txt_utils__WEBPACK_IMPORTED_MODULE_2__["TodoTxtUtils"].htmlEncode(text);
+        text = _helpers_todo_txt_utils__WEBPACK_IMPORTED_MODULE_1__["TodoTxtUtils"].htmlEncode(text);
         // markup priority
         let priCls = this.getDisplayClassForTask(task);
         text = text.replace(task.priority, "<span class=\"" + priCls + "\"><b>" + task.priority + "</b></span>");
@@ -289,163 +393,134 @@ class TaskListComponent {
         }
         return cls;
     }
-}
-TaskListComponent.ɵfac = function TaskListComponent_Factory(t) { return new (t || TaskListComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdirectiveInject"](_angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__["DomSanitizer"])); };
-TaskListComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdefineComponent"]({ type: TaskListComponent, selectors: [["app-task-list"]], hostBindings: function TaskListComponent_HostBindings(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("keydown.alt.t", function TaskListComponent_keydown_alt_t_HostBindingHandler() { return ctx.click_AddTask(); })("keydown.alt.enter", function TaskListComponent_keydown_alt_enter_HostBindingHandler() { return ctx.click_SaveTaskEdit(); })("keydown.alt.esc", function TaskListComponent_keydown_alt_esc_HostBindingHandler() { return ctx.click_CancelTaskEdit(); });
-    } }, decls: 30, vars: 8, consts: [[1, "d-flex", "flex-row", "justify-content-evenly"], [1, "d-flex", "flex-column", "flex-grow-1"], [1, "btn-group", "btn-group-justified"], ["aria-label", "upload file", 1, "file-upload", "btn", "btn-secondary", "btn-lg", 3, "click"], [1, "bi", "bi-cloud-upload"], [1, "fw-light", "d-none", "d-lg-inline"], ["aria-label", "add task", 1, "btn", "btn-lg", "btn-primary", 3, "click"], [1, "bi", "bi-clipboard-plus"], ["aria-label", "save tasks to file", 3, "click"], [1, "bi", "bi-save"], [1, "d-flex", "flex-column", "p-2"], [1, "form-check", "form-switch"], ["type", "checkbox", "id", "flexSwitchCheckDefault", 1, "form-check-input", 3, "checked", "change"], ["for", "flexSwitchCheckDefault", 1, "form-check-label", "d-none", "d-lg-inline"], ["type", "file", 1, "file-input", "visually-hidden", 3, "accept", "change"], ["fileUpload", ""], [1, "input-group", "input-group-lg"], ["type", "text", "placeholder", "Type filter(s)", "aria-label", "task filter", "aria-describedby", "button-addon2", 1, "form-control", 3, "keyup"], ["todoTxtFilter", ""], ["type", "button", "id", "button-addon2", 1, "btn", "btn-primary", 3, "click"], [1, "bi", "bi-x-circle"], ["aria-label", "clear filter", 1, "fw-light", "d-none", "d-lg-inline"], [4, "ngFor", "ngForOf"], ["class", "btn-group d-flex flex-nowrap pt-1", "role", "group", 4, "ngIf"], [4, "ngIf"], ["role", "group", 1, "btn-group", "d-flex", "flex-nowrap", "pt-1"], ["class", "col-xs-2 btn btn-lg btn-light", "aria-label", "mark as complete", 3, "click", 4, "ngIf"], ["class", "col-xs-2 btn btn-lg btn-success", "aria-label", "mark as incomplete", 3, "click", 4, "ngIf"], ["aria-label", "edit task", 3, "innerHTML", "click"], ["aria-label", "mark as complete", 1, "col-xs-2", "btn", "btn-lg", "btn-light", 3, "click"], [1, "bi", "bi-circle"], ["aria-label", "mark as incomplete", 1, "col-xs-2", "btn", "btn-lg", "btn-success", 3, "click"], [1, "bit", "bi-check-circle"], ["contenteditable", "true", 1, "textarea", "btn", "btn-lg", "pt-1", "text-start", "w-100", 3, "id", "innerHTML"], ["role", "group", 1, "btn-group", "d-flex", "flex-wrap", "pt-1"], ["aria-label", "save changes", 1, "btn", "btn-success", 3, "click"], [1, "bi", "bi-check"], ["aria-label", "discard changes", 1, "btn", "btn-warning", 3, "click"], [1, "bi", "bi-x"], ["class", "btn btn-danger", "aria-label", "delete task", 3, "click", 4, "ngIf"], ["aria-label", "delete task", 1, "btn", "btn-danger", 3, "click"], [1, "bi", "bi-trash"]], template: function TaskListComponent_Template(rf, ctx) { if (rf & 1) {
-        const _r27 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵgetCurrentView"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](0, "div", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](1, "div", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](2, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](3, "button", 3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function TaskListComponent_Template_button_click_3_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵrestoreView"](_r27); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵreference"](21); return _r0.click(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](4, "i", 4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](5, "span", 5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](6);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](7, "button", 6);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function TaskListComponent_Template_button_click_7_listener() { return ctx.click_AddTask(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](8, "i", 7);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](9, "span", 5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](10, " Add Task");
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](11, "button", 8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function TaskListComponent_Template_button_click_11_listener() { return ctx.click_SaveTasks(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](12, "i", 9);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](13, "span", 5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](14, " Save Tasks");
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](15, "div", 10);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](16, "div", 11);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](17, "input", 12);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("change", function TaskListComponent_Template_input_change_17_listener() { return ctx.toggleShowClosed(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](18, "label", 13);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](20, "input", 14, 15);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("change", function TaskListComponent_Template_input_change_20_listener($event) { return ctx.processToDoFile($event); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](22, "div", 16);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](23, "input", 17, 18);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("keyup", function TaskListComponent_Template_input_keyup_23_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵrestoreView"](_r27); const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵreference"](24); return ctx.keyup_UpdateFilter(_r1.value); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](25, "button", 19);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵlistener"]("click", function TaskListComponent_Template_button_click_25_listener($event) { return ctx.click_ClearFilter($event); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelement"](26, "span", 20);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementStart"](27, "span", 21);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtext"](28, " Clear Filter");
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtemplate"](29, TaskListComponent_div_29_Template, 3, 2, "div", 22);
-    } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](6);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate1"](" ", ctx.fileName || "Select todo.txt File", "");
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵclassMapInterpolate1"]("btn btn-lg ", ctx.isDirty ? "btn-warning" : "btn-success", "");
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](6);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("checked", ctx.showClosed);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵtextInterpolate"](ctx.showClosed ? "Hide Closed Tasks" : "Show Closed Tasks");
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("accept", ctx.requiredFileType);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵadvance"](9);
-        _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵproperty"]("ngForOf", ctx.getTasks());
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_8__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_8__["NgIf"]], styles: ["div.textarea[_ngcontent-%COMP%] {\r\n    border: dashed 2px;\r\n    border-radius: 4px;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRhc2stbGlzdC5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksa0JBQWtCO0lBQ2xCLGtCQUFrQjtBQUN0QiIsImZpbGUiOiJ0YXNrLWxpc3QuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbImRpdi50ZXh0YXJlYSB7XHJcbiAgICBib3JkZXI6IGRhc2hlZCAycHg7XHJcbiAgICBib3JkZXItcmFkaXVzOiA0cHg7XHJcbn0iXX0= */"] });
-
-
-/***/ }),
-
-/***/ "6gkx":
-/*!***********************************************************!*\
-  !*** ./src/app/todo-txt-web-ui/todo-txt-web-ui.module.ts ***!
-  \***********************************************************/
-/*! exports provided: TodoTxtWebUiModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodoTxtWebUiModule", function() { return TodoTxtWebUiModule; });
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "ofXK");
-/* harmony import */ var _todo_txt_web_ui_routing_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todo-txt-web-ui-routing.module */ "p1Bm");
-/* harmony import */ var _todo_txt_web_ui_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./todo-txt-web-ui.component */ "S1do");
-/* harmony import */ var _task_list_task_list_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./task-list/task-list.component */ "0W9t");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "fXoL");
-
-
-
-
-
-class TodoTxtWebUiModule {
-}
-TodoTxtWebUiModule.ɵfac = function TodoTxtWebUiModule_Factory(t) { return new (t || TodoTxtWebUiModule)(); };
-TodoTxtWebUiModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineNgModule"]({ type: TodoTxtWebUiModule });
-TodoTxtWebUiModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjector"]({ imports: [[
-            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-            _todo_txt_web_ui_routing_module__WEBPACK_IMPORTED_MODULE_1__["TodoTxtWebUiRoutingModule"]
-        ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵsetNgModuleScope"](TodoTxtWebUiModule, { declarations: [_todo_txt_web_ui_component__WEBPACK_IMPORTED_MODULE_2__["TodoTxtWebUiComponent"], _task_list_task_list_component__WEBPACK_IMPORTED_MODULE_3__["TaskListComponent"]], imports: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-        _todo_txt_web_ui_routing_module__WEBPACK_IMPORTED_MODULE_1__["TodoTxtWebUiRoutingModule"]] }); })();
-
-
-/***/ }),
-
-/***/ "Iab2":
-/*!*******************************************************!*\
-  !*** ./node_modules/file-saver/dist/FileSaver.min.js ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(a,b){if(true)!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (b),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));else {}})(this,function(){"use strict";function b(a,b){return"undefined"==typeof b?b={autoBom:!1}:"object"!=typeof b&&(console.warn("Deprecated: Expected third argument to be a object"),b={autoBom:!b}),b.autoBom&&/^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(a.type)?new Blob(["\uFEFF",a],{type:a.type}):a}function c(a,b,c){var d=new XMLHttpRequest;d.open("GET",a),d.responseType="blob",d.onload=function(){g(d.response,b,c)},d.onerror=function(){console.error("could not download file")},d.send()}function d(a){var b=new XMLHttpRequest;b.open("HEAD",a,!1);try{b.send()}catch(a){}return 200<=b.status&&299>=b.status}function e(a){try{a.dispatchEvent(new MouseEvent("click"))}catch(c){var b=document.createEvent("MouseEvents");b.initMouseEvent("click",!0,!0,window,0,0,0,80,20,!1,!1,!1,!1,0,null),a.dispatchEvent(b)}}var f="object"==typeof window&&window.window===window?window:"object"==typeof self&&self.self===self?self:"object"==typeof global&&global.global===global?global:void 0,a=f.navigator&&/Macintosh/.test(navigator.userAgent)&&/AppleWebKit/.test(navigator.userAgent)&&!/Safari/.test(navigator.userAgent),g=f.saveAs||("object"!=typeof window||window!==f?function(){}:"download"in HTMLAnchorElement.prototype&&!a?function(b,g,h){var i=f.URL||f.webkitURL,j=document.createElement("a");g=g||b.name||"download",j.download=g,j.rel="noopener","string"==typeof b?(j.href=b,j.origin===location.origin?e(j):d(j.href)?c(b,g,h):e(j,j.target="_blank")):(j.href=i.createObjectURL(b),setTimeout(function(){i.revokeObjectURL(j.href)},4E4),setTimeout(function(){e(j)},0))}:"msSaveOrOpenBlob"in navigator?function(f,g,h){if(g=g||f.name||"download","string"!=typeof f)navigator.msSaveOrOpenBlob(b(f,h),g);else if(d(f))c(f,g,h);else{var i=document.createElement("a");i.href=f,i.target="_blank",setTimeout(function(){e(i)})}}:function(b,d,e,g){if(g=g||open("","_blank"),g&&(g.document.title=g.document.body.innerText="downloading..."),"string"==typeof b)return c(b,d,e);var h="application/octet-stream"===b.type,i=/constructor/i.test(f.HTMLElement)||f.safari,j=/CriOS\/[\d]+/.test(navigator.userAgent);if((j||h&&i||a)&&"undefined"!=typeof FileReader){var k=new FileReader;k.onloadend=function(){var a=k.result;a=j?a:a.replace(/^data:[^;]*;/,"data:attachment/file;"),g?g.location.href=a:location=a,g=null},k.readAsDataURL(b)}else{var l=f.URL||f.webkitURL,m=l.createObjectURL(b);g?g.location=m:location.href=m,g=null,setTimeout(function(){l.revokeObjectURL(m)},4E4)}});f.saveAs=g.saveAs=g, true&&(module.exports=g)});
-
-//# sourceMappingURL=FileSaver.min.js.map
-
-/***/ }),
-
-/***/ "S1do":
-/*!**************************************************************!*\
-  !*** ./src/app/todo-txt-web-ui/todo-txt-web-ui.component.ts ***!
-  \**************************************************************/
-/*! exports provided: TodoTxtWebUiComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TodoTxtWebUiComponent", function() { return TodoTxtWebUiComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _task_list_task_list_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./task-list/task-list.component */ "0W9t");
-
-
-class TodoTxtWebUiComponent {
-    constructor() { }
-    ngOnInit() {
+    getPriorities() {
+        return Array.from(_tasks_todo_txt_attributes__WEBPACK_IMPORTED_MODULE_6__["TodoTxtAttributes"].priorities);
+    }
+    getProjects() {
+        return Array.from(_tasks_todo_txt_attributes__WEBPACK_IMPORTED_MODULE_6__["TodoTxtAttributes"].projects);
+    }
+    getContexts() {
+        return Array.from(_tasks_todo_txt_attributes__WEBPACK_IMPORTED_MODULE_6__["TodoTxtAttributes"].contexts);
     }
 }
-TodoTxtWebUiComponent.ɵfac = function TodoTxtWebUiComponent_Factory(t) { return new (t || TodoTxtWebUiComponent)(); };
-TodoTxtWebUiComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: TodoTxtWebUiComponent, selectors: [["app-todo-txt-web-ui"]], decls: 5, vars: 0, consts: [[1, "container"], [1, "row"], [1, "col-md-9"], [1, "col-md-3"]], template: function TodoTxtWebUiComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "div", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "div", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "app-task-list");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](4, "div", 3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    } }, directives: [_task_list_task_list_component__WEBPACK_IMPORTED_MODULE_1__["TaskListComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJ0b2RvLXR4dC13ZWItdWkuY29tcG9uZW50LmNzcyJ9 */"] });
+TodoTxtWebUiComponent.ɵfac = function TodoTxtWebUiComponent_Factory(t) { return new (t || TodoTxtWebUiComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdirectiveInject"](_angular_platform_browser__WEBPACK_IMPORTED_MODULE_8__["DomSanitizer"])); };
+TodoTxtWebUiComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineComponent"]({ type: TodoTxtWebUiComponent, selectors: [["app-todo-txt-web-ui"]], hostBindings: function TodoTxtWebUiComponent_HostBindings(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("keydown.esc", function TodoTxtWebUiComponent_keydown_esc_HostBindingHandler() { return ctx.click_CancelTaskEdit(); });
+    } }, decls: 53, vars: 11, consts: [[1, "container"], [1, "row"], [1, "col-md-9"], [1, "d-flex", "flex-row", "justify-content-evenly"], [1, "d-flex", "flex-column", "flex-grow-1"], [1, "btn-group", "btn-group-justified"], ["aria-label", "upload file", 1, "file-upload", "btn", "btn-secondary", "btn-lg", 3, "click"], [1, "bi", "bi-cloud-upload"], [1, "fw-light", "d-none", "d-lg-inline"], ["aria-label", "add task", "data-bs-toggle", "tooltip", "data-bs-placement", "top", "title", "New Task", 1, "btn", "btn-lg", "btn-primary", 3, "click"], [1, "bi", "bi-clipboard-plus"], ["aria-label", "save tasks to file", 3, "click"], [1, "bi", "bi-save"], [1, "d-flex", "flex-column", "p-2"], [1, "form-check", "form-switch"], ["type", "checkbox", "id", "flexSwitchCheckDefault", 1, "form-check-input", 3, "checked", "change"], ["for", "flexSwitchCheckDefault", 1, "form-check-label", "d-none", "d-lg-inline"], ["type", "file", 1, "file-input", "visually-hidden", 3, "accept", "change"], ["fileUpload", ""], [1, "input-group", "input-group-lg"], ["type", "text", "placeholder", "Type filter(s)", "aria-label", "task filter", "aria-describedby", "button-addon2", 1, "form-control", 3, "keyup"], ["todoTxtFilter", ""], ["type", "button", "id", "button-addon2", 1, "btn", "btn-primary", 3, "click"], [1, "bi", "bi-x-circle"], ["aria-label", "clear filter", 1, "fw-light", "d-none", "d-lg-inline"], [4, "ngFor", "ngForOf"], [1, "col-md-3"], [1, "row", "pt-2"], [1, "card"], [1, "card-header"], [1, "btn-group-vertical"], ["class", "btn btn-outline-secondary list-group-item", 3, "click", 4, "ngFor", "ngForOf"], ["class", "btn-group d-flex flex-nowrap pt-1", "role", "group", 4, "ngIf"], [4, "ngIf"], ["role", "group", 1, "btn-group", "d-flex", "flex-nowrap", "pt-1"], ["class", "col-xs-2 btn btn-lg btn-light", "aria-label", "mark as complete", 3, "click", 4, "ngIf"], ["class", "col-xs-2 btn btn-lg btn-success", "aria-label", "mark as incomplete", 3, "click", 4, "ngIf"], ["aria-label", "edit task", 3, "innerHTML", "click"], ["aria-label", "mark as complete", 1, "col-xs-2", "btn", "btn-lg", "btn-light", 3, "click"], [1, "bi", "bi-circle"], ["aria-label", "mark as incomplete", 1, "col-xs-2", "btn", "btn-lg", "btn-success", 3, "click"], [1, "bit", "bi-check-circle"], ["tabindex", "0", "contenteditable", "true", 1, "textarea", "btn", "btn-lg", "pt-1", "text-start", "w-100", 3, "id", "innerHTML", "keydown.enter", "keydown.esc"], ["role", "group", 1, "btn-group", "d-flex", "flex-wrap", "pt-1"], ["aria-label", "save changes", "data-bs-toggle", "tooltip", "data-bs-placement", "top", "title", "Save Changes (Enter)", 1, "btn", "btn-success", 3, "click"], [1, "bi", "bi-check"], ["aria-label", "discard changes", "data-bs-toggle", "tooltip", "data-bs-placement", "top", "title", "Discard Changes (Esc)", 1, "btn", "btn-warning", 3, "click"], [1, "bi", "bi-x"], ["class", "btn btn-danger", "aria-label", "delete task", 3, "click", 4, "ngIf"], ["aria-label", "delete task", 1, "btn", "btn-danger", 3, "click"], [1, "bi", "bi-trash"], [1, "btn", "btn-outline-secondary", "list-group-item", 3, "click"]], template: function TodoTxtWebUiComponent_Template(rf, ctx) { if (rf & 1) {
+        const _r42 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵgetCurrentView"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](0, "div", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](1, "div", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](2, "div", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](3, "div", 3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](4, "div", 4);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](5, "div", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](6, "button", 6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function TodoTxtWebUiComponent_Template_button_click_6_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r42); const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵreference"](24); return _r0.click(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](7, "i", 7);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](8, "span", 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](10, "button", 9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function TodoTxtWebUiComponent_Template_button_click_10_listener() { return ctx.click_AddTask(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](11, "i", 10);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](12, "span", 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](13, " Add Task");
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](14, "button", 11);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function TodoTxtWebUiComponent_Template_button_click_14_listener() { return ctx.click_SaveTasks(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](15, "i", 12);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](16, "span", 8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](17, " Save Tasks");
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](18, "div", 13);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](19, "div", 14);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](20, "input", 15);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("change", function TodoTxtWebUiComponent_Template_input_change_20_listener() { return ctx.toggleShowClosed(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](21, "label", 16);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](22);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](23, "input", 17, 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("change", function TodoTxtWebUiComponent_Template_input_change_23_listener($event) { return ctx.processToDoFile($event); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](25, "div", 19);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](26, "input", 20, 21);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("keyup", function TodoTxtWebUiComponent_Template_input_keyup_26_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵrestoreView"](_r42); const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵreference"](27); return ctx.keyup_UpdateFilter(_r1.value); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](28, "button", 22);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵlistener"]("click", function TodoTxtWebUiComponent_Template_button_click_28_listener($event) { return ctx.click_ClearFilter($event); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelement"](29, "span", 23);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](30, "span", 24);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](31, " Clear Filter");
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](32, TodoTxtWebUiComponent_div_32_Template, 3, 2, "div", 25);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](33, "div", 26);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](34, "div", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](35, "div", 27);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](36, "div", 28);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](37, "div", 29);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](38, " Priorities");
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](39, "div", 30);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](40, TodoTxtWebUiComponent_button_40_Template, 2, 1, "button", 31);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](41, "div", 27);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](42, "div", 28);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](43, "div", 29);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](44, " Projects");
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](45, "div", 30);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](46, TodoTxtWebUiComponent_button_46_Template, 2, 1, "button", 31);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](47, "div", 27);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](48, "div", 28);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](49, "div", 29);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtext"](50, " Contexts");
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementStart"](51, "div", 30);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtemplate"](52, TodoTxtWebUiComponent_button_52_Template, 2, 1, "button", 31);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵelementEnd"]();
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtextInterpolate1"](" ", ctx.fileName || "Select todo.txt File", "");
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵclassMapInterpolate1"]("btn btn-lg ", ctx.isDirty ? "btn-warning" : "btn-success", "");
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("checked", ctx.showClosed);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵtextInterpolate"](ctx.showClosed ? "Hide Closed Tasks" : "Show Closed Tasks");
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("accept", ctx.requiredFileType);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](9);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngForOf", ctx.getTasks());
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngForOf", ctx.getPriorities());
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngForOf", ctx.getProjects());
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵadvance"](6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵproperty"]("ngForOf", ctx.getContexts());
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_9__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_9__["NgIf"]], styles: ["div.textarea[_ngcontent-%COMP%] {\r\n    border: dashed 2px;\r\n    border-radius: 4px;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRvZG8tdHh0LXdlYi11aS5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksa0JBQWtCO0lBQ2xCLGtCQUFrQjtBQUN0QiIsImZpbGUiOiJ0b2RvLXR4dC13ZWItdWkuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbImRpdi50ZXh0YXJlYSB7XHJcbiAgICBib3JkZXI6IGRhc2hlZCAycHg7XHJcbiAgICBib3JkZXItcmFkaXVzOiA0cHg7XHJcbn0iXX0= */"] });
 
 
 /***/ }),
