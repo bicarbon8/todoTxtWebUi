@@ -1,0 +1,5 @@
+node_modules/
+*.orig
+results/
+img/
+coverage/
