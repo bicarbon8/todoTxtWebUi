@@ -25,7 +25,7 @@
             <input type="file" class="file-input visually-hidden" [accept]="requiredFileType" (change)="processToDoFile($event)" #fileUpload />
             <div class="input-group input-group-lg">
                 <input #todoTxtFilter type="text" class="form-control" placeholder="Type filter(s)" aria-label="task filter" aria-describedby="button-addon2" (keyup)="keyup_UpdateFilter(todoTxtFilter.value)">
-                <button class="btn btn-primary" type="button" id="button-addon2" (click)="click_ClearFilter($event)">
+                <button class="btn btn-primary" type="button" id="button-addon2" (click)="click_ClearFilter($event); todoTxtFilter.value=''">
                     <span class="bi bi-x-circle"></span> <span class="fw-light d-none d-lg-inline" aria-label="clear filter"> Clear Filter</span>
                 </button>
             </div>
@@ -45,29 +45,29 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="d-none d-md-inline col-md-3">
             <div class="container">
                 <div class="row pt-2">
-                    <div class="card">
+                    <div class="card p-0">
                         <div class="card-header"> Priorities</div>
                         <div class="btn-group-vertical">
-                            <button *ngFor="let p of getPriorities()" class="btn btn-outline-secondary list-group-item" (click)="keyup_UpdateFilter(p)"> {{p}}</button>
+                            <button *ngFor="let p of getPriorities()" class="btn btn-outline-secondary list-group-item" (click)="keyup_UpdateFilter(p); todoTxtFilter.value=p"> {{p}}</button>
                         </div>
                     </div>
                 </div>
                 <div class="row pt-2">
-                    <div class="card">
+                    <div class="card p-0">
                         <div class="card-header"> Projects</div>
                         <div class="btn-group-vertical">
-                            <button *ngFor="let p of getProjects()" class="btn btn-outline-secondary list-group-item" (click)="keyup_UpdateFilter(p)"> {{p}}</button>
+                            <button *ngFor="let p of getProjects()" class="btn btn-outline-secondary list-group-item" (click)="keyup_UpdateFilter(p); todoTxtFilter.value=p"> {{p}}</button>
                         </div>
                     </div>
                 </div>
                 <div class="row pt-2">
-                    <div class="card">
+                    <div class="card p-0">
                         <div class="card-header"> Contexts</div>
                         <div class="btn-group-vertical">
-                            <button *ngFor="let p of getContexts()" class="btn btn-outline-secondary list-group-item" (click)="keyup_UpdateFilter(p)"> {{p}}</button>
+                            <button *ngFor="let p of getContexts()" class="btn btn-outline-secondary list-group-item" (click)="keyup_UpdateFilter(p); todoTxtFilter.value=p"> {{p}}</button>
                         </div>
                     </div>
                 </div>
