@@ -18,8 +18,6 @@ utilized in supporting the functionality of this project.
 
 ## FEATURES:
 
-- Can easily be added to any existing webpage by simply adding a `<div id="todotxt"></div>` element and the external dependencies
-- Allows users to drag-and-drop in their todo.txt file (or select through a file dialog) for instant syncronization with existing task list
 - Allows exporting of displayed tasks back out of the browser to the user's local filesystem thereby supporting saving of updates to the task list
 - Stores the task list in the browser's localStorage cache so that changes are not lost between browser page reloads / refreshes.
 - Allows editing of current task list
@@ -31,45 +29,48 @@ utilized in supporting the functionality of this project.
 
 ## EXTERNAL DEPENDENCIES:
 
-- [Bootstrap 3.3.1](http://getbootstrap.com/)
-- [JQuery 1.11.1](http://jquery.com/)
+- [Angular.11](https://angular.io/)
 
 ## RUNNING LOCALLY:
 
 - download the latest from: [github](https://github.com/bicarbon8/todoTxtWebUi/archive/master.zip)
 - extract the download and open the `todoTxtWebUi-master` folder
-- open the `index.html` file in a Webkit compatible browser
+- install dependencies using `npm install`
+- install the Angular CLI using `npm i -g angular-cli`
+- run using `ng serve`
+- open your browser to http://localhost:4200
 
 ## KEYBOARD SHORTCUTS:
 
-- `Alt-t` add a new task
-- `Alt-Enter` save an open task
-- `Alt-p` preview changes to an open task
-- `Alt-s` export tasks
-- `Alt-c` clear any filters
+- `Enter` save an open task
+- `Esc` discard edits to an open task
 
 ## INCLUDING IN OTHER WEBSITES:
 
-- download the latest bundle from [github](https://rawgit.com/bicarbon8/todoTxtWebUi/master/dist/bundle.js)
-- ensure you have the following css and javascript references in your html file:
-```html
-<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
-<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css" />
-<link rel="stylesheet" type="text/css" href="dist/todo-txt.css" />
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="dist/bundle.js"></script>
+- add this repository as a sub-module. (see: [Git Submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
+- from your Angular application's router module add the following:
+```typescript
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { MainComponent } from './main/main.component';
+
+const routes: Routes = [
+  ...
+  { path: 'todoTxtWebUi', loadChildren: () => import('todoTxtWebUi/src/app/todo-txt-web-ui/todo-txt-web-ui.module').then((m) => m.TodoTxtWebUiModule) }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
 ```
-- place a `div` element in your html body with an id of `todotxt`. Ex: 
-```html
-<div id="todotxt"></div>
-```
-- open the webpage and the magic happens automatically
+- within your running Angular application navigate to `http://your-app/todoTxtWebUi`
 
 ## NOTE:
 - if you are tracking more than 1000 Tasks, the performance will start to degrade (~5 seconds per add / edit / delete operation)
 - it is not recommended to track more than 5000 Tasks
-- exporting your _todo-txt_ file will exclude all closed tasks so exporting and re-importing can serve as a way of keeping the number of tracked tasks under control
+- exporting your _todo-txt_ file will only include the currently visible tasks so exporting and re-importing can serve as a way of keeping the number of tracked tasks under control if you export when closed tasks are not visible
 
 ## Contributing to the Project:
 
