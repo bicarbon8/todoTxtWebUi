@@ -49,7 +49,7 @@ export class TodoTxtWebUiComponent {
           this.downloadFileName = this.fileName;
           let text: string = await file.text();
           let lines: string[] = text.split('\n');
-          TodoTxtVault.addTasks(...TodoTxtTaskParser.parseMany(...lines));
+          TodoTxtVault.addTasks(...TodoTxtTaskParser.getMany(...lines));
         }
       }
     }
@@ -57,7 +57,7 @@ export class TodoTxtWebUiComponent {
 
   async click_AddTask(): Promise<boolean> {
     this.isAddingNew = true;
-    let t: TodoTxtTask = TodoTxtTaskParser.parse('');
+    let t: TodoTxtTask = TodoTxtTaskParser.get('');
     TodoTxt.addTask(t);
     this.click_StartEditTask(t.id);
     this.isDirty = true;
@@ -159,7 +159,7 @@ export class TodoTxtWebUiComponent {
    * @returns {string} the HTML marked up task text
    */
    getMarkupForTask(text: string): SafeHtml {
-      let task: TodoTxtTask = TodoTxtTaskParser.parse(text);
+      let task: TodoTxtTask = TodoTxtTaskParser.get(text);
       // make html compatible
       text = TodoTxtUtils.htmlEncode(text);
 

@@ -1,6 +1,7 @@
-import { TodoTxtTask } from "../../../src/app/todo-txt-web-ui/tasks/todo-txt-task";
-import { TodoTxtVault } from "../../../src/app/todo-txt-web-ui/storage/todo-txt-vault";
-import { TodoTxt } from "../../../src/app/todo-txt-web-ui/todo-txt";
+import { TodoTxtTask } from "../tasks/todo-txt-task";
+import { TodoTxtVault } from "./todo-txt-vault";
+import { TodoTxt } from "../todo-txt";
+import { TodoTxtTaskParser } from "../tasks/todo-txt-task-parser";
 
 describe('TodoTxtVault', () => {
     beforeEach(() => {
@@ -20,8 +21,8 @@ describe('TodoTxtVault', () => {
         let max: number = 5000;
         let startTime = Date.now();
         for (var i=0; i<max; i++) {
-            let task: TodoTxtTask = new TodoTxtTask(`(A) do some work for @Foo${i} because of +Bar${i}`);
-            TodoTxtVault.addTask(task);
+            let task: TodoTxtTask = TodoTxtTaskParser.get(`(A) do some work for @Foo${i} because of +Bar${i}`);
+            TodoTxtVault.addTasks(task);
         }
         let endTime = Date.now();
         let elapsed = endTime - startTime;
@@ -33,8 +34,8 @@ describe('TodoTxtVault', () => {
         spyOn(localStorage, 'setItem').and.throwError('no worky...');
         spyOn(localStorage, 'getItem').and.throwError('also no worky...');
 
-        let task: TodoTxtTask = new TodoTxtTask('(B) present +ImportantThing to @ImportantPerson');
-        TodoTxtVault.addTask(task);
+        let task: TodoTxtTask = TodoTxtTaskParser.get('(B) present +ImportantThing to @ImportantPerson');
+        TodoTxtVault.addTasks(task);
 
         let actual: TodoTxtTask = TodoTxt.getTask(task.id);
         expect(actual).not.toBeNull();
@@ -42,8 +43,8 @@ describe('TodoTxtVault', () => {
     });
 
     it('can remove task', () => {
-        let task: TodoTxtTask = new TodoTxtTask('(A) do the +Things for @Karen');
-        TodoTxtVault.addTask(task);
+        let task: TodoTxtTask = TodoTxtTaskParser.get('(A) do the +Things for @Karen');
+        TodoTxtVault.addTasks(task);
 
         let actual: TodoTxtTask = TodoTxt.getTask(task.id);
         expect(actual).not.toBeNull();

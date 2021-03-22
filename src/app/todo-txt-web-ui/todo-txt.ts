@@ -115,7 +115,7 @@ export module TodoTxt {
      */
     export function createTask(textStr: string): string {
         let text: string = textStr || '';
-        let t: TodoTxtTask = TodoTxtTaskParser.parse(text);
+        let t: TodoTxtTask = TodoTxtTaskParser.get(text);
         addTask(t);
         return t.id;
     }
@@ -137,7 +137,7 @@ export module TodoTxt {
      * @returns {boolean} true if task could be updated otherwise false
      */
     export function updateTask(taskId: string, newText: string): boolean {
-        let task: TodoTxtTask = TodoTxtTaskParser.parse(newText);
+        let task: TodoTxtTask = TodoTxtTaskParser.get(newText);
         task.id = taskId;
 
         // overwrite storage with updated task

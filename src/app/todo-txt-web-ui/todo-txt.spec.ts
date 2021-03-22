@@ -30,9 +30,10 @@
  * You should have received a copy of the GNU General Public License
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
-import { TodoTxt } from '../../src/app/todo-txt-web-ui/todo-txt';
-import { TodoTxtTask } from '../../src/app/todo-txt-web-ui/tasks/todo-txt-task';
-import { TodoTxtVault } from '../../src/app/todo-txt-web-ui/storage/todo-txt-vault';
+import { TodoTxt } from './todo-txt';
+import { TodoTxtTask } from './tasks/todo-txt-task';
+import { TodoTxtVault } from './storage/todo-txt-vault';
+import { TodoTxtTaskParser } from './tasks/todo-txt-task-parser';
 
 describe('TodoTxt', () => {
     beforeAll(() => {
@@ -52,7 +53,7 @@ describe('TodoTxt', () => {
     
     it('can add task to TodoTxtVault', () => {
         let text: string = `sample task ${new Date().getTime()}`;
-        let task: TodoTxtTask = new TodoTxtTask(text);
+        let task: TodoTxtTask = TodoTxtTaskParser.get(text);
         expect(() => TodoTxtVault.getTask(task.id)).toThrowError(`no TodoTxtTask with ID of '${task.id}' could be found`);
         TodoTxt.addTask(task);
         let actual: TodoTxtTask = TodoTxtVault.getTask(task.id);
@@ -61,8 +62,8 @@ describe('TodoTxt', () => {
 
     it('can get task from TodoTxtVault', () => {
         let text: string = `sample task ${new Date().getTime()}`;
-        let task: TodoTxtTask = new TodoTxtTask(text);
-        TodoTxtVault.addTask(task);
+        let task: TodoTxtTask = TodoTxtTaskParser.get(text);
+        TodoTxtVault.addTasks(task);
         var actual = TodoTxt.getTask(task.id);
         expect(actual.id).toEqual(task.id);
         expect(actual.text).toEqual(task.text);
