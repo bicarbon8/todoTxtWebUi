@@ -4,7 +4,7 @@
             <div class="d-flex flex-row justify-content-evenly pb-1">
                 <div class="d-flex flex-column flex-grow-1">
                     <div class="btn-group btn-group-justified">
-                        <button class="file-upload btn btn-secondary btn-lg" (click)="fileUpload.click()" aria-label="upload file" data-bs-toggle="tooltip" data-bs-placement="top" title="Import todo.txt file">
+                        <button class="file-upload btn btn-secondary btn-lg" (click)="click_OpenToDoFile()" aria-label="upload file" data-bs-toggle="tooltip" data-bs-placement="top" title="Import todo.txt file">
                             <i class="bi bi-cloud-upload"> </i><span class="fw-light d-none d-lg-inline"> {{fileName || 'Import todo.txt File'}}</span>
                         </button>
                         <button class="btn btn-lg btn-primary" (click)="click_AddTask()" aria-label="add task" data-bs-toggle="tooltip" data-bs-placement="top" title="New task">
@@ -22,7 +22,7 @@
                     </div>
                 </div>
             </div>
-            <input type="file" class="file-input visually-hidden" [accept]="requiredFileType" (change)="processToDoFile($event)" #fileUpload />
+            <input id="file-input" type="file" class="file-input visually-hidden" [accept]="requiredFileType" (change)="processToDoFile($event)" #fileUpload />
             <div class="input-group input-group-lg">
                 <input #todoTxtFilter type="text" class="form-control" placeholder="Type filter(s)" aria-label="task filter" aria-describedby="button-addon2" (keyup)="keyup_UpdateFilter(todoTxtFilter.value)">
                 <button class="btn btn-primary" type="button" id="button-addon2" (click)="click_ClearFilter($event); todoTxtFilter.value=''" data-bs-toggle="tooltip" data-bs-placement="top" title="Clear filter">

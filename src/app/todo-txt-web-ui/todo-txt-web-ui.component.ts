@@ -8,6 +8,7 @@ import { TodoTxtTaskParser } from './tasks/todo-txt-task-parser';
 import { TodoTxt } from './todo-txt';
 import { saveAs } from 'file-saver';
 import { TodoTxtAttributes } from './tasks/todo-txt-attributes';
+import { FileData } from './helpers/file-data';
 
 @Component({
   selector: 'app-todo-txt-web-ui',
@@ -37,6 +38,20 @@ export class TodoTxtWebUiComponent {
     this.showClosed = cfg.showClosed;
     TodoTxtVault.setConfig(cfg);
   }
+
+  async click_OpenToDoFile(): Promise<void> {
+    const data: FileData = await TodoTxtUtils.readFile()
+    .catch((err) => {
+      console.warn(`unable to use File System API so falling back to legacy mode: ${err}`);
+      document.getElementById('file-input').click();
+      return null;
+    });
+    if (data) {
+      this.fileName = data.name;
+      let lines: string[] = data.text?.split('\n') || [];
+      TodoTxtVault.addTasks(...TodoTxtTaskParser.getMany(...lines));
+    }
+  }
   
   async processToDoFile(event: any): Promise<void> {
     if (event) {
@@ -46,7 +61,6 @@ export class TodoTxtWebUiComponent {
         if (file) {
           TodoTxtVault.removeAllTasks();
           this.fileName = file.name;
-          this.downloadFileName = this.fileName;
           let text: string = await file.text();
           let lines: string[] = text.split('\n');
           TodoTxtVault.addTasks(...TodoTxtTaskParser.getMany(...lines));
@@ -65,10 +79,14 @@ export class TodoTxtWebUiComponent {
   }
 
   async click_SaveTasks(): Promise<void> {
-    let data: string = this.getTasks().map((t) => t.text?.trim())?.join('\n');
-    if (data) {
-      let blob = new Blob([data], { type: 'data:attachment/text; charset=utf-8' });
-      saveAs(blob, this.downloadFileName);
+    let text: string = this.getTasks().map((t) => t.text?.trim())?.join('\n');
+    if (text) {
+      await TodoTxtUtils.saveToFile({text: text, name: this.fileName})
+      .catch((err) => {
+        console.warn(`unable to use File System API so falling back to legacy mode: ${err}`);
+        let blob = new Blob([text], { type: 'data:attachment/text; charset=utf-8' });
+        saveAs(blob, this.downloadFileName);
+      });
     }
     this.isDirty = false;
   }

@@ -30,6 +30,16 @@
  * You should have received a copy of the GNU General Public License
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
+
+import { FileData } from "./file-data";
+
+declare global {
+    interface Window {
+        showOpenFilePicker(options?: any): Promise<[any]>;
+        showSaveFilePicker(options?: any): Promise<any>;
+    }
+}
+
 /**
  * Utility methods used by the project library
  * @namespace
@@ -98,5 +108,30 @@ export module TodoTxtUtils {
             .replace(/&gt;/g, '>')
             .replace(/&quot;/g, '"')
             .replace(/&nbsp;/g, ' ');
+    }
+
+    export async function readFile(): Promise<FileData> {
+        let [handle] = await window.showOpenFilePicker();
+        const file = await handle.getFile();
+        const text = await file.text();
+        return {text: text, name: file.name, path: file.webkitRelativePath, size: file.size};
+    }
+
+    export async function saveToFile(data: FileData): Promise<void> {
+        const options = {
+            suggestedName: data.name || 'todo.txt',
+            types: [
+              {
+                description: "ToDo.txt file",
+                accept: {
+                  "text/plain": [".txt"],
+                },
+              },
+            ],
+          };
+        const handle = await window.showSaveFilePicker(options);
+        const file = await handle.createWritable();
+        await file.write(data.text || '');
+        await file.close();
     }
 }
