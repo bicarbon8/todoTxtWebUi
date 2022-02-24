@@ -42,9 +42,11 @@ export class TodoTxtWebUiComponent {
   async click_OpenToDoFile(): Promise<void> {
     const data: FileData = await TodoTxtUtils.readFile()
     .catch((err) => {
-      console.warn(`unable to use File System API so falling back to legacy mode: ${err}`);
-      document.getElementById('file-input').click();
-      return null;
+      if (err.name != 'AbortError') { // AbortError is manual user cancel of file save operation
+        console.warn(`unable to use File System API so falling back to legacy mode: ${err}`);
+        document.getElementById('file-input').click();
+        return null;
+      }
     });
     if (data) {
       this.fileName = data.name;
@@ -83,9 +85,11 @@ export class TodoTxtWebUiComponent {
     if (text) {
       await TodoTxtUtils.saveToFile({text: text, name: this.fileName})
       .catch((err) => {
-        console.warn(`unable to use File System API so falling back to legacy mode: ${err}`);
-        let blob = new Blob([text], { type: 'data:attachment/text; charset=utf-8' });
-        saveAs(blob, this.downloadFileName);
+        if (err.name != 'AbortError') { // AbortError is manual user cancel of file save operation
+          console.warn(`unable to use File System API so falling back to legacy mode: ${err}`);
+          let blob = new Blob([text], { type: 'data:attachment/text; charset=utf-8' });
+          saveAs(blob, this.downloadFileName);
+        }
       });
     }
     this.isDirty = false;
