@@ -11,7 +11,6 @@ sharedMappings.register(
 module.exports = {
   output: {
     uniqueName: "todoTxtWebUi",
-    publicPath: "auto",
   },
   optimization: {
     runtimeChunk: false
