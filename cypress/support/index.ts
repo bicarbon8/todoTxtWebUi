@@ -15,3 +15,15 @@
 
 // When a command from ./commands is ready to use, import with `import './commands'` syntax
 import './commands';
+
+// likely want to do this in a support file
+// so it's applied to all spec files
+// cypress/support/index.js
+Cypress.on('uncaught:exception', (err, runnable) => {
+    // angular module federation erroneous error ingnore
+    if (err.message.includes("Cannot use 'import.meta' outside a module")) {
+      return false
+    }
+    // we still want to ensure there are no other unexpected
+    // errors, so we let them fail the test
+})
