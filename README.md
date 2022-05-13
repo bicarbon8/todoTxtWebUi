@@ -78,5 +78,5 @@ export class AppRoutingModule { }
 - clone the code using `git clone https://github.com/<your-project-area>/todoTxtWebUi todoTxtWebUi` where `<your-project-area>` is replaced with the location of your Fork
 - run `npm install` to install all dev dependencies
 - build using `npm run build`
-- test using `npm test`
-- when you are happy with your changes, submit a Pull Request back to the _master_ branch at `https://github.com/bicarbon8/todoTxtWebUi`
+- test using `npm test:all`
+- when you are happy with your changes and all tests pass, run `npm run build:prod` commit the generated `./docs` directory and submit a Pull Request back to the _master_ branch at `https://github.com/bicarbon8/todoTxtWebUi`

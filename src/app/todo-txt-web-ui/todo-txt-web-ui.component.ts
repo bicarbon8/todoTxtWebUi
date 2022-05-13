@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeUrl } from '@angular/platform-browser';
 import { TodoTxtUtils } from './helpers/todo-txt-utils';
 import { TodoTxtConfig } from './storage/todo-txt-config';
@@ -26,7 +26,7 @@ export class TodoTxtWebUiComponent {
   editingTaskId: string;
   isAddingNew: boolean;
 
-  constructor(private sanitiser: DomSanitizer) {
+  constructor(private sanitiser: DomSanitizer, private changeDetector: ChangeDetectorRef) {
     this.isDirty = false;
     this.showClosed = TodoTxtVault.getConfig().showClosed;
     this.downloadFileName = 'todo.txt';
@@ -71,13 +71,12 @@ export class TodoTxtWebUiComponent {
     }
   }
 
-  async click_AddTask(): Promise<boolean> {
+  async click_AddTask(): Promise<string> {
     this.isAddingNew = true;
     let t: TodoTxtTask = TodoTxtTaskParser.get('');
     TodoTxt.addTask(t);
-    this.click_StartEditTask(t.id);
     this.isDirty = true;
-    return false;
+    return await this.click_StartEditTask(t.id);
   }
 
   async click_SaveTasks(): Promise<void> {
@@ -112,42 +111,37 @@ export class TodoTxtWebUiComponent {
     TodoTxt.activateTask(id);
   }
   
-  async click_StartEditTask(id: string): Promise<void> {
+  async click_StartEditTask(id: string): Promise<string> {
     this.editingTaskId = id;
-    setTimeout(() => this.setFocus(id), 0);
+    this.changeDetector.detectChanges();
+    return await this.setFocus(id);
   }
 
-  async setFocus(id: string): Promise<void> {
-    let div: HTMLElement = document.getElementById(`textarea_${id}`);
-    if (div) {
-      console.info(`found element 'textarea_${id}'`);
-      div.focus();
-      // let s = window.getSelection();
-      // let r = document.createRange();
-      // r.setStart(div, 0);
-      // r.setEnd(div, 0);
-      // s.removeAllRanges();
-      // s.addRange(r);
+  async setFocus(id: string): Promise<string> {
+    let el: HTMLElement = document.getElementById(`textarea_${id}`);
+    if (el) {
+      console.info(`setting focus on element 'textarea_${id}'`);
+      el.focus();
+      return id;
     } else {
-      console.warn(`unable to find element 'textarea_${id}'`);
+      return Promise.reject(`unable to find element 'textarea_${id}'`);
     }
   }
 
-  async click_SaveTaskEdit(id: string): Promise<boolean> {
+  async click_SaveTaskEdit(id: string): Promise<string> {
     let text: string = document.querySelector<HTMLDivElement>(`#textarea_${id}`).innerText;
     TodoTxt.updateTask(id, text);
     this.isDirty = true;
     this.doneEditing();
-    return false;
+    return text;
   }
 
   @HostListener('keydown.esc')
-  async click_CancelTaskEdit(): Promise<boolean> {
+  async click_CancelTaskEdit(): Promise<void> {
     if (this.isAddingNew) {
       this.click_DeleteTask(this.editingTaskId);
     }
     this.doneEditing();
-    return false;
   }
 
   async click_DeleteTask(id: string): Promise<void> {
@@ -159,6 +153,7 @@ export class TodoTxtWebUiComponent {
   doneEditing(): void {
     this.editingTaskId = null;
     this.isAddingNew = false;
+    this.changeDetector.detectChanges();
   }
 
   getTasks(): TodoTxtTask[] {

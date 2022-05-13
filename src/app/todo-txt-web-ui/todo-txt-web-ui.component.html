@@ -7,7 +7,7 @@
                         <button class="file-upload btn btn-secondary btn-lg" (click)="click_OpenToDoFile()" aria-label="upload file" data-bs-toggle="tooltip" data-bs-placement="top" title="Import todo.txt file">
                             <i class="bi bi-cloud-upload"> </i><span class="fw-light d-none d-lg-inline"> {{fileName || 'Import todo.txt File'}}</span>
                         </button>
-                        <button class="btn btn-lg btn-primary" (click)="click_AddTask()" aria-label="add task" data-bs-toggle="tooltip" data-bs-placement="top" title="New task">
+                        <button class="btn btn-lg btn-primary" (click)="click_AddTask()" aria-label="add task" id="addtask_button" data-bs-toggle="tooltip" data-bs-placement="top" title="New task">
                             <i class="bi bi-clipboard-plus"> </i><span class="fw-light d-none d-lg-inline"> New Task</span>
                         </button>
                         <button class="btn btn-lg {{(isDirty) ? 'btn-warning' : 'btn-success'}}" (click)="click_SaveTasks()" aria-label="save tasks to file" data-bs-toggle="tooltip" data-bs-placement="top" title="Export tasks">
@@ -51,7 +51,7 @@
                     <div class="card p-0">
                         <div class="card-header"> Priorities</div>
                         <div class="btn-group-vertical">
-                            <button *ngFor="let p of getPriorities()" class="btn btn-outline-secondary list-group-item" (click)="keyup_UpdateFilter(p); todoTxtFilter.value=p" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter by {{p}}"> {{p}}</button>
+                            <button *ngFor="let p of getPriorities()" class="btn btn-outline-secondary list-group-item" (click)="keyup_UpdateFilter(p); todoTxtFilter.value=p" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter by priority: {{p}}"> {{p}}</button>
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                     <div class="card p-0">
                         <div class="card-header"> Projects</div>
                         <div class="btn-group-vertical">
-                            <button *ngFor="let p of getProjects()" class="btn btn-outline-secondary list-group-item" (click)="keyup_UpdateFilter(p); todoTxtFilter.value=p" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter by {{p}}"> {{p}}</button>
+                            <button *ngFor="let p of getProjects()" class="btn btn-outline-secondary list-group-item" (click)="keyup_UpdateFilter(p); todoTxtFilter.value=p" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter by project: {{p}}"> {{p}}</button>
                         </div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                     <div class="card p-0">
                         <div class="card-header"> Contexts</div>
                         <div class="btn-group-vertical">
-                            <button *ngFor="let p of getContexts()" class="btn btn-outline-secondary list-group-item" (click)="keyup_UpdateFilter(p); todoTxtFilter.value=p" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter by {{p}}"> {{p}}</button>
+                            <button *ngFor="let p of getContexts()" class="btn btn-outline-secondary list-group-item" (click)="keyup_UpdateFilter(p); todoTxtFilter.value=p" data-bs-toggle="tooltip" data-bs-placement="top" title="Filter by context: {{p}}"> {{p}}</button>
                         </div>
                     </div>
                 </div>

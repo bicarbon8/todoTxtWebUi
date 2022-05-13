@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TodoTxtVault } from './storage/todo-txt-vault';
 
 import { TodoTxtWebUiComponent } from './todo-txt-web-ui.component';
 
@@ -16,10 +17,11 @@ describe('TodoTxtWebUiComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TodoTxtWebUiComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture.autoDetectChanges(true);
+    TodoTxtVault.removeAllTasks();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should create and instance successfully', () => {
+    expect(component).toBeDefined();
   });
 });
