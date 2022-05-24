@@ -5,5 +5,10 @@
   "screenshotsFolder": "cypress/screenshots",
   "pluginsFile": "cypress/plugins/index.ts",
   "fixturesFolder": "cypress/fixtures",
-  "baseUrl": "http://localhost:4300"
+  "baseUrl": "http://localhost:4300",
+  "retries": {
+    "runMode": 3,
+    "openMode": 0
+  },
+  "pageLoadTimeout": 120000
 }
