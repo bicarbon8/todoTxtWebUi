@@ -14,7 +14,7 @@ utilized in supporting the functionality of this project.
 
 ## DEMO:
 
-[ResponsiveDemo](https://bicarbon8.github.io/todoTxtWebUi/)
+[ResponsiveDemo](https://bicarbon8.github.io/todo/)
 
 ## FEATURES:
 
