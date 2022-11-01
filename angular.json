@@ -33,7 +33,7 @@
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true,
-            "extraWebpackConfig": "webpack.config.js",
+            "extraWebpackConfig": "webpack.config.cjs",
             "commonChunk": false
           },
           "configurations": {
@@ -62,7 +62,7 @@
                   "maximumError": "10kb"
                 }
               ],
-              "extraWebpackConfig": "webpack.prod.config.js"
+              "extraWebpackConfig": "webpack.prod.config.cjs"
             }
           },
           "defaultConfiguration": ""
@@ -73,12 +73,12 @@
             "browserTarget": "todoTxtWebUi:build",
             "port": 4300,
             "publicHost": "http://localhost:4300",
-            "extraWebpackConfig": "webpack.config.js"
+            "extraWebpackConfig": "webpack.config.cjs"
           },
           "configurations": {
             "production": {
               "browserTarget": "todoTxtWebUi:build:production",
-              "extraWebpackConfig": "webpack.prod.config.js"
+              "extraWebpackConfig": "webpack.prod.config.cjs"
             }
           }
         },
@@ -86,7 +86,7 @@
           "builder": "ngx-build-plus:extract-i18n",
           "options": {
             "browserTarget": "todoTxtWebUi:build",
-            "extraWebpackConfig": "webpack.config.js"
+            "extraWebpackConfig": "webpack.config.cjs"
           }
         },
         "test": {

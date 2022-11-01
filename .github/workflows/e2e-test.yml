@@ -1,11 +1,6 @@
 name: End-to-end tests
 on: 
-  push:
-    branches:
-    - master
-  pull_request:
-    branches:
-    - master
+  workflow_dispatch:
 jobs:
   cypress-run:
     runs-on: ubuntu-20.04

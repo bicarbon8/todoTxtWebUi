@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { TodoTxtWebUiRoutingModule } from './todo-txt-web-ui-routing.module';
 import { TodoTxtWebUiComponent } from './todo-txt-web-ui.component';
 
-
 @NgModule({
   declarations: [TodoTxtWebUiComponent],
   imports: [

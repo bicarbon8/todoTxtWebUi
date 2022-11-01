@@ -1,3 +1,3 @@
 /* You can add global styles to this file, and also import other style files */
-@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css");
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
+@import url("~bootstrap/dist/css/bootstrap.min.css");
+@import url("~bootstrap-icons/font/bootstrap-icons.css");
