@@ -14,7 +14,7 @@
 // ***********************************************************
 
 // When a command from ./commands is ready to use, import with `import './commands'` syntax
-import './commands';
+import './e2e';
 
 // likely want to do this in a support file
 // so it's applied to all spec files

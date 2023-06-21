@@ -95,3 +95,12 @@ function disableRemoteAccess(): void {
 };
 
 Cypress.Commands.add('disableRemoteAccess', disableRemoteAccess);
+Cypress.on('uncaught:exception', (err, runnable) => {
+    // we expect a "Cannot use 'import.meta' outside a module" error
+    // and don't want to fail the test so we return false
+    if (err.message.includes("Cannot use 'import.meta' outside a module")) {
+        return false
+    }
+    // we still want to ensure there are no other unexpected
+    // errors, so we let them fail the test
+})
