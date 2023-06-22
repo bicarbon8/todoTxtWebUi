@@ -11,7 +11,7 @@ const todotxt: string = `${pri} sample ${proj} ${ctx}`;
 
 describe('TodoTxtWebUiComponent', () => {
   beforeEach(() => {
-    TodoTxtVault.removeAllTasks();
+    TodoTxtVault._clear();
   })
 
   it('can be mounted', () => {
@@ -22,7 +22,8 @@ describe('TodoTxtWebUiComponent', () => {
 
   it('will display 3 cards for priorities contexts and projects', () => {
     cy.mount(TodoTxtWebUiComponent);
-    cy.get('.card').should('contain', 'Priorities')
+    cy.get('.card').should('be.visible')
+      .should('contain', 'Priorities')
       .should('contain', 'Projects')
       .should('contain', 'Contexts');
   })
