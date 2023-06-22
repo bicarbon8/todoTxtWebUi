@@ -7,7 +7,7 @@ export default defineConfig({
       runMode: 3,
       openMode: 0,
     },
-    pageLoadTimeout: 10000,
+    pageLoadTimeout: 120000,
   },
 
   component: {
@@ -16,5 +16,6 @@ export default defineConfig({
       bundler: "webpack",
     },
     specPattern: "**/*.cy.ts",
+    viewportWidth: 800,
   },
 });

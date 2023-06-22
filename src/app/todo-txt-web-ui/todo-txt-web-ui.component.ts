@@ -175,7 +175,7 @@ export class TodoTxtWebUiComponent {
    * @param {TodoTxtTask} task - the task to generate for
    * @returns {string} the HTML marked up task text
    */
-   getMarkupForTask(text: string): SafeHtml {
+  getMarkupForTask(text: string): SafeHtml {
       let task: TodoTxtTask = TodoTxtTaskParser.get(text);
       // make html compatible
       text = TodoTxtUtils.htmlEncode(text);
