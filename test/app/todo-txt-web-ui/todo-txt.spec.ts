@@ -31,10 +31,10 @@
  * along with todoTxtWebUi.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
 import "jasmine";
-import { TodoTxt } from './todo-txt';
-import { TodoTxtTask } from './tasks/todo-txt-task';
-import { TodoTxtVault } from './storage/todo-txt-vault';
-import { TodoTxtTaskParser } from './tasks/todo-txt-task-parser';
+import { TodoTxt } from '../../../src/app/todo-txt-web-ui/todo-txt';
+import { TodoTxtTask } from '../../../src/app/todo-txt-web-ui/tasks/todo-txt-task';
+import { TodoTxtVault } from '../../../src/app/todo-txt-web-ui/storage/todo-txt-vault';
+import { TodoTxtTaskParser } from '../../../src/app/todo-txt-web-ui/tasks/todo-txt-task-parser';
 
 describe('TodoTxt', () => {
     beforeAll(() => {

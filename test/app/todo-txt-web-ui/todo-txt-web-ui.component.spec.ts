@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TodoTxtVault } from './storage/todo-txt-vault';
+import { TodoTxtVault } from '../../../src/app/todo-txt-web-ui/storage/todo-txt-vault';
 
-import { TodoTxtWebUiComponent } from './todo-txt-web-ui.component';
+import { TodoTxtWebUiComponent } from '../../../src/app/todo-txt-web-ui/todo-txt-web-ui.component';
 
 describe('TodoTxtWebUiComponent', () => {
   let component: TodoTxtWebUiComponent;
