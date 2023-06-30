@@ -31,6 +31,7 @@
     "bootstrap-icons": "^1.10.5",
     "file-saver": "^2.0.5",
     "file-system-access": "^1.0.4",
+    "ngx-build-plus": "^16.0.0",
     "rxjs": "6.6.7",
     "tslib": "2.3.1",
     "zone.js": "0.13.1"

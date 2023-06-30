@@ -36,7 +36,7 @@
                     <button class="btn btn-lg {{(t.isActive) ? 'btn-light' : 'btn-outline-success'}} text-start w-100" (click)="click_StartEditTask(t.id)" aria-label="edit task" [innerHTML]="getMarkupForTask(t.text)" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit task"></button>
                 </div>
                 <div *ngIf="editingTaskId == t.id">
-                    <div id="textarea_{{t.id}}" tabindex="0" contenteditable="true" class="textarea btn btn-lg pt-1 text-start w-100" [innerHTML]="getMarkupForTask(t.text)" (keydown.enter)="click_SaveTaskEdit(t.id)" (keydown.esc)="click_CancelTaskEdit()"></div>
+                    <div id="textarea_{{t.id}}" tabindex="0" contenteditable="true" class="textarea btn btn-lg pt-1 text-start w-100 bg-light" [innerHTML]="getMarkupForTask(t.text)" (keydown.enter)="click_SaveTaskEdit(t.id)" (keydown.esc)="click_CancelTaskEdit()"></div>
                     <div class="btn-group d-flex flex-wrap pt-1" role="group">
                         <button class="btn btn-success" (click)="click_SaveTaskEdit(t.id)" aria-label="save changes" data-bs-toggle="tooltip" data-bs-placement="top" title="Save Changes (Enter)" data-bs-toggle="tooltip" data-bs-placement="top" title="Save changes"><i class="bi bi-check"></i><span class="fw-light d-none d-lg-inline"> {{(isAddingNew) ? 'Save' : 'Update'}} Task</span></button>
                         <button class="btn btn-warning" (click)="click_CancelTaskEdit()" aria-label="discard changes" data-bs-toggle="tooltip" data-bs-placement="top" title="Discard Changes (Esc)" data-bs-toggle="tooltip" data-bs-placement="top" title="Discard changes"><i class="bi bi-x"></i><span class="fw-light d-none d-lg-inline"> Discard Changes</span></button>
