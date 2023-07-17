@@ -1,4 +1,4 @@
-import "zone.js";
+import 'zone.js';
 import { enableProdMode, getPlatform } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { environment } from './environments/environment';
