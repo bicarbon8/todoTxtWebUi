@@ -1,13 +1,9 @@
-import { loadRemoteModule } from '@angular-architects/module-federation';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  {path: '', loadChildren: () => loadRemoteModule({
-    type: 'module',
-    remoteEntry: './remoteEntry.js',
-    exposedModule: './Module'
-  }).then((m) => m.TodoTxtWebUiModule)}
+  {path: '', loadChildren: () => import('./todo-txt-web-ui/todo-txt-web-ui.module').then((m) => m.TodoTxtWebUiModule)},
+  {path: '**', redirectTo: '', pathMatch: 'full'}
 ];
 
 @NgModule({
